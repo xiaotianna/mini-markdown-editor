@@ -1,0 +1,29 @@
+{
+  "name": "@mini-markdown/ast-parser",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "watch": "rollup -c rollup.config.ts --configPlugin typescript -w",
+    "dev": "nodemon dist/bundle",
+    "build": "rollup -c rollup.config.ts --configPlugin typescript",
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "markdown-to-ast",
+    "markdown-transform",
+    "markdown-parser"
+  ],
+  "author": "lantianyu",
+  "license": "ISC",
+  "devDependencies": {
+    "@rollup/plugin-alias": "^5.1.1",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@types/node": "^22.10.6",
+    "nodemon": "^3.1.9",
+    "rollup": "^4.30.1",
+    "tslib": "^2.8.1",
+    "typescript": "^5.7.3",
+    "eslint": "9.18.0",
+    "@typescript-eslint/parser": "8.20.0"
+  }
+}

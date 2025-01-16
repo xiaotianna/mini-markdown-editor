@@ -1,0 +1,37 @@
+{
+  "name": "mini-markdown",
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=7"
+  },
+  "engine-strict": true,
+  "packageManager": "pnpm@7.33.5",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "in": "pnpm install -r",
+    "clear": "rimraf --glob ./node_modules ./packages/**/node_modules ./packages/**/dist ./pnpm-lock.yaml",
+    "dev:web": "pnpm -F @mini-markdown/editor dev",
+    "build:web": "pnpm -F @mini-markdown/editor dev",
+    "prepare": "husky",
+    "lint": "node ./scripts/zx-lint.js"
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx}": "pnpm lint"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-vinyl"
+    }
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.6.1",
+    "@commitlint/config-conventional": "^19.6.0",
+    "cz-vinyl": "1",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.3.0",
+    "rimraf": "^6.0.1",
+    "zx": "^8.3.0"
+  }
+}
