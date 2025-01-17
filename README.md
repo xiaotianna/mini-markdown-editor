@@ -56,3 +56,5 @@ git cz
 ```bash
 git push origin dev_xxx
 ```
+
+6、测试git
