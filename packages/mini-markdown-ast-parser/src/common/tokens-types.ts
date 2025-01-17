@@ -6,8 +6,9 @@ export const TOKENS_TYPES = {
   Blockquote: 'blockquote', // 引用
   // 行级
   Text: 'text', // 文本
-  Strong: 'strong', // 加粗
-  Emphasis: 'emphasis', // 斜体
+  Blod: 'blod', // 加粗
+  Italic: 'italic', // 斜体
+  Underline: 'underline', // 下划线
   Delete: 'delete', // 删除线
   Link: 'link', // 链接
   Image: 'image', // 图片
