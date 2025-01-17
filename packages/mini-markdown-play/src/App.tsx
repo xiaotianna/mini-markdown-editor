@@ -1,4 +1,5 @@
-import { Heading } from '@mini-markdown/material/src/components/Heading/index.tsx';
+// import { Heading } from '@mini-markdown/material/src/components/Heading/index.tsx';
+import { Heading } from '@mini-markdown/material';
 import { useRef } from 'react';
 import ReactDOMServer from 'react-dom/server';
 

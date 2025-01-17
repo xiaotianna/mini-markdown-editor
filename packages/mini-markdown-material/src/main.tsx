@@ -1,4 +1,5 @@
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
+// ts 类型
+export type { PropsType } from '@/components/Heading'
 
-createRoot(document.getElementById('root')!).render(<App />)
+// 组件
+export { default as Heading } from '@/components/Heading'

@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import styled from 'styled-components'
-import { LineWrap } from '../../style/LineWrap'
+import { LineWrap } from '@/style/LineWrap'
 
 /**
  *  '#' 这个字符，以及后面内容的样式（span包裹）
@@ -13,28 +13,12 @@ const HeadingStyle = styled.span`
   }
 `
 
-const Heading: FC<{
+export type PropsType = {
   level: number
   children: React.ReactNode
-}> = ({ level, children }) => {
-  // switch (level) {
-  //   case 1:
-  //     return <HeadingStyle>
-  //       <h1># {children}</h1>
-  //     </HeadingStyle>
-  //   case 2:
-  //     return <h2>## {children}</h2>
-  //   case 3:
-  //     return <h3>### {children}</h3>
-  //   case 4:
-  //     return <h4>#### {children}</h4>
-  //   case 5:
-  //     return <h5>##### {children}</h5>
-  //   case 6:
-  //     return <h6>###### {children}</h6>
-  //   default:
-  //     return <></>
-  // }
+}
+
+const Heading: FC<PropsType> = ({ level, children }) => {
   return (
     <LineWrap>
       <HeadingStyle>
@@ -45,4 +29,4 @@ const Heading: FC<{
   )
 }
 
-export { Heading }
+export default Heading
