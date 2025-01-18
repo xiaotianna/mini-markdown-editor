@@ -4,6 +4,8 @@ export const TOKENS_TYPES = {
   Heading: 'heading', // 标题
   Paragraph: 'paragraph', // 段落
   Blockquote: 'blockquote', // 引用
+  Image: 'image', // 图片
+  ThematicBreak: 'thematicBreak', // 分割线
   // 行级
   Text: 'text', // 文本
   Blod: 'blod', // 加粗
@@ -11,10 +13,8 @@ export const TOKENS_TYPES = {
   Underline: 'underline', // 下划线
   Delete: 'delete', // 删除线
   Link: 'link', // 链接
-  Image: 'image', // 图片
   InlineCode: 'inlineCode', // 行内高亮
   // 其他
-  ThematicBreak: 'thematicBreak', // 分割线
   Code: 'code', // 代码块
   List: 'list', // 列表
   ListItem: 'listItem', // 列表项
