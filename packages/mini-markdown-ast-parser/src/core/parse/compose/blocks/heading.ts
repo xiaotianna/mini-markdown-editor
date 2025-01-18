@@ -1,5 +1,6 @@
 import type { Tokens } from '@/types/tokens'
-import type { BlockFnParams } from '.'
+import type { ParseFnParams } from '..'
+import { parseInlineElements } from '../inline'
 
 // 转换 h1-h6
 export const parseHeading = ({
@@ -7,33 +8,18 @@ export const parseHeading = ({
   index,
   currentOffset,
   root
-}: BlockFnParams) => {
+}: ParseFnParams) => {
   for (let d = 1; d <= 6; d++) {
     const headingPrefix = '#'.repeat(d) + ' '
     if (trimmedLine.startsWith(headingPrefix)) {
       const text = trimmedLine.slice(headingPrefix.length)
-      // 创建 heading 节点
+      // 调用 parseInlineElements 解析行内元素
+      const children = parseInlineElements(text, index, currentOffset)
+
       const headingNode = {
         type: 'heading',
         depth: d,
-        children: [
-          {
-            type: 'text',
-            value: text,
-            position: {
-              start: {
-                line: index + 1,
-                column: d + 2,
-                offset: currentOffset + d + 1
-              },
-              end: {
-                line: index + 1,
-                column: d + 2 + text.length,
-                offset: currentOffset + d + 1 + text.length
-              }
-            }
-          }
-        ],
+        children: children,
         position: {
           start: { line: index + 1, column: 1, offset: currentOffset },
           end: {
@@ -44,7 +30,7 @@ export const parseHeading = ({
         }
       }
       root.children.push(headingNode as Tokens)
-      break
+      return true
     }
   }
 }

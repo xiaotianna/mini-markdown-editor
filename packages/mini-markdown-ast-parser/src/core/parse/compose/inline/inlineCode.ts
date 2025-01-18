@@ -8,7 +8,6 @@ export const parseInlineCode = ({
   currentOffset,
   root
 }: BlockFnParams) => {
-  // 解析内联代码
   const inlineCodeRegex = /(`+)(.*?)\1/g
   let match
   let lastIndex = 0

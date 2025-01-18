@@ -17,7 +17,6 @@
 `inlineCode` inlineCode 行内高亮
 
 --- thematicBreak 分割线
-*** thematicBreak 分割线
 
 ```js
 ```

@@ -2,10 +2,7 @@ import { tokenizer } from './tokenizer'
 import type { RootTokens } from '@/types/tokens'
 
 // 语法分析
-export const parseMarkdown = (markdown: string): RootTokens | Error => {
-  if (!markdown) {
-    return new Error('Markdown conversion text cannot be empty')
-  }
+export const parseMarkdown = (markdown: string): RootTokens => {
   const lines = markdown.split('\n')
   // 根节点
   const root: RootTokens = {
