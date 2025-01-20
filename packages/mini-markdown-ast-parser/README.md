@@ -28,6 +28,13 @@ pnpm add @mini-markdown/ast-parser
 ## 使用
 
 ```js
+// esm
+import { parseMarkdown, transformHtml } from '@mini-markdown/ast-parser'
+// commonjs
+const { parseMarkdown, transformHtml } = require('@mini-markdown/ast-parser')
+// 样式导入
+import '@mini-markdown/ast-parser/style'
+
 // 解析 markdown 内容为 ast 对象
 const ast = parseMarkdown(code)
 // 转换 ast 为 html 字符串
