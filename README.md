@@ -7,7 +7,7 @@
 ```
 - docs 文档
 - packages
-    - mini-markdown-ast-parser markdown 编辑器 ast 解析器（采用 ts 开发）
+    - mini-markdown-ast-parser markdown 编辑器 ast 解析器（采用 rollup + ts 开发）
     - mini-markdown-editor 编辑器（采用 next.js 开发）
     - mini-markdown-material 编辑器物料组件库（react + vite 开发、打包）
     - mini-markdown-play 物料组件库测试项目
@@ -21,6 +21,18 @@
 ```bash
 # 安装依赖
 pnpm in
+# 清空项目 node_modules 和 dist 目录
+pnpm clear
+# 运行 mini-markdown-ast-parser
+pnpm dev:ast
+# 构建 mini-markdown-ast-parser
+pnpm build:ast
+# 构建 mini-markdown-ast-parser 案例项目
+pnpm build:ast:play
+# 运行 mini-markdown-editor
+pnpm dev:editor
+# 构建 mini-markdown-editor
+pnpm build:editor
 ```
 
 ## git提交规范
@@ -56,5 +68,3 @@ git cz
 ```bash
 git push origin dev_xxx
 ```
-
-6、测试git111

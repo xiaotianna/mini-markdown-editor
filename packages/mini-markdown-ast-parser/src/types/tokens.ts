@@ -20,7 +20,7 @@ export interface Tokens {
   /**
    * 只对 heading 有效
    */
-  deps?: number // 标题的层级
+  depth?: number // 标题的层级
   /**
    * 只对 list 有效
    */
@@ -36,7 +36,7 @@ export interface Tokens {
    * 只对 code 有效
    */
   lang?: string // 代码块的lang
-  meta?: string // 代码块的meta(```js [meta])
+  meta?: string | null // 代码块的meta(```js [meta])
   children?: Tokens[]
   position: PositionType
 }

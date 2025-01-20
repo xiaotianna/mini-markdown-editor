@@ -6,7 +6,8 @@ export const parseThematicBreak = ({
   trimmedLine,
   index,
   currentOffset,
-  root
+  root,
+  resetCurrentStatus
 }: ParseFnParams) => {
   if (/^(?:-{3,}|[*]{3,})$/.test(trimmedLine)) {
     const thematicBreakNode = {
@@ -17,6 +18,7 @@ export const parseThematicBreak = ({
       }
     }
     root.children.push(thematicBreakNode as Tokens)
+    resetCurrentStatus()
     return true
   }
 }

@@ -2,28 +2,55 @@
   "name": "@mini-markdown/ast-parser",
   "version": "1.0.0",
   "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/types/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/src/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./style": {
+      "import": "./dist/style/index.css",
+      "require": "./dist/style/index.css"
+    }
+  },
   "scripts": {
     "watch": "rollup -c rollup.config.ts --configPlugin typescript -w",
-    "dev": "nodemon dist/bundle",
-    "build": "rollup -c rollup.config.ts --configPlugin typescript",
-    "lint": "eslint ."
+    "start": "nodemon dist/bundle",
+    "dev": "npm-run-all --parallel watch start",
+    "build": "pnpm lint && rollup -c rollup.config.ts --configPlugin typescript",
+    "lint": "eslint .",
+    "build:play": "pnpm build && node example/index.js"
   },
   "keywords": [
     "markdown-to-ast",
     "markdown-transform",
-    "markdown-parser"
+    "markdown-parser",
+    "markdown",
+    "ast"
   ],
   "author": "lantianyu",
   "license": "ISC",
+  "dependencies": {
+    "highlight.js": "^11.11.1"
+  },
   "devDependencies": {
     "@rollup/plugin-alias": "^5.1.1",
+    "@rollup/plugin-commonjs": "^28.0.2",
+    "@rollup/plugin-node-resolve": "^16.0.0",
     "@rollup/plugin-typescript": "^12.1.2",
     "@types/node": "^22.10.6",
-    "nodemon": "^3.1.9",
-    "rollup": "^4.30.1",
-    "tslib": "^2.8.1",
-    "typescript": "^5.7.3",
+    "@typescript-eslint/parser": "8.20.0",
     "eslint": "9.18.0",
-    "@typescript-eslint/parser": "8.20.0"
+    "nodemon": "^3.1.9",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.5.1",
+    "rollup": "^4.30.1",
+    "rollup-plugin-delete": "^2.1.0",
+    "rollup-plugin-postcss": "^4.0.2",
+    "tslib": "^2.8.1",
+    "typescript": "^5.7.3"
   }
 }

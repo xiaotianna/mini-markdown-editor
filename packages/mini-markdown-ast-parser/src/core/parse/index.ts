@@ -1,5 +1,5 @@
 import { tokenizer } from './tokenizer'
-import type { RootTokens } from '@/types/tokens'
+import type { RootTokens } from '../../types/tokens'
 
 // 语法分析
 export const parseMarkdown = (markdown: string): RootTokens => {
