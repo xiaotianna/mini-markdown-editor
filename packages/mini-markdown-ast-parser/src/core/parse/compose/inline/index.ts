@@ -3,43 +3,49 @@ export const parseInlineElements = (
   index: number,
   currentOffset: number
 ) => {
-  const strongRegex = /\*\*(.*?)\*\*/
-  const emphasisRegex = /_(.*?)_/
+  const blodRegex = /\*\*(.*?)\*\*/
+  const italicRegex = /_(.*?)_/
   const underlineRegex = /\-\-(.*?)\-\-/
   const deleteRegex = /~~(.*?)~~/
   const inlineCodeRegex = /`(.*?)`/
   const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/
   const imageRegex = /!\[(.*?)\]\((.*?)\)/g
+  const htmlRegex = /<([a-zA-Z0-9]+)([^>]*)>(.*?)<\/\1>/g
   let offset = 0
   let children = []
   let lastIndex = 0
 
   while (offset < line.length) {
-    const strongMatch = line.slice(offset).match(strongRegex)
-    const emphasisMatch = line.slice(offset).match(emphasisRegex)
+    const blodMatch = line.slice(offset).match(blodRegex)
+    const italicMatch = line.slice(offset).match(italicRegex)
     const underlineMatch = line.slice(offset).match(underlineRegex)
     const deleteMatch = line.slice(offset).match(deleteRegex)
     const inlineCodeMatch = line.slice(offset).match(inlineCodeRegex)
+    const imageMatch = line.slice(offset).match(imageRegex)
+    const linkMatch = line.slice(offset).match(linkRegex)
+    const htmlMatch = line.slice(offset).match(htmlRegex)
 
     let match: RegExpMatchArray | null = null
     let type = ''
     let regex = null
 
     if (
-      strongMatch &&
-      (!match || (strongMatch.index ?? Infinity) < (match?.index ?? Infinity))
+      blodMatch &&
+      (!match ||
+        (blodMatch.index ?? Infinity) <
+          ((match as RegExpMatchArray)?.index ?? Infinity))
     ) {
-      match = strongMatch
-      type = 'strong'
-      regex = strongRegex
+      match = blodMatch
+      type = 'blod'
+      regex = blodRegex
     }
     if (
-      emphasisMatch &&
-      (!match || (emphasisMatch.index ?? Infinity) < (match?.index ?? Infinity))
+      italicMatch &&
+      (!match || (italicMatch.index ?? Infinity) < (match?.index ?? Infinity))
     ) {
-      match = emphasisMatch
-      type = 'emphasis'
-      regex = emphasisRegex
+      match = italicMatch
+      type = 'italic'
+      regex = italicRegex
     }
     if (
       underlineMatch &&
@@ -67,9 +73,12 @@ export const parseInlineElements = (
       type = 'inlineCode'
       regex = inlineCodeRegex
     }
+    if (htmlMatch && (!match || (htmlMatch.index ?? Infinity) < (match?.index ?? Infinity))) {
+      match = htmlMatch
+      type = 'html'
+      regex = htmlRegex
+    }
 
-    // 添加图片匹配逻辑
-    const imageMatch = line.slice(offset).match(imageRegex)
     if (imageMatch) {
       for (let i = 0; i < imageMatch.length; i++) {
         const fullMatch = imageMatch[i]
@@ -99,7 +108,6 @@ export const parseInlineElements = (
         lastIndex = offset
       }
     } else {
-      const linkMatch = line.slice(offset).match(linkRegex)
       if (
         linkMatch &&
         (!match || (linkMatch.index ?? Infinity) < (match?.index ?? Infinity))
@@ -170,6 +178,23 @@ export const parseInlineElements = (
             }
           }
         })
+      } else if (type === 'html') { // 添加HTML标签处理逻辑
+        children.push({
+          type: type,
+          value: match[0],
+          position: {
+            start: {
+              line: index + 1,
+              column: offset + 1,
+              offset: currentOffset + offset
+            },
+            end: {
+              line: index + 1,
+              column: offset + match[0].length + 1,
+              offset: currentOffset + offset + match[0].length
+            }
+          }
+        })
       } else {
         children.push({
           type: type,
@@ -211,6 +236,7 @@ export const parseInlineElements = (
           }
         })
       }
+
       offset += (match.index ?? 0) + match[0].length
       lastIndex = offset
     } else {
@@ -236,6 +262,5 @@ export const parseInlineElements = (
       }
     })
   }
-
   return children
 }

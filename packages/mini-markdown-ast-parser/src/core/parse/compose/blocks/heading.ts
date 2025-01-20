@@ -7,7 +7,8 @@ export const parseHeading = ({
   trimmedLine,
   index,
   currentOffset,
-  root
+  root,
+  resetCurrentStatus
 }: ParseFnParams) => {
   for (let d = 1; d <= 6; d++) {
     const headingPrefix = '#'.repeat(d) + ' '
@@ -30,6 +31,7 @@ export const parseHeading = ({
         }
       }
       root.children.push(headingNode as Tokens)
+      resetCurrentStatus()
       return true
     }
   }

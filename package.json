@@ -12,8 +12,11 @@
     "preinstall": "npx only-allow pnpm",
     "in": "pnpm install -r",
     "clear": "rimraf --glob ./node_modules ./packages/**/node_modules ./packages/**/dist ./pnpm-lock.yaml",
-    "dev:web": "pnpm -F @mini-markdown/editor dev",
-    "build:web": "pnpm -F @mini-markdown/editor dev",
+    "dev:ast": "pnpm -F @mini-markdown/ast-parser dev",
+    "build:ast": "pnpm -F @mini-markdown/ast-parser build",
+    "build:ast:play": "pnpm -F @mini-markdown/ast-parser build:play",
+    "dev:editor": "pnpm -F @mini-markdown/editor dev",
+    "build:editor": "pnpm -F @mini-markdown/editor build",
     "prepare": "husky",
     "lint": "node ./scripts/zx-lint.js"
   },

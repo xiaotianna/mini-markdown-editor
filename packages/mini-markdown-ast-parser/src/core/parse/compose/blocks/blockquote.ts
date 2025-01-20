@@ -1,7 +1,6 @@
 import type { Tokens } from '@/types/tokens'
 import type { ParseFnParams } from '..'
 import { parseMarkdown } from '../..'
-import { parseInlineElements } from '../inline'
 
 // 转换 blockquote
 export const parseBlockquote = ({
@@ -99,5 +98,8 @@ export const parseBlockquote = ({
       currentStatus.currentBlockquote = null
     }
     return true
+  } else {
+    currentStatus.currentBlockquote = null
+    return false
   }
 }
