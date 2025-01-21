@@ -1,3 +1,5 @@
+import { Tokens } from "@/types/tokens"
+
 export const parseInlineElements = (
   line: string,
   index: number,
@@ -196,43 +198,17 @@ export const parseInlineElements = (
           }
         })
       } else {
+        // 递归解析内部内容
+        const innerContent = match[1]
+        const innerOffset = currentOffset + offset + (match.index ?? 0) + (type === 'blod' || type === 'delete' ? 2 : 1)
+        const innerChildren: any = parseInlineElements(innerContent, index, innerOffset)
+        
         children.push({
           type: type,
-          children: [
-            {
-              type: 'text',
-              value: match[1],
-              position: {
-                start: {
-                  line: index + 1,
-                  column: offset + (match.index ?? 0) + 3,
-                  offset: currentOffset + offset + (match.index ?? 0) + 2
-                },
-                end: {
-                  line: index + 1,
-                  column: offset + (match.index ?? 0) + match[0].length - 2,
-                  offset:
-                    currentOffset +
-                    offset +
-                    (match.index ?? 0) +
-                    match[0].length -
-                    3
-                }
-              }
-            }
-          ],
+          children: innerChildren,
           position: {
-            start: {
-              line: index + 1,
-              column: offset + (match.index ?? 0) + 1,
-              offset: currentOffset + offset + (match.index ?? 0)
-            },
-            end: {
-              line: index + 1,
-              column: offset + (match.index ?? 0) + match[0].length + 1,
-              offset:
-                currentOffset + offset + (match.index ?? 0) + match[0].length
-            }
+            start: { line: index + 1, column: offset + (match.index ?? 0) + 1, offset: currentOffset + offset + (match.index ?? 0) },
+            end: { line: index + 1, column: offset + (match.index ?? 0) + match[0].length + 1, offset: currentOffset + offset + (match.index ?? 0) + match[0].length }
           }
         })
       }
