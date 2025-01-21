@@ -1,16 +1,17 @@
 {
   "name": "docs",
   "version": "1.0.0",
-  "private": true,
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "build": "rspress build",
-    "dev": "rspress dev",
-    "preview": "rspress preview"
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
   },
-  "dependencies": {
-    "rspress": "^1.39.4"
-  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
-    "@types/node": "^18.11.17"
+    "vitepress": "^1.6.1"
   }
 }

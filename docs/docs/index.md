@@ -1,37 +1,69 @@
----
-pageType: home
+让我来对比一下 CSS-in-JS（以 styled-components 为例）和 CSS Modules 这两种方案的优缺点：
 
-hero:
-  name: My Site
-  text: A cool website!
-  tagline: This is the tagline
-  actions:
-    - theme: brand
-      text: Quick Start
-      link: /guide/
-    - theme: alt
-      text: GitHub
-      link: https://github.com/web-infra-dev/rspress
-  image:
-    src: /rspress-icon.png
-    alt: Logo
-features:
-  - title: Blazing fast build speed
-    details: The core compilation module is based on the Rust front-end toolchain, providing a more ultimate development experience.
-    icon: 🏃🏻‍♀️
-  - title: Support for MDX content writing
-    details: MDX is a powerful way to write content, allowing you to use React components in Markdown.
-    icon: 📦
-  - title: Built-in full-text search
-    details: Automatically generates a full-text search index for you during construction, providing out-of-the-box full-text search capabilities.
-    icon: 🎨
-  - title: Simpler I18n solution
-    details: With the built-in I18n solution, you can easily provide multi-language support for documents or components.
-    icon: 🌍
-  - title: Static site generation
-    details: In production, it automatically builds into static HTML files, which can be easily deployed anywhere.
-    icon: 🌈
-  - title: Providing multiple custom capabilities
-    details: Through its extension mechanism, you can easily extend theme UI and build process.
-    icon: 🔥
----
+### CSS-in-JS 优点：
+1. 动态样式能力强
+   
+   - 可以基于 props 动态计算样式
+   - 支持主题系统，通过 ThemeProvider 可以方便地实现主题切换
+   - 可以直接在组件中使用 JavaScript 变量和函数
+2. 组件化程度高
+   
+   - 样式与组件紧密绑定，提高了代码的内聚性
+   - 支持样式组件的继承和组合
+   - 样式作用域完全隔离
+3. 开发体验好
+   
+   - 不需要在组件和样式文件之间切换
+   - 支持模板字符串语法，写法接近原生 CSS
+   - 支持自动添加浏览器前缀
+### CSS-in-JS 缺点：
+1. 运行时开销
+   
+   - 需要在运行时生成和注入样式
+   - 首次渲染性能较差
+   - bundle 体积会增大
+2. 调试相对困难
+   
+   - 生成的类名是动态的，不易于调试
+   - DevTools 中查看样式不如传统 CSS 直观
+### CSS Modules 优点：
+1. 性能更好
+   
+   - 在构建时生成样式，没有运行时开销
+   - bundle 体积更小
+   - 首次渲染更快
+2. 更好的工具支持
+   
+   - 完整的 CSS 语法支持
+   - 更好的 IDE 提示和自动补全
+   - 更容易与现有的 CSS 工具链集成（如 PostCSS）
+3. 调试友好
+   
+   - 生成的类名可预测
+   - 在 DevTools 中更容易定位样式问题
+   - 支持 source map
+### CSS Modules 缺点：
+1. 动态样式能力有限
+   
+   - 不能基于 props 直接生成样式
+   - 需要通过类名组合来实现动态样式
+   - 主题系统实现相对复杂
+2. 开发体验略差
+   
+   - 需要在组件和样式文件之间切换
+   - 类名管理需要额外注意
+   - 样式复用相对困难
+### 选择建议：
+1. 选择 CSS-in-JS 的场景：
+   
+   - 需要高度动态的样式系统
+   - 组件库开发
+   - 需要主题系统的项目
+   - 小型项目或对性能要求不是特别高的场景
+2. 选择 CSS Modules 的场景：
+   
+   - 对性能要求较高的大型项目
+   - 样式相对静态的项目
+   - 需要与现有 CSS 工具链集成的项目
+   - 团队更熟悉传统 CSS 开发模式
+在实际项目中，这两种方案也可以混合使用，根据具体场景选择最适合的方案。例如，可以使用 CSS Modules 处理大部分静态样式，而在需要动态样式的特定组件中使用 CSS-in-JS。
