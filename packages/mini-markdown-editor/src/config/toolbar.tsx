@@ -1,6 +1,6 @@
 // 工具栏图标
 import HeadingIcon from '@/assets/images/heading.svg'
-import BlodIcon from '@/assets/images/blod.svg'
+import BoldIcon from '@/assets/images/bold.svg'
 import ItalicIcon from '@/assets/images/italic.svg'
 import UnderlineIcon from '@/assets/images/underline.svg'
 import DeleteIcon from '@/assets/images/delete.svg'
@@ -30,8 +30,8 @@ export const toolbars = [
     list: []
   },
   {
-    type: 'blod',
-    icon: BlodIcon,
+    type: 'bold',
+    icon: BoldIcon,
     title: '加粗'
   },
   {

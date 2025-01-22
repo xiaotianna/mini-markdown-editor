@@ -1,6 +1,7 @@
-import { FC } from 'react'
+import { FC, useMemo } from 'react'
 import styled from 'styled-components'
 import { Checkbox } from '@arco-design/web-react'
+import { useEditorContentStore } from '@/store/editor-content'
 
 const StatusWrapper = styled.div`
   width: 100%;
@@ -40,9 +41,14 @@ const StatusWrapper = styled.div`
 `
 
 const Status: FC = () => {
+  const { content } = useEditorContentStore()
+  const contentNum = useMemo(() => {
+    return content.replace(/[\s\n]/g, '').length
+  }, [content])
+
   return (
     <StatusWrapper>
-      <div className='status-left'>字数: {0}</div>
+      <div className='status-left'>字数: {contentNum}</div>
       <div className='status-right'>
         <Checkbox className={'checkbox'} defaultChecked={true}>
           <span className='checkbox-text'>同步滚动</span>
