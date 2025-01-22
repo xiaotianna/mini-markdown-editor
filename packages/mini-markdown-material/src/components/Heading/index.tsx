@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import styled from 'styled-components'
-import { LineWrap } from '@/style/LineWrap'
+import { LineWrap } from '@/components/base/LineWrap'
 
 /**
  *  '#' 这个字符，以及后面内容的样式（span包裹）
@@ -8,6 +8,7 @@ import { LineWrap } from '@/style/LineWrap'
 const HeadingStyle = styled.span`
   color: #3f4a54;
   font-weight: bold;
+  color: #0000ff;
   .heading-tag {
     color: #0000ff;
   }

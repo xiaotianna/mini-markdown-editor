@@ -1,0 +1,14 @@
+.light {
+  background-color: white;
+  color: black;
+}
+
+.dark {
+  background-color: black;
+  color: white;
+}
+
+.container {
+  min-height: 100vh;
+  transition: all 0.5s;
+}
