@@ -18,7 +18,7 @@
   },
   "scripts": {
     "watch": "rollup -c rollup.config.ts --configPlugin typescript -w",
-    "start": "nodemon dist/bundle",
+    "start": "nodemon dist/index.js",
     "dev": "npm-run-all --parallel watch start",
     "build": "pnpm lint && rollup -c rollup.config.ts --configPlugin typescript",
     "lint": "eslint .",

@@ -7,7 +7,7 @@ export const TOKENS_TYPES = {
   ThematicBreak: 'thematicBreak', // 分割线
   // 行级
   Text: 'text', // 文本
-  Blod: 'blod', // 加粗
+  Bold: 'bold', // 加粗
   Italic: 'italic', // 斜体
   Underline: 'underline', // 下划线
   Delete: 'delete', // 删除线

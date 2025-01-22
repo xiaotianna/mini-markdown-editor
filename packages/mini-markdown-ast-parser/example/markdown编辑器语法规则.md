@@ -1,6 +1,6 @@
 # heading 标题
 
-**加粗** blod 加粗
+**加粗** bold 加粗
 
 _斜体_ italic 斜体
 
