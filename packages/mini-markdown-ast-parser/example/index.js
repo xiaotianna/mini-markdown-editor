@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { parseMarkdown, transformHtml } from '../dist/bundle.js'
+import { parseMarkdown, transformHtml } from '../dist/index.js'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const code = fs.readFileSync(

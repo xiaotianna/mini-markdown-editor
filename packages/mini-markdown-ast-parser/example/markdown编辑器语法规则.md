@@ -1,8 +1,8 @@
 # heading 标题
 
-**加粗** blod 加粗
+**加粗** bold 加粗
 
-*斜体* italic 斜体
+_斜体_ italic 斜体
 
 --下划线-- underline 下划线
 

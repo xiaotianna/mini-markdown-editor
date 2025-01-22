@@ -9,8 +9,7 @@ export const parseCode = ({
   index,
   currentOffset,
   root,
-  currentStatus,
-  lines
+  currentStatus
 }: ParseFnParams) => {
   // 代码块处理
   if (trimmedLine.startsWith('```')) {
@@ -45,29 +44,6 @@ export const parseCode = ({
     return true
   } else if (currentStatus.inCodeBlock) {
     currentStatus.codeBlockValue += line + '\n'
-    // 如果是最后一行且仍在代码块中，强制生成代码块节点
-    if (index === lines.length - 1) {
-      currentStatus.inCodeBlock = false
-      const codeNode: Tokens = {
-        type: 'code' as TokenTypeVal,
-        lang: currentStatus.codeBlockLang,
-        meta: null,
-        value: currentStatus.codeBlockValue.trim(),
-        position: {
-          start: {
-            line: currentStatus.codeBlockStartLine,
-            column: 1,
-            offset: currentStatus.codeBlockStartOffset
-          },
-          end: {
-            line: index + 1,
-            column: line.length + 1,
-            offset: currentOffset + line.length
-          }
-        }
-      }
-      root.children.push(codeNode)
-    }
     return true
   }
 }

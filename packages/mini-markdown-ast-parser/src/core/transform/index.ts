@@ -4,7 +4,7 @@ import { renderRoot } from './render/root'
 import { renderHeading } from './render/heading'
 import { renderText } from './render/text'
 import { renderParagraph } from './render/paragraph'
-import { renderBlod } from './render/blod'
+import { renderBold } from './render/bold'
 import { renderItalic } from './render/italic'
 import { renderUnderline } from './render/underline'
 import { renderDelete } from './render/delete'
@@ -29,7 +29,7 @@ const nodeMap: Record<
   heading: renderHeading,
   text: renderText,
   paragraph: renderParagraph,
-  blod: renderBlod,
+  bold: renderBold,
   italic: renderItalic,
   underline: renderUnderline,
   delete: renderDelete,

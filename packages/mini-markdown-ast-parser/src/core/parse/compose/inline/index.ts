@@ -1,9 +1,11 @@
+import { Tokens } from "@/types/tokens"
+
 export const parseInlineElements = (
   line: string,
   index: number,
   currentOffset: number
 ) => {
-  const blodRegex = /\*\*(.*?)\*\*/
+  const boldRegex = /\*\*(.*?)\*\*/
   const italicRegex = /_(.*?)_/
   const underlineRegex = /\-\-(.*?)\-\-/
   const deleteRegex = /~~(.*?)~~/
@@ -16,7 +18,7 @@ export const parseInlineElements = (
   let lastIndex = 0
 
   while (offset < line.length) {
-    const blodMatch = line.slice(offset).match(blodRegex)
+    const boldMatch = line.slice(offset).match(boldRegex)
     const italicMatch = line.slice(offset).match(italicRegex)
     const underlineMatch = line.slice(offset).match(underlineRegex)
     const deleteMatch = line.slice(offset).match(deleteRegex)
@@ -30,14 +32,14 @@ export const parseInlineElements = (
     let regex = null
 
     if (
-      blodMatch &&
+      boldMatch &&
       (!match ||
-        (blodMatch.index ?? Infinity) <
+        (boldMatch.index ?? Infinity) <
           ((match as RegExpMatchArray)?.index ?? Infinity))
     ) {
-      match = blodMatch
-      type = 'blod'
-      regex = blodRegex
+      match = boldMatch
+      type = 'bold'
+      regex = boldRegex
     }
     if (
       italicMatch &&
@@ -119,6 +121,29 @@ export const parseInlineElements = (
     }
 
     if (match) {
+      // 如果是空的行内代码块，直接作为普通文本处理
+      if (type === 'inlineCode' && !match[1].trim()) {
+        children.push({
+          type: 'text',
+          value: match[0],
+          position: {
+            start: {
+              line: index + 1,
+              column: offset + (match.index ?? 0) + 1,
+              offset: currentOffset + offset + (match.index ?? 0)
+            },
+            end: {
+              line: index + 1,
+              column: offset + (match.index ?? 0) + match[0].length + 1,
+              offset: currentOffset + offset + (match.index ?? 0) + match[0].length
+            }
+          }
+        })
+        offset += (match.index ?? 0) + match[0].length
+        lastIndex = offset
+        continue
+      }
+
       if (match.index !== undefined && match.index > 0) {
         children.push({
           type: 'text',
@@ -196,43 +221,17 @@ export const parseInlineElements = (
           }
         })
       } else {
+        // 递归解析内部内容
+        const innerContent = match[1]
+        const innerOffset = currentOffset + offset + (match.index ?? 0) + (type === 'bold' || type === 'delete' ? 2 : 1)
+        const innerChildren: any = parseInlineElements(innerContent, index, innerOffset)
+        
         children.push({
           type: type,
-          children: [
-            {
-              type: 'text',
-              value: match[1],
-              position: {
-                start: {
-                  line: index + 1,
-                  column: offset + (match.index ?? 0) + 3,
-                  offset: currentOffset + offset + (match.index ?? 0) + 2
-                },
-                end: {
-                  line: index + 1,
-                  column: offset + (match.index ?? 0) + match[0].length - 2,
-                  offset:
-                    currentOffset +
-                    offset +
-                    (match.index ?? 0) +
-                    match[0].length -
-                    3
-                }
-              }
-            }
-          ],
+          children: innerChildren,
           position: {
-            start: {
-              line: index + 1,
-              column: offset + (match.index ?? 0) + 1,
-              offset: currentOffset + offset + (match.index ?? 0)
-            },
-            end: {
-              line: index + 1,
-              column: offset + (match.index ?? 0) + match[0].length + 1,
-              offset:
-                currentOffset + offset + (match.index ?? 0) + match[0].length
-            }
+            start: { line: index + 1, column: offset + (match.index ?? 0) + 1, offset: currentOffset + offset + (match.index ?? 0) },
+            end: { line: index + 1, column: offset + (match.index ?? 0) + match[0].length + 1, offset: currentOffset + offset + (match.index ?? 0) + match[0].length }
           }
         })
       }
