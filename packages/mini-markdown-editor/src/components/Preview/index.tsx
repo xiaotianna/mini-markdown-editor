@@ -4,7 +4,7 @@ import "@/assets/styles/preview.css";
 import "highlight.js/styles/atom-one-dark.css";
 import styled from "styled-components";
 import { scrollSync } from "@/utils/scroll-sync";
-import { useEditorContentStore } from "@/store/editor-content";
+import { useEditorContentStore } from "@/store/editor";
 
 const ScrollWrapper = styled.div`
   width: 100%;

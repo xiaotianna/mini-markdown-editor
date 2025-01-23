@@ -1,10 +1,10 @@
-import { FC } from "react";
+import { FC, useRef } from "react";
 import styled from "styled-components";
-import CodeMirror from "@uiw/react-codemirror";
+import CodeMirror, { type EditorView, ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
 import * as events from "@uiw/codemirror-extensions-events";
-import { useEditorContentStore } from "@/store/editor-content";
+import { useEditorContentStore } from "@/store/editor";
 import { scrollSync } from "@/utils/scroll-sync";
 import { useDebounceFn } from "ahooks";
 
@@ -15,6 +15,7 @@ const ScrollWrapper = styled.div`
   padding: 5px 10px;
   display: flex;
   flex-direction: column;
+
   .editor-content {
     width: 100%;
     min-height: 100%;
@@ -35,18 +36,26 @@ const ScrollWrapper = styled.div`
 `;
 
 const Editor: FC = () => {
-  const { content, setContent, scrollWrapper, setScrollWrapper } = useEditorContentStore();
+  const { content, setContent, scrollWrapper, setScrollWrapper, setEditorView } =
+    useEditorContentStore();
+  const editorRef = useRef<ReactCodeMirrorRef>(null);
+
+  // 编辑器挂载完成后将编辑器示例存储起来
+  const handleCreate = (view: EditorView) => {
+    setEditorView(view);
+  };
+
   const { run } = useDebounceFn(
-    (e) => {
-      const editorInstance = e.target as HTMLDivElement;
-      scrollSync({
-        toScrollInstance: editorInstance,
-        fromScrollInstance: document.querySelector(".markdown-editor-preview"),
-      });
+    () => {
+      const editorInstance = editorRef.current?.view?.dom;
+      if (editorInstance) {
+        scrollSync({
+          toScrollInstance: editorInstance,
+          fromScrollInstance: document.querySelector(".markdown-editor-preview"),
+        });
+      }
     },
-    {
-      wait: 10,
-    },
+    { wait: 10 },
   );
 
   const handleChange = (val: string) => {
@@ -59,7 +68,7 @@ const Editor: FC = () => {
     },
   });
 
-  const handleMoseEnter = () => {
+  const handleMouseEnter = () => {
     setScrollWrapper("editor");
   };
 
@@ -67,6 +76,8 @@ const Editor: FC = () => {
     <ScrollWrapper>
       <CodeMirror
         className="markdown-editor-content"
+        ref={editorRef}
+        onCreateEditor={handleCreate}
         value={content}
         extensions={[
           markdown({ base: markdownLanguage, codeLanguages: languages }),
@@ -83,7 +94,7 @@ const Editor: FC = () => {
         autoFocus={true}
         style={{ height: "100%" }}
         onChange={handleChange}
-        onMouseEnter={handleMoseEnter}
+        onMouseEnter={handleMouseEnter}
       />
     </ScrollWrapper>
   );

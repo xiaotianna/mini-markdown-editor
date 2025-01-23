@@ -1,6 +1,6 @@
 import { FC } from "react";
 import styled from "styled-components";
-import { useEditorContentStore } from "@/store/editor-content";
+import { useEditorContentStore } from "@/store/editor";
 import Toolbar from "@/components/Toolbar";
 import Editor from "@/components/Editor";
 import Preview from "@/components/Preview";

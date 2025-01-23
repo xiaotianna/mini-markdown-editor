@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { DropDownMenu } from "../base/DropDownMenu";
 import IconTooltip from "../base/IconTooltip";
 import { FC, memo } from "react";
+import { useEditorContentStore } from "@/store/editor";
 
 const ToolbarItemWrapper = styled.div`
   width: 16px;
@@ -30,18 +31,24 @@ interface ToolbarItemProps {
   list?: Array<string>;
 }
 
-export const ToolbarItem: FC<ToolbarItemProps> = memo(({ icon, title, list }) => (
-  <ToolbarItemWrapper className="item">
-    {list ? (
-      <IconTooltip content={title}>
-        <DropDownMenu list={list}>
+export const ToolbarItem: FC<ToolbarItemProps> = memo(({ icon, title, list }) => {
+  const focusEditor = useEditorContentStore((state) => state.focusEditor);
+  const handleClick = () => {
+    focusEditor();
+  };
+  return (
+    <ToolbarItemWrapper className="item" onClick={handleClick}>
+      {list ? (
+        <IconTooltip content={title}>
+          <DropDownMenu list={list}>
+            <img src={icon} alt={title} />
+          </DropDownMenu>
+        </IconTooltip>
+      ) : (
+        <IconTooltip content={title}>
           <img src={icon} alt={title} />
-        </DropDownMenu>
-      </IconTooltip>
-    ) : (
-      <IconTooltip content={title}>
-        <img src={icon} alt={title} />
-      </IconTooltip>
-    )}
-  </ToolbarItemWrapper>
-));
+        </IconTooltip>
+      )}
+    </ToolbarItemWrapper>
+  );
+});

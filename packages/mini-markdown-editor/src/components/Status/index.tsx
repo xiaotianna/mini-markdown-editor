@@ -1,6 +1,6 @@
 import { FC, useMemo } from "react";
 import styled from "styled-components";
-import { useEditorContentStore } from "@/store/editor-content";
+import { useEditorContentStore } from "@/store/editor";
 import { Checkbox } from "antd";
 import type { CheckboxProps } from "antd";
 
