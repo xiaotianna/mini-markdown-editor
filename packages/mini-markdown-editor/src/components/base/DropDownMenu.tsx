@@ -1,5 +1,6 @@
-import { Dropdown, Menu } from "@arco-design/web-react";
-import React, { useCallback, useMemo, memo } from "react";
+import React, { useMemo, memo } from "react";
+import { Dropdown } from "antd";
+import type { MenuProps } from "antd";
 
 interface DropDownMenuProps {
   children: React.ReactNode;
@@ -8,26 +9,25 @@ interface DropDownMenuProps {
 }
 
 export const DropDownMenu = memo(({ children, list, onSelect }: DropDownMenuProps) => {
-  const handleMenuItemClick = useCallback(
-    (key: string) => {
-      onSelect?.(key);
-    },
-    [onSelect],
-  );
+  const items: MenuProps["items"] = useMemo(() => {
+    return list.map((item) => ({
+      key: item,
+      label: item,
+    }));
+  }, [list]);
 
-  const dropList = useMemo(
-    () => (
-      <Menu onClickMenuItem={handleMenuItemClick}>
-        {list.map((item) => (
-          <Menu.Item key={item}>{item}</Menu.Item>
-        ))}
-      </Menu>
-    ),
-    [list, handleMenuItemClick],
-  );
+  const handleMenuClick: MenuProps["onClick"] = (e) => {
+    onSelect?.(e.key);
+  };
 
   return (
-    <Dropdown droplist={dropList} position="bl">
+    <Dropdown
+      menu={{
+        items,
+        onClick: handleMenuClick,
+      }}
+      placement="bottomLeft"
+    >
       {children}
     </Dropdown>
   );
