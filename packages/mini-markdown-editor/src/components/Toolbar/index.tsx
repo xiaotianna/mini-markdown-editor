@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import styled from 'styled-components'
 import IconTooltip from '../base/IconTooltip'
-import { toolbars } from '@/config/toolbar'
+import { useToolbar } from '@/hooks/use-toolbar'
 
 const ToolbarContent = styled.div`
   width: 100%;
@@ -44,6 +44,7 @@ const Divider = styled.div`
 `
 
 const Toolbar: FC = () => {
+  const {toolbars} = useToolbar()
   return (
     <ToolbarContent>
       {/* 渲染工具栏 */}
