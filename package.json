@@ -18,10 +18,14 @@
     "dev:editor": "pnpm -F @mini-markdown/editor dev",
     "build:editor": "pnpm -F @mini-markdown/editor build",
     "prepare": "husky",
-    "lint": "node ./scripts/zx-lint.js"
+    "lint": "node ./scripts/zx-lint.js",
+    "prettier": "prettier --write ."
   },
   "lint-staged": {
-    "*.{js,ts,jsx,tsx}": "pnpm lint"
+    "*.{js,ts,jsx,tsx}": [
+      "prettier --write",
+      "pnpm lint"
+    ]
   },
   "config": {
     "commitizen": {
@@ -34,6 +38,7 @@
     "cz-vinyl": "1",
     "husky": "^9.1.7",
     "lint-staged": "^15.3.0",
+    "prettier": "^3.4.2",
     "rimraf": "^6.0.1",
     "zx": "^8.3.0"
   }

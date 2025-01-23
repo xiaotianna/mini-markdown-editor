@@ -1,64 +1,43 @@
-// import { Heading } from '@mini-markdown/material/src/components/Heading/index.tsx';
-import { Heading } from '@mini-markdown/material';
-import { useRef } from 'react';
-import ReactDOMServer from 'react-dom/server';
+import CodeMirror from '@uiw/react-codemirror'
+import { markdown, markdownLanguage } from '@codemirror/lang-markdown'
+import { languages } from '@codemirror/language-data'
 
-function App() {
-  const editRef = useRef<HTMLDivElement>(null);
-  const handleClick = () => {
-    if (document.activeElement != editRef.current) {
-      editRef.current!.focus()
-    }
-    const headingHtml = ReactDOMServer.renderToStaticMarkup(<Heading level={2}>hello</Heading>);
-    document.execCommand('insertHTML', false, headingHtml);
-  };
+const code = `## Title
 
-  const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
-    console.log('input event', e);
-    // const selection = getSelection();
-    // if (selection && selection.rangeCount > 0) 
-    //   const range = selection.getRangeAt(0);
-    //   console.log('Current cursor position:', range);
-    // }
-  };
-
-  const getText = () => {
-    console.log(editRef.current?.innerText);
-    
-  }
-
-  return (
-    <div>
-      <header
-        style={{
-          width: '50%',
-          border: '1px solid red',
-          margin: '0 auto',
-          padding: '0 10px'
-        }}
-      >
-        <button onClick={handleClick}>h1</button>
-        <button onClick={getText}>获取内容</button>
-      </header>
-      <div
-        style={{
-          width: '50%',
-          height: '50vh',
-          border: '1px solid red',
-          margin: '0 auto',
-          padding: '10px'
-        }}
-        contentEditable={true}
-        onInput={handleInput}
-        spellCheck={false}
-        suppressContentEditableWarning={true}
-        autoFocus={true}
-        ref={editRef}
-      >
-        <Heading level={2}>hello</Heading>
-      </div>
-    </div>
-  );
+\`\`\`jsx
+function Demo() {
+  return <div>demo</div>
 }
+\`\`\`
 
-export default App;
+\`\`\`bash
+# Not dependent on uiw.
+npm install @codemirror/lang-markdown --save
+npm install @codemirror/language-data --save
+\`\`\`
+
+[weisit ulr](https://uiwjs.github.io/react-codemirror/)
+
+\`\`\`go
+package main
+import "fmt"
+func main() {
+  fmt.Println("Hello, 世界")
+}
+\`\`\`
+`
+
+export default function App() {
+  return (
+    <CodeMirror
+      value={code}
+      extensions={[
+        markdown({ base: markdownLanguage, codeLanguages: languages }),
+      ]}
+      basicSetup={{
+        lineNumbers: false,
+        foldGutter: false,
+      }}
+    />
+  )
+}

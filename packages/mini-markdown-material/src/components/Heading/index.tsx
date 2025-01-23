@@ -8,7 +8,17 @@ import { LineWrap } from '@/components/base/LineWrap'
 const HeadingStyle = styled.span`
   color: #3f4a54;
   font-weight: bold;
-  color: #0000ff;
+  font-size: ${props => {
+    switch (props.level) {
+      case 1: return '2em';
+      case 2: return '1.5em';
+      case 3: return '1.17em';
+      case 4: return '1em';
+      case 5: return '0.83em';
+      case 6: return '0.67em';
+      default: return '1em';
+    }
+  }};
   .heading-tag {
     color: #0000ff;
   }

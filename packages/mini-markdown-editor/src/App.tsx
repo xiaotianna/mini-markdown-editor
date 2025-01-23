@@ -1,6 +1,8 @@
-import { FC } from 'react'
-import styled from 'styled-components'
-import EditorWrapper from './EditorWrapper'
+import { FC } from "react"
+import styled from "styled-components"
+import EditorWrapper from "./EditorWrapper"
+
+import { ToolbarProvider } from "@/components/providers/toolbar-provider"
 
 const AppWrapper = styled.div`
   width: 100%;
@@ -14,7 +16,9 @@ const AppWrapper = styled.div`
 const App: FC = () => {
   return (
     <AppWrapper>
-      <EditorWrapper />
+      <ToolbarProvider>
+        <EditorWrapper />
+      </ToolbarProvider>
     </AppWrapper>
   )
 }

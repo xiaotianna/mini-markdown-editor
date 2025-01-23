@@ -8,7 +8,7 @@
 - docs 文档
 - packages
     - mini-markdown-ast-parser markdown 编辑器 ast 解析器（采用 rollup + ts 开发）
-    - mini-markdown-editor 编辑器（采用 next.js 开发）
+    - mini-markdown-editor 编辑器（采用 react + vite 开发、打包）
     - mini-markdown-material 编辑器物料组件库（react + vite 开发、打包）
     - mini-markdown-play 物料组件库测试项目
 - scripts 脚本

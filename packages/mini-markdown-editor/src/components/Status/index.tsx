@@ -1,7 +1,8 @@
-import { FC, useMemo } from 'react'
-import styled from 'styled-components'
-import { Checkbox } from '@arco-design/web-react'
-import { useEditorContentStore } from '@/store/editor-content'
+import { FC, useMemo } from "react";
+import styled from "styled-components";
+import { useEditorContentStore } from "@/store/editor-content";
+import { Checkbox } from "antd";
+import type { CheckboxProps } from "antd";
 
 const StatusWrapper = styled.div`
   width: 100%;
@@ -25,11 +26,6 @@ const StatusWrapper = styled.div`
       display: flex;
       align-items: center;
       gap: 10px;
-      .checkbox {
-        .arco-checkbox-text {
-          margin-left: 5px;
-        }
-      }
       .checkbox-text {
         font-size: 12px;
       }
@@ -38,24 +34,29 @@ const StatusWrapper = styled.div`
       }
     }
   }
-`
+`;
 
 const Status: FC = () => {
-  const { content } = useEditorContentStore()
+  const { content } = useEditorContentStore();
   const contentNum = useMemo(() => {
-    return content.replace(/[\s\n]/g, '').length
-  }, [content])
+    return content.replace(/[\s\n]/g, "").length;
+  }, [content]);
+
+  // TODO: 本地记录按钮状态 做持久化处理
+  const onChange: CheckboxProps["onChange"] = (e) => {
+    console.log(`${e.target.checked}`);
+  };
 
   return (
     <StatusWrapper>
-      <div className='status-left'>字数: {contentNum}</div>
-      <div className='status-right'>
-        <Checkbox className={'checkbox'} defaultChecked={true}>
-          <span className='checkbox-text'>同步滚动</span>
+      <div className="status-left">字数: {contentNum}</div>
+      <div className="status-right">
+        <Checkbox className={"checkbox"} defaultChecked={true} onChange={onChange}>
+          <span className="checkbox-text">同步滚动</span>
         </Checkbox>
-        <div className='scroll-top'>滚动到顶部</div>
+        <div className="scroll-top">滚动到顶部</div>
       </div>
     </StatusWrapper>
-  )
-}
-export default Status
+  );
+};
+export default Status;

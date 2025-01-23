@@ -10,7 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@arco-design/web-react": "^2.65.0",
+    "@codemirror/lang-markdown": "^6.3.2",
+    "@codemirror/language-data": "^6.5.1",
+    "@mini-markdown/material": "workspace:^1.0.0",
+    "@uiw/codemirror-extensions-events": "^4.23.7",
+    "@uiw/react-codemirror": "^4.23.7",
+    "ahooks": "^3.8.4",
+    "antd": "^5.23.2",
     "highlight.js": "^11.11.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
