@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import styled from 'styled-components'
+import { useEditorContentStore } from '@/store/editor-content'
 import Toolbar from '@/components/Toolbar'
 import Editor from '@/components/Editor'
 import Preview from '@/components/Preview'
@@ -12,8 +13,8 @@ const Container = styled.div`
   width: 100%;
   min-width: 700px;
   max-width: 1200px;
-  height: 500px;
-  /* min-height: 500px; */
+  min-height: 500px;
+  height: 100%;
   border: 1px solid #e6e6e6;
   display: flex;
   flex-direction: column;
@@ -42,6 +43,8 @@ const Divider = styled.div`
 `
 
 const EditorWrapper: FC = () => {
+  const { content } = useEditorContentStore()
+
   return (
     <>
       <Container>
@@ -56,7 +59,7 @@ const EditorWrapper: FC = () => {
           <Divider />
           <Col span={12}>
             {/* 渲染区 */}
-            <Preview />
+            <Preview content={content} />
           </Col>
         </StyledRow>
         {/* 底部状态栏 */}
