@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { DropDownMenu } from "../base/DropDownMenu";
 import IconTooltip from "../base/IconTooltip";
-import { FC } from "react";
+import { FC, memo } from "react";
 
 const ToolbarItemWrapper = styled.div`
   width: 16px;
@@ -24,12 +24,13 @@ const ToolbarItemWrapper = styled.div`
   }
 `;
 
-// 新增的ToolbarItem组件
-export const ToolbarItem: FC<{
+interface ToolbarItemProps {
   icon: string | undefined;
   title: string | undefined;
   list?: Array<string>;
-}> = ({ icon, title, list }) => (
+}
+
+export const ToolbarItem: FC<ToolbarItemProps> = memo(({ icon, title, list }) => (
   <ToolbarItemWrapper className="item">
     {list ? (
       <IconTooltip content={title}>
@@ -43,4 +44,4 @@ export const ToolbarItem: FC<{
       </IconTooltip>
     )}
   </ToolbarItemWrapper>
-);
+));

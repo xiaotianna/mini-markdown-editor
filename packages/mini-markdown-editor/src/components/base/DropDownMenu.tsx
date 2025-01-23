@@ -1,5 +1,5 @@
 import { Dropdown, Menu } from "@arco-design/web-react";
-import React from "react";
+import React, { useCallback, useMemo, memo } from "react";
 
 interface DropDownMenuProps {
   children: React.ReactNode;
@@ -7,18 +7,23 @@ interface DropDownMenuProps {
   onSelect?: (key: string) => void;
 }
 
-export const DropDownMenu = ({ children, list, onSelect }: DropDownMenuProps) => {
-  // TODO: 处理不同的点击事件
-  const handleMenuItemClick = (key: string) => {
-    onSelect?.(key);
-  };
+export const DropDownMenu = memo(({ children, list, onSelect }: DropDownMenuProps) => {
+  const handleMenuItemClick = useCallback(
+    (key: string) => {
+      onSelect?.(key);
+    },
+    [onSelect],
+  );
 
-  const dropList = (
-    <Menu onClickMenuItem={handleMenuItemClick}>
-      {list.map((item, index) => (
-        <Menu.Item key={index.toString()}>{item}</Menu.Item>
-      ))}
-    </Menu>
+  const dropList = useMemo(
+    () => (
+      <Menu onClickMenuItem={handleMenuItemClick}>
+        {list.map((item) => (
+          <Menu.Item key={item}>{item}</Menu.Item>
+        ))}
+      </Menu>
+    ),
+    [list, handleMenuItemClick],
   );
 
   return (
@@ -26,4 +31,4 @@ export const DropDownMenu = ({ children, list, onSelect }: DropDownMenuProps) =>
       {children}
     </Dropdown>
   );
-};
+});
