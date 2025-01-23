@@ -1,7 +1,7 @@
-import { FC } from 'react'
-import styled from 'styled-components'
-import IconTooltip from '../base/IconTooltip'
-import { useToolbar } from '@/hooks/use-toolbar'
+import { FC } from "react";
+import styled from "styled-components";
+import { useToolbar } from "@/hooks/use-toolbar";
+import { ToolbarItem } from "./ToolbarItem";
 
 const ToolbarContent = styled.div`
   width: 100%;
@@ -10,28 +10,7 @@ const ToolbarContent = styled.div`
   padding: 4px;
   display: flex;
   align-items: center;
-`
-
-const ToolbarItemWrapper = styled.div`
-  width: 16px;
-  height: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  box-sizing: content-box;
-  padding: 3px;
-  border-radius: 3px;
-  margin: 0 2px;
-  transition: all 0.3s;
-  &:hover {
-    background-color: #e6e6e6;
-  }
-  img {
-    width: 100%;
-    height: 100%;
-  }
-`
+`;
 
 const Divider = styled.div`
   background-color: #e6e6e6;
@@ -41,37 +20,22 @@ const Divider = styled.div`
   position: relative;
   top: 0.1em;
   width: 1px;
-`
+`;
 
 const Toolbar: FC = () => {
-  const {toolbars} = useToolbar()
+  const { toolbars } = useToolbar();
+
   return (
     <ToolbarContent>
-      {/* 渲染工具栏 */}
-      {toolbars.map((item, index) => {
-        if (item.type !== 'line') {
-          // 工具栏 按钮
-          const { icon, title } = item
-          return (
-            <ToolbarItemWrapper
-              className='item'
-              key={index}
-            >
-              <IconTooltip content={title}>
-                <img
-                  src={icon}
-                  alt={title}
-                />
-              </IconTooltip>
-            </ToolbarItemWrapper>
-          )
-        } else {
-          // 分割线
-          return <Divider key={index} />
-        }
-      })}
+      {toolbars.map((item, index) =>
+        item.type === "line" ? (
+          <Divider key={`divider-${index}`} />
+        ) : (
+          <ToolbarItem key={`item-${index}`} icon={item.icon} title={item.title} list={item.list} />
+        ),
+      )}
     </ToolbarContent>
-  )
-}
+  );
+};
 
-export default Toolbar
+export default Toolbar;

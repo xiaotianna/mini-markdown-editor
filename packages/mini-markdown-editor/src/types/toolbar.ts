@@ -1,19 +1,19 @@
 export interface ToolbarItem {
-  type: ToolbarType
-  icon?: string
-  title?: string
-  // list?: any[]; // TODO: 未知类型, 需要进一步确认
-  disabled?: boolean
-  visible?: boolean
-  onClick?: () => void
+  type: ToolbarType;
+  icon?: string;
+  title?: string;
+  list?: string[];
+  disabled?: boolean;
+  visible?: boolean;
+  onClick?: () => void;
 }
 
 export interface ToolbarContextValues {
-  toolbars: ToolbarItem[]
-  addToolbar?: (toolbarItem: ToolbarItem) => void
-  removeToolbar?: (type: ToolbarType) => void
-  updateToolbar?: (type: ToolbarType, newConfig: ToolbarItem) => void
-  reorderToolbars?: (newOrder: ToolbarType[]) => void
+  toolbars: ToolbarItem[];
+  addToolbar?: (toolbarItem: ToolbarItem) => void;
+  removeToolbar?: (type: ToolbarType) => void;
+  updateToolbar?: (type: ToolbarType, newConfig: ToolbarItem) => void;
+  reorderToolbars?: (newOrder: ToolbarType[]) => void;
 }
 
 export type ToolbarType =
@@ -38,4 +38,4 @@ export type ToolbarType =
   | "preview"
   | "contents"
   | "html"
-  | "pdf"
+  | "pdf";
