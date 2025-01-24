@@ -20,8 +20,10 @@ const ToolbarItemWrapper = styled.div`
     background-color: #e6e6e6;
   }
   img {
-    width: 100%;
-    height: 100%;
+    width: 16px;
+    height: 16px;
+    display: block;
+    flex-shrink: 0;
   }
 `;
 

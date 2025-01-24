@@ -1,7 +1,8 @@
 import { create } from "zustand";
-import code from "@/mock/preview.md?raw";
 import type { EditorView } from "@codemirror/view";
 import { ReactCodeMirrorRef } from "@uiw/react-codemirror";
+import { safeLocalStorage } from "@/utils/storage";
+import { EDITOR_CONTENT_KEY } from "@/common";
 
 interface EditorContentStoreType {
   content: string;
@@ -19,9 +20,12 @@ interface EditorContentStoreType {
   setPreviewView: (view: HTMLElement | null) => void;
 }
 
+const localStorage = safeLocalStorage();
+
 // 编辑器内容状态
 const useEditorContentStore = create<EditorContentStoreType>((set, get) => ({
-  content: code,
+  // content: code,
+  content: localStorage.getItem(EDITOR_CONTENT_KEY) || "",
   setContent: (content: string) => set({ content }),
   scrollWrapper: "",
   setScrollWrapper: (scrollWrapper: string) => set({ scrollWrapper }),
