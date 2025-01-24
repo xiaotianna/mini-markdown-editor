@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "build:ast": "pnpm -F @mini-markdown/ast-parser build",
+    "dev": "pnpm build:ast && vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
