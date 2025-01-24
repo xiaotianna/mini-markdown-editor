@@ -1,6 +1,6 @@
-import { FC, useEffect, useRef } from "react";
+import { FC, useCallback, useEffect, useRef } from "react";
 import styled from "styled-components";
-import CodeMirror, { type EditorView, ReactCodeMirrorRef } from "@uiw/react-codemirror";
+import CodeMirror, { type EditorView, ViewUpdate } from "@uiw/react-codemirror";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
 import * as events from "@uiw/codemirror-extensions-events";
@@ -42,13 +42,21 @@ const Editor: FC = () => {
     setContent,
     scrollWrapper,
     setScrollWrapper,
-    editorView,
     setEditorView,
     previewView,
-    setEditorRef,
+    editorView,
   } = useEditorContentStore();
-  const editorRef = useRef<ReactCodeMirrorRef>(null);
   const localStorage = safeLocalStorage();
+  // ref转发
+  const editorViewRef = useRef<EditorView>();
+  // 存储实例
+  const setEditorViewInstance = useCallback(
+    (view: EditorView) => {
+      setEditorView(view);
+      editorViewRef.current = view;
+    },
+    [editorViewRef],
+  );
 
   // 处理重加载后的光标位置
   useEffect(() => {
@@ -62,20 +70,24 @@ const Editor: FC = () => {
 
   // 编辑器挂载完成后将编辑器示例存储起来
   const handleCreate = (view: EditorView) => {
-    setEditorView(view);
-    setEditorRef(editorRef);
+    setEditorViewInstance(view);
   };
 
-  const handleChange = (val: string) => {
+  const handleChange = (val: string, editView: ViewUpdate) => {
+    // 更新store
     setContent(val);
     // 本地同步存储
     localStorage.setItem(EDITOR_CONTENT_KEY, val);
+    // 更新编辑器实例
+    setEditorViewInstance(editView.view);
   };
 
   const eventExt = events.scroll({
     scroll: () => {
       if (scrollWrapper !== "editor") return;
-      handleEditorScroll(editorRef, previewView);
+      const view = editorViewRef.current;
+      if (!view || !previewView) return;
+      handleEditorScroll({ editorView: view, previewView });
     },
   });
 
@@ -87,7 +99,6 @@ const Editor: FC = () => {
     <ScrollWrapper>
       <CodeMirror
         className="markdown-editor-content"
-        ref={editorRef}
         onCreateEditor={handleCreate}
         value={content}
         extensions={[
