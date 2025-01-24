@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import code from "@/mock/preview.md?raw";
 import type { EditorView } from "@codemirror/view";
+import { ReactCodeMirrorRef } from "@uiw/react-codemirror";
 
 interface EditorContentStoreType {
   content: string;
@@ -10,6 +11,8 @@ interface EditorContentStoreType {
   // 编辑区
   editorView: EditorView | null;
   setEditorView: (view: EditorView | null) => void;
+  editorRef: React.RefObject<ReactCodeMirrorRef> | null;
+  setEditorRef: (ref: React.RefObject<ReactCodeMirrorRef>) => void;
   focusEditor: () => void;
   // 预览区
   previewView: HTMLElement | null;
@@ -25,6 +28,8 @@ const useEditorContentStore = create<EditorContentStoreType>((set, get) => ({
   // 编辑区
   editorView: null,
   setEditorView: (view: EditorView | null) => set({ editorView: view }),
+  editorRef: null,
+  setEditorRef: (ref: React.RefObject<ReactCodeMirrorRef>) => set({ editorRef: ref }),
   focusEditor: () => {
     const { editorView } = get();
     if (editorView) {
