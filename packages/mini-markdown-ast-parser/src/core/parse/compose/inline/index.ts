@@ -11,34 +11,26 @@ interface ProcessContext {
   index: number;
   offset: number;
   currentOffset: number;
-  parseInlineElements: (
-    line: string,
-    index: number,
-    currentOffset: number
-  ) => Tokens[];
+  parseInlineElements: (line: string, index: number, currentOffset: number) => Tokens[];
 }
 
 // 定义所有 Markdown 模式
 const MARKDOWN_PATTERNS: Record<string, MarkdownPattern> = {
   bold: {
     regex: /\*\*(?<content>.*?)\*\*/,
-    process: (match, context) =>
-      createStandardToken("bold" as TokenTypeVal, match, context),
+    process: (match, context) => createStandardToken("bold" as TokenTypeVal, match, context),
   },
   italic: {
     regex: /\_(?<content>.*?)\_/,
-    process: (match, context) =>
-      createStandardToken("italic" as TokenTypeVal, match, context),
+    process: (match, context) => createStandardToken("italic" as TokenTypeVal, match, context),
   },
   underline: {
     regex: /\-{2}(?<content>.*?)\-{2}/,
-    process: (match, context) =>
-      createStandardToken("underline" as TokenTypeVal, match, context),
+    process: (match, context) => createStandardToken("underline" as TokenTypeVal, match, context),
   },
   delete: {
     regex: /\~{2}(?<content>.*?)\~{2}/,
-    process: (match, context) =>
-      createStandardToken("delete" as TokenTypeVal, match, context),
+    process: (match, context) => createStandardToken("delete" as TokenTypeVal, match, context),
   },
   inlineCode: {
     regex: /`(?<content>.*?)`/,
@@ -48,13 +40,13 @@ const MARKDOWN_PATTERNS: Record<string, MarkdownPattern> = {
       }
       return {
         type: "inlineCode",
-        value: match.groups?.content || match[1],
+        children: [createTextToken(match.groups?.content || "", match, context)],
         position: createPosition(match, context),
       };
     },
   },
   image: {
-    regex: /!\[(?<alt>.*?)\]\((?<url>.*?)\)/g,
+    regex: /!\[(?<alt>.*?)\]\((?<url>.*?)\)/,
     process: (match, context) => ({
       type: "image",
       title: null,
@@ -64,7 +56,7 @@ const MARKDOWN_PATTERNS: Record<string, MarkdownPattern> = {
     }),
   },
   link: {
-    regex: /\[(?<text>[^\]]+)\]\((?<url>[^)]+)\)/,
+    regex: /(?<!!)\[(?<text>[^\]]+)\]\((?<url>[^)]+)\)/,
     process: (match, context) => ({
       type: "link",
       title: null,
@@ -85,8 +77,7 @@ const MARKDOWN_PATTERNS: Record<string, MarkdownPattern> = {
 
 // 创建位置信息
 function createPosition(match: RegExpMatchArray, context: ProcessContext) {
-  const startOffset =
-    context.currentOffset + context.offset + (match.index ?? 0);
+  const startOffset = context.currentOffset + context.offset + (match.index ?? 0);
   const endOffset = startOffset + match[0].length;
 
   return {
@@ -104,11 +95,7 @@ function createPosition(match: RegExpMatchArray, context: ProcessContext) {
 }
 
 // 创建文本节点
-function createTextToken(
-  value: string,
-  match: RegExpMatchArray,
-  context: ProcessContext
-): Tokens {
+function createTextToken(value: string, match: RegExpMatchArray, context: ProcessContext): Tokens {
   return {
     type: "text",
     value,
@@ -120,7 +107,7 @@ function createTextToken(
 function createStandardToken(
   type: TokenTypeVal,
   match: RegExpMatchArray,
-  context: ProcessContext
+  context: ProcessContext,
 ): Tokens {
   const innerContent = match.groups?.content || match[1];
   const innerOffset =
@@ -131,11 +118,7 @@ function createStandardToken(
 
   return {
     type,
-    children: context.parseInlineElements(
-      innerContent,
-      context.index,
-      innerOffset
-    ),
+    children: context.parseInlineElements(innerContent, context.index, innerOffset),
     position: createPosition(match, context),
   };
 }
@@ -148,10 +131,7 @@ function findNextMatch(line: string, offset: number) {
     const match = line.slice(offset).match(pattern.regex);
     if (!match) continue;
 
-    if (
-      !bestMatch ||
-      (match.index ?? Infinity) < (bestMatch.match.index ?? Infinity)
-    ) {
+    if (!bestMatch || (match.index ?? Infinity) < (bestMatch.match.index ?? Infinity)) {
       bestMatch = { type, match };
     }
   }
@@ -162,7 +142,7 @@ function findNextMatch(line: string, offset: number) {
 export const parseInlineElements = (
   line: string,
   index: number,
-  currentOffset: number
+  currentOffset: number,
 ): Tokens[] => {
   let offset = 0;
   let children: Tokens[] = [];
