@@ -3,8 +3,8 @@ import { parseMarkdown, transformHtml } from "@mini-markdown/ast-parser";
 import "@/assets/styles/preview.css";
 import "highlight.js/styles/atom-one-dark.css";
 import styled from "styled-components";
-import { scrollSync } from "@/utils/scroll-sync";
 import { useEditorContentStore } from "@/store/editor";
+import { handlePreviewScroll } from "@/utils/handle-scroll";
 
 const ScrollWrapper = styled.div`
   width: 100%;
@@ -18,14 +18,11 @@ const Preview: FC<{ content: string }> = ({ content }) => {
   const node = transformHtml(ast);
   const previewRef = useRef<HTMLDivElement>(null);
 
-  const { scrollWrapper, setScrollWrapper, setPreviewView } = useEditorContentStore();
+  const { scrollWrapper, setScrollWrapper, setPreviewView, editorRef } = useEditorContentStore();
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     if (scrollWrapper !== "preview") return;
-    scrollSync({
-      toScrollInstance: e.currentTarget,
-      fromScrollInstance: document.querySelector(".cm-scroller"),
-    });
+    handlePreviewScroll(e.currentTarget, editorRef!);
   };
 
   const handleMoseEnter = () => {
