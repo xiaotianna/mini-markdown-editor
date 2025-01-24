@@ -1,6 +1,6 @@
-import { FC } from "react";
+import { FC, useDeferredValue } from "react";
 import styled from "styled-components";
-import { useEditorContentStore } from "@/store/editor-content";
+import { useEditorContentStore } from "@/store/editor";
 import Toolbar from "@/components/Toolbar";
 import Editor from "@/components/Editor";
 import Preview from "@/components/Preview";
@@ -54,6 +54,7 @@ const Divider = styled.div`
 
 const EditorWrapper: FC = () => {
   const { content } = useEditorContentStore();
+  const deferredContent = useDeferredValue(content);
 
   return (
     <Container>
@@ -69,7 +70,7 @@ const EditorWrapper: FC = () => {
           </Col>
           <Col span={12}>
             {/* 渲染区 */}
-            <Preview content={content} />
+            <Preview content={deferredContent} />
           </Col>
         </StyledRow>
         {/* 分割线 */}

@@ -5,7 +5,8 @@ import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
 import * as events from "@uiw/codemirror-extensions-events";
 import { useEditorContentStore } from "@/store/editor";
-import { handleEditorScroll } from "@/utils/handle-scroll";
+import { scrollSync } from "@/utils/scroll-sync";
+import { useDebounceFn } from "ahooks";
 
 const ScrollWrapper = styled.div`
   width: 100%;
@@ -35,31 +36,35 @@ const ScrollWrapper = styled.div`
 `;
 
 const Editor: FC = () => {
-  const {
-    content,
-    setContent,
-    scrollWrapper,
-    setScrollWrapper,
-    setEditorView,
-    previewView,
-    setEditorRef,
-  } = useEditorContentStore();
+  const { content, setContent, scrollWrapper, setScrollWrapper, setEditorView } =
+    useEditorContentStore();
   const editorRef = useRef<ReactCodeMirrorRef>(null);
 
   // 编辑器挂载完成后将编辑器示例存储起来
   const handleCreate = (view: EditorView) => {
     setEditorView(view);
-    setEditorRef(editorRef);
   };
+
+  const { run } = useDebounceFn(
+    () => {
+      const editorInstance = editorRef.current?.view?.scrollDOM;
+      if (editorInstance) {
+        scrollSync({
+          toScrollInstance: editorInstance,
+          fromScrollInstance: document.querySelector(".markdown-editor-preview"),
+        });
+      }
+    },
+    { wait: 10 },
+  );
 
   const handleChange = (val: string) => {
     setContent(val);
   };
 
   const eventExt = events.scroll({
-    scroll: () => {
-      if (scrollWrapper !== "editor") return;
-      handleEditorScroll(editorRef, previewView);
+    scroll: (e: Event) => {
+      run(e);
     },
   });
 
