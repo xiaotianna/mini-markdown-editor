@@ -1,180 +1,146 @@
-import { ReactCodeMirrorRef } from "@uiw/react-codemirror";
+import { EditorView } from "@uiw/react-codemirror";
 
-let editorElementList: number[] = [];
-let previewElementList: number[] = [];
+interface InstancesType {
+  previewView: HTMLElement;
+  editorView: EditorView;
+}
 
-const computedTop = ({
-  previewView,
-  editorRef,
-}: {
-  previewView: HTMLElement | null;
-  editorRef: React.RefObject<ReactCodeMirrorRef>;
-}) => {
-  const nodeArr = Array.from(previewView!.childNodes).filter((n: ChildNode) => {
-    if ((n as HTMLElement).clientHeight === 0 && n.nodeName === "P") {
-      return;
-    }
-    return n;
-  });
-  editorElementList = [];
-  previewElementList = [];
-  const editorInstance = editorRef.current;
-  nodeArr.forEach((node) => {
-    const lineAtr = (node as HTMLElement).getAttribute("data-line");
-    if (!lineAtr) return;
-    const lineNumber = Number(lineAtr);
-    // 确保行号在有效范围内
-    if (
-      lineNumber < 1 ||
-      !editorInstance?.state?.doc ||
-      lineNumber > editorInstance.state.doc.lines
-    ) {
-      return;
-    }
-    const line = editorInstance?.state?.doc?.line(lineNumber);
-    const lineBlock = editorInstance?.view?.lineBlockAt(line!.from);
-    const topHeight = lineBlock!.top;
-    editorElementList.push(topHeight);
-    previewElementList.push((node as HTMLElement).offsetTop);
-  });
-};
+class Scroll {
+  // 用于存放编辑器和预览区高度对应关系
+  editorElementList: number[];
+  previewElementList: number[];
 
-const handleEditorScroll = (
-  editorRef: React.RefObject<ReactCodeMirrorRef>,
-  previewView: HTMLElement | null,
-) => {
-  computedTop({ editorRef, previewView });
-
-  const editorScrollInfo = editorRef.current?.view?.scrollDOM;
-  if (!editorScrollInfo || !previewView) return;
-
-  // 找到当前滚动位置对应的节点索引
-  let scrollElementIndex = editorElementList.length - 1;
-  for (let i = 0; i < editorElementList.length - 1; i++) {
-    if (editorScrollInfo.scrollTop < editorElementList[i + 1]) {
-      scrollElementIndex = i;
-      break;
-    }
+  constructor() {
+    this.editorElementList = [];
+    this.previewElementList = [];
   }
 
-  // 编辑区域已经滚动到底部，那么预览区域也直接滚动到底部
-  if (editorScrollInfo.scrollTop >= editorScrollInfo.scrollHeight - editorScrollInfo.clientHeight) {
-    const targetScrollTop = previewView.scrollHeight - previewView.clientHeight;
-    const currentScrollTop = previewView.scrollTop;
-    const distance = targetScrollTop - currentScrollTop;
-    const duration = 100; // 滚动动画持续时间，单位毫秒
-    let start: number;
+  // 计算编辑器和预览区域高度的对应关系
+  computedTop({ previewView, editorView }: InstancesType) {
+    const nodeArr = Array.from(previewView!.childNodes).filter((n: ChildNode) => {
+      if ((n as HTMLElement).clientHeight === 0 && n.nodeName === "P") {
+        return;
+      }
+      return n;
+    });
+    this.editorElementList = [];
+    this.previewElementList = [];
+    nodeArr.forEach((node) => {
+      const lineAtr = (node as HTMLElement).getAttribute("data-line");
+      if (!lineAtr) return;
+      // 预览区元素对应编辑区行号
+      const lineNumber = Number(lineAtr);
+      // 确保行号在有效范围内
+      if (lineNumber < 1 || !editorView.state?.doc || lineNumber > editorView.state.doc.lines) {
+        return;
+      }
+      // 获取编辑器区域行号
+      const line = editorView.state?.doc?.line(lineNumber);
+      // 获取编辑器区域行高
+      const lineBlock = editorView.lineBlockAt(line.from);
+      // 获取编辑器区域顶部距离
+      const topHeight = lineBlock!.top;
+      this.editorElementList.push(topHeight);
+      this.previewElementList.push((node as HTMLElement).offsetTop);
+    });
+  }
 
-    function step(timestamp: number) {
-      if (start === undefined) start = timestamp;
-      const time = timestamp - start;
-      const percent = Math.min(time / duration, 1);
-      previewView!.scrollTop = currentScrollTop + distance * percent;
-      if (time < duration) {
-        requestAnimationFrame(step);
+  // 处理滚动事件
+  handleScroll(source: "editor" | "preview", { editorView, previewView }: InstancesType) {
+    const editorInstance = editorView;
+    const scrollInfo = source === "editor" ? editorInstance.scrollDOM : previewView;
+    const targetElement = source === "editor" ? previewView : editorInstance.scrollDOM;
+
+    if (!scrollInfo || !targetElement) return;
+
+    // 找到当前滚动位置对应的节点索引
+    const sourceList = source === "editor" ? this.editorElementList : this.previewElementList;
+    const targetList = source === "editor" ? this.previewElementList : this.editorElementList;
+
+    let scrollElementIndex = sourceList.length - 1;
+    for (let i = 0; i < sourceList.length - 1; i++) {
+      if (scrollInfo.scrollTop < sourceList[i + 1]) {
+        scrollElementIndex = i;
+        break;
       }
     }
 
-    requestAnimationFrame(step);
-    return;
-  }
+    // 源区域已经滚动到底部，那么目标区域也直接滚动到底部
+    if (scrollInfo.scrollTop >= scrollInfo.scrollHeight - scrollInfo.clientHeight) {
+      const targetScrollTop = targetElement.scrollHeight - targetElement.clientHeight;
+      const currentScrollTop = targetElement.scrollTop;
+      const distance = targetScrollTop - currentScrollTop;
+      const duration = 100; // 滚动动画持续时间，单位毫秒
+      let start: number;
 
-  if (scrollElementIndex < editorElementList.length - 1) {
-    const currentEditorPos = editorElementList[scrollElementIndex];
-    const nextEditorPos = editorElementList[scrollElementIndex + 1];
-    const currentPreviewPos = previewElementList[scrollElementIndex];
-    const nextPreviewPos = previewElementList[scrollElementIndex + 1];
-
-    // 计算滚动比例时考虑元素高度
-    const editorDistance = nextEditorPos - currentEditorPos;
-    const previewDistance = nextPreviewPos - currentPreviewPos;
-
-    // 添加最小距离阈值，避免小距离计算导致的跳动
-    const MIN_DISTANCE = 10;
-    if (editorDistance < MIN_DISTANCE || previewDistance < MIN_DISTANCE) {
-      return;
-    }
-
-    // 计算滚动比例
-    const ratio = Math.max(
-      0,
-      Math.min(1, (editorScrollInfo.scrollTop - currentEditorPos) / editorDistance),
-    );
-    requestAnimationFrame(() => {
-      previewView.scrollTop = currentPreviewPos + previewDistance * ratio;
-    });
-  }
-};
-
-const handlePreviewScroll = (
-  previewView: HTMLElement | null,
-  editorRef: React.RefObject<ReactCodeMirrorRef>,
-) => {
-  computedTop({ previewView, editorRef });
-
-  const previewScrollInfo = previewView;
-  const editorScrollInfo = editorRef.current?.view?.scrollDOM;
-  if (!previewScrollInfo || !editorScrollInfo) return;
-
-  // 找到当前滚动位置对应的节点索引
-  let scrollElementIndex = previewElementList.length - 1;
-  for (let i = 0; i < previewElementList.length - 1; i++) {
-    if (previewScrollInfo.scrollTop < previewElementList[i + 1]) {
-      scrollElementIndex = i;
-      break;
-    }
-  }
-
-  // 预览区域已经滚动到底部，那么编辑区域也直接滚动到底部
-  if (
-    previewScrollInfo.scrollTop >=
-    previewScrollInfo.scrollHeight - previewScrollInfo.clientHeight
-  ) {
-    const targetScrollTop = editorScrollInfo.scrollHeight - editorScrollInfo.clientHeight;
-    const currentScrollTop = editorScrollInfo.scrollTop;
-    const distance = targetScrollTop - currentScrollTop;
-    const duration = 100; // 滚动动画持续时间，单位毫秒
-    let start: number;
-
-    function step(timestamp: number) {
-      if (start === undefined) start = timestamp;
-      const time = timestamp - start;
-      const percent = Math.min(time / duration, 1);
-      editorScrollInfo!.scrollTop = currentScrollTop + distance * percent;
-      if (time < duration) {
-        requestAnimationFrame(step);
+      function step(timestamp: number) {
+        if (start === undefined) start = timestamp;
+        const time = timestamp - start;
+        const percent = Math.min(time / duration, 1);
+        // 确保 targetElement 存在再进行滚动操作
+        if (targetElement) {
+          targetElement.scrollTop = currentScrollTop + distance * percent;
+          if (time < duration) {
+            requestAnimationFrame(step);
+          }
+        }
       }
-    }
 
-    requestAnimationFrame(step);
-    return;
-  }
-
-  if (scrollElementIndex < previewElementList.length - 1) {
-    const currentPreviewPos = previewElementList[scrollElementIndex];
-    const nextPreviewPos = previewElementList[scrollElementIndex + 1];
-    const currentEditorPos = editorElementList[scrollElementIndex];
-    const nextEditorPos = editorElementList[scrollElementIndex + 1];
-
-    // 计算滚动比例时考虑元素高度
-    const previewDistance = nextPreviewPos - currentPreviewPos;
-    const editorDistance = nextEditorPos - currentEditorPos;
-
-    // 添加最小距离阈值，避免小距离计算导致的跳动
-    const MIN_DISTANCE = 10;
-    if (previewDistance < MIN_DISTANCE || editorDistance < MIN_DISTANCE) {
+      requestAnimationFrame(step);
       return;
     }
 
-    // 计算滚动比例
-    const ratio = Math.max(
-      0,
-      Math.min(1, (previewScrollInfo.scrollTop - currentPreviewPos) / previewDistance),
-    );
-    requestAnimationFrame(() => {
-      editorScrollInfo.scrollTop = currentEditorPos + editorDistance * ratio;
-    });
+    // 目标区域滚动到对应位置
+    if (scrollElementIndex < sourceList.length - 1) {
+      const currentSourcePos = sourceList[scrollElementIndex];
+      const nextSourcePos = sourceList[scrollElementIndex + 1];
+      const currentTargetPos = targetList[scrollElementIndex];
+      const nextTargetPos = targetList[scrollElementIndex + 1];
+
+      // 计算滚动比例时考虑元素高度
+      const sourceDistance = nextSourcePos - currentSourcePos;
+      const targetDistance = nextTargetPos - currentTargetPos;
+
+      // 添加最小距离阈值，避免小距离计算导致的跳动
+      const MIN_DISTANCE = 10;
+      if (sourceDistance < MIN_DISTANCE || targetDistance < MIN_DISTANCE) {
+        return;
+      }
+
+      // 计算滚动比例
+      const ratio = Math.max(
+        0,
+        Math.min(1, (scrollInfo.scrollTop - currentSourcePos) / sourceDistance),
+      );
+      requestAnimationFrame(() => {
+        targetElement.scrollTop = currentTargetPos + targetDistance * ratio;
+      });
+    }
   }
+
+  // 编辑区滚动
+  handleEditorScroll(editorView: EditorView, previewView: HTMLElement | null) {
+    if (previewView) {
+      this.computedTop({ previewView, editorView });
+      this.handleScroll("editor", { editorView, previewView });
+    }
+  }
+
+  // 预览区滚动
+  handlePreviewScroll(previewView: HTMLElement | null, editorView: EditorView) {
+    if (previewView) {
+      this.computedTop({ previewView, editorView });
+      this.handleScroll("preview", { editorView, previewView });
+    }
+  }
+}
+
+export const scroll = new Scroll();
+
+export const handleEditorScroll = ({ editorView, previewView }: InstancesType) => {
+  scroll.handleEditorScroll(editorView, previewView);
 };
 
-export { handleEditorScroll, handlePreviewScroll };
+export const handlePreviewScroll = ({ editorView, previewView }: InstancesType) => {
+  scroll.handlePreviewScroll(previewView, editorView);
+};
