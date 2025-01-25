@@ -7,13 +7,36 @@ export interface GlobalConfig {
    * @type {Record<ToolbarType, boolean>} 需要渲染的 toolbar 对象，值为 true 时渲染，false 时不渲染
    */
   toolbar?: ToolbarType[] | Record<ToolbarType, boolean>;
-  status?: {
-    hidden: boolean; // 是否隐藏
-    scrollSync: boolean; // 是否同步滚动
-  };
-  theme?: "light" | "dark"; // 主题
-  codeTheme: "default" | "atom" | "github"; // 代码主题
-  showCodeRowNumber: boolean; // 是否显示编辑区行号
-  preview: boolean; // 是否显示预览区
-  local: boolean; // 是否开启本地存储
+  /**
+   * 底部状态栏是否显示，默认显示
+   * @type {boolean}
+   */
+  status?: boolean;
+  /**
+   * 编辑器主题
+   * @type {"light" | "dark"}
+   */
+  theme?: "light" | "dark";
+  /**
+   * 代码块主题
+   * @type {"default" | "atom" | "github"}
+   */
+  codeTheme?: "default" | "atom" | "github";
+  /**
+   * 是否开启本地存储
+   * @type {boolean}
+   */
+  local?: boolean; // 是否开启本地存储
+  /**
+   * 改变编辑器内容时触发
+   * @type {(value: string) => void}
+   */
+  onChange?: (value: string) => void;
+  /**
+   * 上传图片时触发
+   * @type {(file: File, callback: Callback) => void}
+   */
+  onUpload?: (file: File, callback: Callback) => void;
 }
+
+export type Callback = (param: { url: string; alt?: string }) => void;

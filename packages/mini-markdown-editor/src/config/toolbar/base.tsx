@@ -22,8 +22,9 @@ import HtmlIcon from "@/assets/images/html.svg";
 import OutputPDFIcon from "@/assets/images/output-pdf.svg";
 import { InsertTextEvent } from "./event";
 import { ToolbarItem } from "@/types/toolbar";
+import Upload from "@/components/base/Upload";
 
-const toolbar: ToolbarItem[] = [
+export const toolbar: ToolbarItem[] = [
   {
     type: "heading",
     icon: HeadingIcon,
@@ -137,9 +138,6 @@ const toolbar: ToolbarItem[] = [
       {
         title: "上传图片",
         type: "image-upload",
-        onClick: () => {
-          console.log("在config/toobar/base.ts");
-        },
       },
     ],
   },
@@ -202,4 +200,8 @@ const toolbar: ToolbarItem[] = [
   },
 ];
 
-export { toolbar };
+// 渲染其他定制节点
+export const render = {
+  "image-upload": <Upload />,
+};
+export type renderKey = keyof typeof render;

@@ -6,6 +6,9 @@ import Editor from "@/components/Editor";
 import Preview from "@/components/Preview";
 import Status from "@/components/Status";
 import { Row, Col } from "antd";
+import { ToolbarProvider } from "@/components/providers/toolbar-provider";
+import { ConfigProvider } from "@/components/providers/config-provider";
+import { GlobalConfig } from "./types/global-config";
 
 const Container = styled.div`
   width: 100%;
@@ -52,33 +55,35 @@ const Divider = styled.div`
   z-index: 1;
 `;
 
-const EditorWrapper: FC = () => {
+const EditorWrapper: FC<GlobalConfig> = (config) => {
   const { content } = useEditorContentStore();
   const deferredContent = useDeferredValue(content);
 
   return (
     <Container>
-      {/* 工具栏 */}
-      <Toolbar />
-
-      {/* 内容区域 */}
-      <ContentWrapper>
-        <StyledRow>
-          <Col span={12}>
-            {/* 编辑区 */}
-            <Editor />
-          </Col>
-          <Col span={12}>
-            {/* 渲染区 */}
-            <Preview content={deferredContent} />
-          </Col>
-        </StyledRow>
-        {/* 分割线 */}
-        <Divider />
-      </ContentWrapper>
-
-      {/* 底部状态栏 */}
-      <Status />
+      <ConfigProvider config={config}>
+        <ToolbarProvider>
+          {/* 工具栏 */}
+          <Toolbar />
+        </ToolbarProvider>
+        {/* 内容区域 */}
+        <ContentWrapper>
+          <StyledRow>
+            <Col span={12}>
+              {/* 编辑区 */}
+              <Editor />
+            </Col>
+            <Col span={12}>
+              {/* 渲染区 */}
+              <Preview content={deferredContent} />
+            </Col>
+          </StyledRow>
+          {/* 分割线 */}
+          <Divider />
+        </ContentWrapper>
+        {/* 底部状态栏 */}
+        {config.status ? <Status /> : null}
+      </ConfigProvider>
     </Container>
   );
 };
