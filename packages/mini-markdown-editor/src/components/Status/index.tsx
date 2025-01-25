@@ -39,7 +39,7 @@ const StatusWrapper = styled.div`
 `;
 
 const Status: FC = () => {
-  const { content } = useEditorContentStore();
+  const content = useEditorContentStore((state) => state.content);
   const localStorage = safeLocalStorage();
   const [syncScroll, setSyncScroll] = useState<boolean>();
 

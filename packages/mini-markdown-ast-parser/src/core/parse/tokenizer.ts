@@ -4,7 +4,7 @@ import { parseMap, defaultParse } from "./compose";
 // 词法分析器
 export const tokenizer = (lines: string[], root: RootTokens) => {
   if (!Array.isArray(lines)) {
-    return new Error("The lines parameter is not an array");
+    return new Error("The parameter is an array");
   }
 
   let currentOffset = 0;
@@ -51,7 +51,6 @@ export const tokenizer = (lines: string[], root: RootTokens) => {
 
     // 是否继续转换
     let isParse = false;
-    // TODO: 动态调整解析器顺序以优化性能？
     for (const [key, parseFn] of Object.entries(parseMap)) {
       const result = parseFn({
         trimmedLine,
@@ -63,47 +62,12 @@ export const tokenizer = (lines: string[], root: RootTokens) => {
         currentStatus,
         resetCurrentStatus,
       });
-
       if (result) {
-        // 获取最后添加的节点类型
-        const lastNode = root.children[root.children.length - 1];
-        if (lastNode) {
-          // 根据不同类型的节点重置状态
-          if (lastNode.type !== "list" && lastNode.type !== "listItem") {
-            currentStatus.currentList = null;
-            currentStatus.listStack = [];
-            currentStatus.currentListItem = null;
-            currentStatus.currentIndent = 0;
-          }
-
-          if (lastNode.type !== "blockquote") {
-            currentStatus.currentBlockquote = null;
-          }
-
-          if (lastNode.type !== "heading") {
-            currentStatus.depth = 0;
-          }
-
-          if (lastNode.type !== "table") {
-            currentStatus.currentTable = null;
-          }
-
-          if (lastNode.type !== "code") {
-            currentStatus.inCodeBlock = false;
-            currentStatus.codeBlockLang = "";
-            currentStatus.codeBlockValue = "";
-            currentStatus.codeBlockStartOffset = 0;
-            currentStatus.codeBlockStartLine = 0;
-          }
-        }
-
         isParse = true;
         break;
       }
     }
     if (!isParse) {
-      // 如果没有特殊解析，则清空状态
-      resetCurrentStatus();
       defaultParse({
         trimmedLine,
         line,

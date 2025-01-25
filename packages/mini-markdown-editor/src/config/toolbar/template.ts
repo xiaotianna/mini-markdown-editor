@@ -72,8 +72,8 @@ const template: TemplateType = {
   underline: {
     content: `----`,
     selection: {
-      anchor: 1,
-      head: 1,
+      anchor: 2,
+      head: 2,
     },
   },
   delete: {
@@ -100,8 +100,8 @@ const template: TemplateType = {
   ol: {
     content: `1. `,
     selection: {
-      anchor: 2,
-      head: 2,
+      anchor: 3,
+      head: 3,
     },
   },
   inlinecode: {

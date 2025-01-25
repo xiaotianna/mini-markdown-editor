@@ -56,7 +56,7 @@ const Divider = styled.div`
 `;
 
 const EditorWrapper: FC<GlobalConfig> = (config) => {
-  const { content } = useEditorContentStore();
+  const content = useEditorContentStore((state) => state.content);
   const deferredContent = useDeferredValue(content);
 
   return (
