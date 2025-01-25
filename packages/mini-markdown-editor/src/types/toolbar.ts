@@ -11,7 +11,7 @@ export interface ToolbarItem {
 export interface ToolbarItemListItem {
   title: string;
   type: string;
-  onClick: (...args: any[]) => void | (() => void);
+  onClick?: (...args: any[]) => void | (() => void);
 }
 
 export interface ToolbarContextValues {
