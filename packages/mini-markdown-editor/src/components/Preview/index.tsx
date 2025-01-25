@@ -6,6 +6,8 @@ import styled from "styled-components";
 import { useEditorContentStore } from "@/store/editor";
 import { handlePreviewScroll } from "@/utils/handle-scroll";
 import React from "react";
+import { safeLocalStorage } from "@/utils/storage";
+import { SYNC_SCROLL_STATUS } from "@/common";
 
 const ScrollWrapper = styled.div`
   width: 100%;
@@ -17,6 +19,7 @@ const ScrollWrapper = styled.div`
 const Preview: FC<{ content: string }> = ({ content }) => {
   // store
   const { scrollWrapper, setScrollWrapper, setPreviewView, editorView } = useEditorContentStore();
+  const localStorage = safeLocalStorage();
 
   // 渲染 html 节点
   const node = React.useMemo(() => {
@@ -35,7 +38,7 @@ const Preview: FC<{ content: string }> = ({ content }) => {
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     if (scrollWrapper !== "preview") return;
     const previewView = e.currentTarget;
-    if (!editorView || !previewView) return;
+    if (!(editorView && previewView && localStorage.getItem(SYNC_SCROLL_STATUS) === "true")) return;
     handlePreviewScroll({ previewView, editorView });
   };
 
