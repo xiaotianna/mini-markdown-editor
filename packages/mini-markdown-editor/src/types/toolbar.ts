@@ -2,10 +2,16 @@ export interface ToolbarItem {
   type: ToolbarType;
   icon?: string;
   title?: string;
-  list?: string[];
+  list?: ToolbarItemListItem[];
   disabled?: boolean;
   visible?: boolean;
   onClick?: () => void;
+}
+
+export interface ToolbarItemListItem {
+  title: string;
+  type: string;
+  onClick: (...args: any[]) => void | (() => void);
 }
 
 export interface ToolbarContextValues {
@@ -18,6 +24,12 @@ export interface ToolbarContextValues {
 
 export type ToolbarType =
   | "heading"
+  | "heading-1"
+  | "heading-2"
+  | "heading-3"
+  | "heading-4"
+  | "heading-5"
+  | "heading-6"
   | "bold"
   | "italic"
   | "underline"
@@ -30,6 +42,8 @@ export type ToolbarType =
   | "code"
   | "link"
   | "image"
+  | "image-link"
+  | "image-upload"
   | "table"
   | "undo"
   | "redo"
@@ -37,5 +51,6 @@ export type ToolbarType =
   | "write"
   | "preview"
   | "contents"
+  | "help"
   | "html"
   | "pdf";

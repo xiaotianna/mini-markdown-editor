@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useToolbar } from "@/hooks/use-toolbar";
 import { ToolbarItem } from "./ToolbarItem";
 import { CopyCodeButton } from "./CopyCodeButton";
+import { useSyncEditorView } from "@/hooks/use-sync-editorview";
 
 const ToolbarContent = styled.div`
   width: 100%;
@@ -36,6 +37,7 @@ const Divider = styled.div`
 
 const Toolbar: FC = () => {
   const { toolbars } = useToolbar();
+  useSyncEditorView();
 
   return (
     <ToolbarContent>
@@ -49,6 +51,8 @@ const Toolbar: FC = () => {
               icon={item.icon}
               title={item.title}
               list={item.list}
+              type={item.type}
+              onClick={item.onClick}
             />
           ),
         )}

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { DropDownMenu } from "../base/DropDownMenu";
 import IconTooltip from "../base/IconTooltip";
 import { FC, memo } from "react";
-import { useEditorContentStore } from "@/store/editor";
+import { ToolbarItemListItem, ToolbarType } from "@/types/toolbar";
 
 const ToolbarItemWrapper = styled.div`
   width: 16px;
@@ -30,16 +30,14 @@ const ToolbarItemWrapper = styled.div`
 interface ToolbarItemProps {
   icon: string | undefined;
   title: string | undefined;
-  list?: Array<string>;
+  type: ToolbarType;
+  list?: Array<ToolbarItemListItem>;
+  onClick?: (...args: any[]) => void | (() => void);
 }
 
-export const ToolbarItem: FC<ToolbarItemProps> = memo(({ icon, title, list }) => {
-  const focusEditor = useEditorContentStore((state) => state.focusEditor);
-  const handleClick = () => {
-    focusEditor();
-  };
+export const ToolbarItem: FC<ToolbarItemProps> = memo(({ icon, title, list, onClick }) => {
   return (
-    <ToolbarItemWrapper className="item" onClick={handleClick}>
+    <ToolbarItemWrapper className="item" onClick={list ? undefined : onClick}>
       {list ? (
         <IconTooltip content={title}>
           <DropDownMenu list={list}>
