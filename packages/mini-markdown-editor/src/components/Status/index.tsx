@@ -1,8 +1,10 @@
-import { FC, useMemo } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { useEditorContentStore } from "@/store/editor";
 import { Checkbox } from "antd";
 import type { CheckboxProps } from "antd";
+import { SYNC_SCROLL_STATUS } from "@/common";
+import { safeLocalStorage } from "@/utils/storage";
 
 const StatusWrapper = styled.div`
   width: 100%;
@@ -38,20 +40,32 @@ const StatusWrapper = styled.div`
 
 const Status: FC = () => {
   const { content } = useEditorContentStore();
+  const localStorage = safeLocalStorage();
+  const [syncScroll, setSyncScroll] = useState<boolean>();
+
   const contentNum = useMemo(() => {
     return content.replace(/[\s\n]/g, "").length;
   }, [content]);
 
-  // TODO: 本地记录按钮状态 做持久化处理
-  const onChange: CheckboxProps["onChange"] = (e) => {
-    console.log(`${e.target.checked}`);
+  // 初始化时从 localStorage 读取状态
+  useEffect(() => {
+    const savedStatus = localStorage.getItem(SYNC_SCROLL_STATUS);
+    //! 明确转换为布尔值
+    const initialStatus = savedStatus === null ? true : savedStatus === "true";
+    setSyncScroll(initialStatus);
+  }, [localStorage]);
+
+  // 状态改变处理函数
+  const handleSyncScrollChange: CheckboxProps["onChange"] = (e) => {
+    setSyncScroll(e.target.checked);
+    localStorage.setItem(SYNC_SCROLL_STATUS, String(e.target.checked));
   };
 
   return (
     <StatusWrapper>
       <div className="status-left">字数: {contentNum}</div>
       <div className="status-right">
-        <Checkbox className={"checkbox"} defaultChecked={true} onChange={onChange}>
+        <Checkbox className="checkbox" checked={syncScroll} onChange={handleSyncScrollChange}>
           <span className="checkbox-text">同步滚动</span>
         </Checkbox>
         <div className="scroll-top">滚动到顶部</div>
@@ -59,4 +73,5 @@ const Status: FC = () => {
     </StatusWrapper>
   );
 };
+
 export default Status;
