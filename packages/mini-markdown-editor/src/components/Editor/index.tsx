@@ -7,7 +7,7 @@ import * as events from "@uiw/codemirror-extensions-events";
 import { useEditorContentStore } from "@/store/editor";
 import { handleEditorScroll } from "@/utils/handle-scroll";
 import { safeLocalStorage } from "@/utils/storage";
-import { EDITOR_CONTENT_KEY } from "@/common";
+import { EDITOR_CONTENT_KEY, SYNC_SCROLL_STATUS } from "@/common";
 
 const ScrollWrapper = styled.div`
   width: 100%;
@@ -86,7 +86,7 @@ const Editor: FC = () => {
     scroll: () => {
       if (scrollWrapper !== "editor") return;
       const view = editorViewRef.current;
-      if (!view || !previewView) return;
+      if (!(view && previewView && localStorage.getItem(SYNC_SCROLL_STATUS) === "true")) return;
       handleEditorScroll({ editorView: view, previewView });
     },
   });
