@@ -6,6 +6,7 @@ export interface ToolbarItem {
   disabled?: boolean;
   visible?: boolean;
   onClick?: () => void;
+  component?: React.ReactNode;
 }
 
 export interface ToolbarItemListItem {
@@ -23,18 +24,17 @@ export interface ToolbarContextValues {
 }
 
 export type ToolbarType =
-  | "title"
-  | "first-title"
-  | "second-title"
-  | "third-title"
-  | "fourth-title"
-  | "fifth-title"
-  | "sixth-title"
+  | "heading"
+  | "heading-1"
+  | "heading-2"
+  | "heading-3"
+  | "heading-4"
+  | "heading-5"
+  | "heading-6"
   | "bold"
   | "italic"
   | "underline"
-  | "strikethrough"
-  // TODO: 后续要规范化line无效type的写法
+  | "delete"
   | "line"
   | "blockquote"
   | "ul"
@@ -53,5 +53,4 @@ export type ToolbarType =
   | "preview"
   | "contents"
   | "help"
-  | "html"
   | "pdf";

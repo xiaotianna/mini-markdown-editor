@@ -4,17 +4,17 @@ type Description = string;
 export class Hotkey {
   // Tools
   static readonly Title = {
-    FIRST: new Hotkey("mod+1", "first-title"),
-    SECOND: new Hotkey("mod+2", "second-title"),
-    THIRD: new Hotkey("mod+3", "third-title"),
-    FOURTH: new Hotkey("mod+4", "fourth-title"),
-    FIFTH: new Hotkey("mod+5", "fifth-title"),
-    SIXTH: new Hotkey("mod+6", "sixth-title"),
+    FIRST: new Hotkey("mod+1", "heaing-1"),
+    SECOND: new Hotkey("mod+2", "heaing-2"),
+    THIRD: new Hotkey("mod+3", "heaing-3"),
+    FOURTH: new Hotkey("mod+4", "heaing-4"),
+    FIFTH: new Hotkey("mod+5", "heaing-5"),
+    SIXTH: new Hotkey("mod+6", "heaing-6"),
   } as const;
   static readonly BOLD = new Hotkey("mod+b", "bold"); // **text**
   static readonly ITALIC = new Hotkey("mod+i", "italic"); // *text*
   static readonly UNDERLINE = new Hotkey("mod+u", "underline"); // --text--
-  static readonly STRIKETHROUGH = new Hotkey("mod+shift+x", "strikethrough"); // ~~text~~
+  static readonly DELETE = new Hotkey("mod+shift+x", "delete"); // ~~text~~
   static readonly BLOCKQUOTE = new Hotkey("mod+shift+9", "blockquote"); // > text
   static readonly UNORDERED_LIST = new Hotkey("mod+shift+8", "ul"); // - item
   static readonly ORDERED_LIST = new Hotkey("mod+shift+7", "ol"); // 1. item

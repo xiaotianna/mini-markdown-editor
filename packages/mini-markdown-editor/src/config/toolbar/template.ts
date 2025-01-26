@@ -12,43 +12,43 @@ export type TemplateVal = {
 };
 
 const template: TemplateType = {
-  "first-title": {
+  "heading-1": {
     content: `# `,
     selection: {
       // anchor === head 不框选内容
-      anchor: 0, // 光标起始位置
+      anchor: 2, // 光标起始位置
       head: 2, // 光标结束位置
     },
   },
-  "second-title": {
+  "heading-2": {
     content: `## `,
     selection: {
       anchor: 0,
       head: 3,
     },
   },
-  "third-title": {
+  "heading-3": {
     content: `### `,
     selection: {
       anchor: 0,
       head: 4,
     },
   },
-  "fourth-title": {
+  "heading-4": {
     content: `#### `,
     selection: {
       anchor: 0,
       head: 5,
     },
   },
-  "fifth-title": {
+  "heading-5": {
     content: `##### `,
     selection: {
       anchor: 0,
       head: 6,
     },
   },
-  "sixth-title": {
+  "heading-6": {
     content: `###### `,
     selection: {
       anchor: 0,
@@ -76,7 +76,7 @@ const template: TemplateType = {
       head: 2,
     },
   },
-  strikethrough: {
+  delete: {
     content: `~~~~`,
     selection: {
       anchor: 2,

@@ -1,3 +1,4 @@
+// icon
 import HeadingIcon from "@/assets/images/heading.svg";
 import BoldIcon from "@/assets/images/bold.svg";
 import ItalicIcon from "@/assets/images/italic.svg";
@@ -13,52 +14,52 @@ import ImageIcon from "@/assets/images/image.svg";
 import TableIcon from "@/assets/images/table.svg";
 import Undo from "@/assets/images/undo.svg";
 import Redo from "@/assets/images/redo.svg";
-import FullscreenIcon from "@/assets/images/fullscreen.svg";
 import WriteIcon from "@/assets/images/write.svg";
 import PreviewIcon from "@/assets/images/perview.svg";
 import ContentsIcon from "@/assets/images/contents.svg";
 import HelpIcon from "@/assets/images/help.svg";
-import HtmlIcon from "@/assets/images/html.svg";
 import OutputPDFIcon from "@/assets/images/output-pdf.svg";
 import { InsertTextEvent } from "./event";
 import { ToolbarItem } from "@/types/toolbar";
-import Upload from "@/components/base/Upload";
+// 组件
+import Upload from "@/components/Toolbar/Upload";
+import FullScreen from "@/components/Toolbar/FullScreen";
 
 export const toolbar: ToolbarItem[] = [
   {
-    type: "title",
+    type: "heading",
     icon: HeadingIcon,
     title: "标题",
     list: [
       {
         title: "H1 一级标题",
-        type: "first-title",
-        onClick: () => InsertTextEvent("first-title"),
+        type: "heading-1",
+        onClick: () => InsertTextEvent("heading-1"),
       },
       {
         title: "H2 二级标题",
-        type: "second-title",
-        onClick: () => InsertTextEvent("second-title"),
+        type: "heading-2",
+        onClick: () => InsertTextEvent("heading-2"),
       },
       {
         title: "H3 三级标题",
-        type: "third-title",
-        onClick: () => InsertTextEvent("third-title"),
+        type: "heading-3",
+        onClick: () => InsertTextEvent("heading-3"),
       },
       {
         title: "H4 四级标题",
-        type: "fourth-title",
-        onClick: () => InsertTextEvent("fourth-title"),
+        type: "heading-4",
+        onClick: () => InsertTextEvent("heading-4"),
       },
       {
         title: "H5 五级标题",
-        type: "fifth-title",
-        onClick: () => InsertTextEvent("fifth-title"),
+        type: "heading-5",
+        onClick: () => InsertTextEvent("heading-5"),
       },
       {
         title: "H6 六级标题",
-        type: "sixth-title",
-        onClick: () => InsertTextEvent("sixth-title"),
+        type: "heading-6",
+        onClick: () => InsertTextEvent("heading-6"),
       },
     ],
   },
@@ -81,10 +82,10 @@ export const toolbar: ToolbarItem[] = [
     onClick: () => InsertTextEvent("underline"),
   },
   {
-    type: "strikethrough",
+    type: "delete",
     icon: DeleteIcon,
     title: "删除线",
-    onClick: () => InsertTextEvent("strikethrough"),
+    onClick: () => InsertTextEvent("delete"),
   },
   {
     type: "line",
@@ -165,8 +166,7 @@ export const toolbar: ToolbarItem[] = [
   },
   {
     type: "fullscreen",
-    icon: FullscreenIcon,
-    title: "全屏",
+    component: <FullScreen />,
   },
   {
     type: "write",
@@ -187,11 +187,6 @@ export const toolbar: ToolbarItem[] = [
     type: "help",
     icon: HelpIcon,
     title: "帮助",
-  },
-  {
-    type: "html",
-    icon: HtmlIcon,
-    title: "HTML代码预览",
   },
   {
     type: "pdf",

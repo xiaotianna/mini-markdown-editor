@@ -22,8 +22,6 @@ export const InsertImageEvent = (url: string, alt: string) => {
 
 // 重做
 
-// 全屏
-
 // 只写
 
 // 仅预览
@@ -31,7 +29,5 @@ export const InsertImageEvent = (url: string, alt: string) => {
 // 打开目录
 
 // 帮助
-
-// HTML代码预览
 
 // 导出为PDF

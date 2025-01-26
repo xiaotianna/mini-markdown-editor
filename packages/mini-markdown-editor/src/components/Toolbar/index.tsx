@@ -47,15 +47,7 @@ const Toolbar: FC = () => {
           item.type === "line" ? (
             <Divider key={`divider-${index}`} />
           ) : (
-            <ToolbarItem
-              key={`item-${index}`}
-              icon={item.icon}
-              title={item.title}
-              list={item.list}
-              type={item.type}
-              onClick={item.onClick}
-              // hotkey={item.hotkey}
-            />
+            <ToolbarItem key={`item-${index}`} {...item} />
           ),
         )}
       </ToolbarLeft>
