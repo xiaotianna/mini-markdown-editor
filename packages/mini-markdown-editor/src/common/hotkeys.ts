@@ -3,7 +3,7 @@ type Command = string;
 type Description = string;
 export class Hotkey {
   // Tools
-  static readonly Title = {
+  static readonly TITLE = {
     FIRST: new Hotkey("mod+1", "heaing-1"),
     SECOND: new Hotkey("mod+2", "heaing-2"),
     THIRD: new Hotkey("mod+3", "heaing-3"),
@@ -35,12 +35,20 @@ export class Hotkey {
     Hotkey.validateCommand(command);
   }
 
+  // 检测是否为 Mac 系统
+  private static readonly isMac = (() => {
+    if ("userAgentData" in navigator) {
+      return (navigator as any).userAgentData?.platform === "macOS";
+    }
+    return /Mac|iPod|iPhone|iPad/.test(navigator.userAgent);
+  })();
+
   // 键值映射表
   private static readonly KEY_MAPPING = {
-    mod: process.platform === "darwin" ? "⌘" : "Ctrl",
+    mod: Hotkey.isMac ? "⌘" : "Ctrl",
     shift: "⇧",
-    alt: process.platform === "darwin" ? "⌥" : "Alt",
-    ctrl: process.platform === "darwin" ? "⌃" : "Ctrl",
+    alt: Hotkey.isMac ? "⌥" : "Alt",
+    ctrl: Hotkey.isMac ? "⌃" : "Ctrl",
     equal: "=",
     minus: "-",
     plus: "+",
