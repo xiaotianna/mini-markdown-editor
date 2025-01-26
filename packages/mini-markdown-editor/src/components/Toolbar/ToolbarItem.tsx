@@ -33,6 +33,7 @@ interface ToolbarItemProps {
   type: ToolbarType;
   list?: Array<ToolbarItemListItem>;
   onClick?: (...args: any[]) => void | (() => void);
+  hotkey?: string;
 }
 
 export const ToolbarItem: FC<ToolbarItemProps> = memo(({ icon, title, list, onClick }) => {

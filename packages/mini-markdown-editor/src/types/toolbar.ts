@@ -23,17 +23,18 @@ export interface ToolbarContextValues {
 }
 
 export type ToolbarType =
-  | "heading"
-  | "heading-1"
-  | "heading-2"
-  | "heading-3"
-  | "heading-4"
-  | "heading-5"
-  | "heading-6"
+  | "title"
+  | "first-title"
+  | "second-title"
+  | "third-title"
+  | "fourth-title"
+  | "fifth-title"
+  | "sixth-title"
   | "bold"
   | "italic"
   | "underline"
-  | "delete"
+  | "strikethrough"
+  // TODO: 后续要规范化line无效type的写法
   | "line"
   | "blockquote"
   | "ul"

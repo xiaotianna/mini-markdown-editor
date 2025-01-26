@@ -26,39 +26,39 @@ import Upload from "@/components/base/Upload";
 
 export const toolbar: ToolbarItem[] = [
   {
-    type: "heading",
+    type: "title",
     icon: HeadingIcon,
     title: "标题",
     list: [
       {
         title: "H1 一级标题",
-        type: "heading-1",
-        onClick: () => InsertTextEvent("heading-1"),
+        type: "first-title",
+        onClick: () => InsertTextEvent("first-title"),
       },
       {
         title: "H2 二级标题",
-        type: "heading-2",
-        onClick: () => InsertTextEvent("heading-2"),
+        type: "second-title",
+        onClick: () => InsertTextEvent("second-title"),
       },
       {
         title: "H3 三级标题",
-        type: "heading-3",
-        onClick: () => InsertTextEvent("heading-3"),
+        type: "third-title",
+        onClick: () => InsertTextEvent("third-title"),
       },
       {
         title: "H4 四级标题",
-        type: "heading-4",
-        onClick: () => InsertTextEvent("heading-4"),
+        type: "fourth-title",
+        onClick: () => InsertTextEvent("fourth-title"),
       },
       {
         title: "H5 五级标题",
-        type: "heading-5",
-        onClick: () => InsertTextEvent("heading-5"),
+        type: "fifth-title",
+        onClick: () => InsertTextEvent("fifth-title"),
       },
       {
         title: "H6 六级标题",
-        type: "heading-6",
-        onClick: () => InsertTextEvent("heading-6"),
+        type: "sixth-title",
+        onClick: () => InsertTextEvent("sixth-title"),
       },
     ],
   },
@@ -81,10 +81,10 @@ export const toolbar: ToolbarItem[] = [
     onClick: () => InsertTextEvent("underline"),
   },
   {
-    type: "delete",
+    type: "strikethrough",
     icon: DeleteIcon,
     title: "删除线",
-    onClick: () => InsertTextEvent("delete"),
+    onClick: () => InsertTextEvent("strikethrough"),
   },
   {
     type: "line",

@@ -54,6 +54,7 @@ const Toolbar: FC = () => {
               list={item.list}
               type={item.type}
               onClick={item.onClick}
+              // hotkey={item.hotkey}
             />
           ),
         )}
