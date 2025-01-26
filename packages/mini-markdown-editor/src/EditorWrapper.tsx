@@ -8,6 +8,7 @@ import Status from "@/components/Status";
 import { Row, Col } from "antd";
 import { ToolbarProvider } from "@/components/providers/toolbar-provider";
 import { ConfigProvider } from "@/components/providers/config-provider";
+import { HotkeysProvider } from "@/components/providers/hotkeys-provider";
 import { GlobalConfig } from "./types/global-config";
 import { useToolbarStore } from "./store/toolbar";
 
@@ -75,29 +76,31 @@ const EditorWrapper: FC<GlobalConfig> = (config) => {
   return (
     <Container className={`md-editor ${isFullScreen && "md-editor-fullscreen"}`}>
       <ConfigProvider config={config}>
-        <ToolbarProvider>
-          {/* 工具栏 */}
-          <Toolbar />
-        </ToolbarProvider>
-        {/* 内容区域 */}
-        <ContentWrapper>
-          <StyledRow>
-            <Col span={12}>
-              {/* 编辑区 */}
-              <Editor />
-            </Col>
-            <Col span={12}>
-              {/* 渲染区 */}
-              <Preview content={deferredContent} />
-            </Col>
-            <Col span={10}>
-              {/* 渲染区 */}
-              123
-            </Col>
-          </StyledRow>
-          {/* 分割线 */}
-          <Divider />
-        </ContentWrapper>
+        <HotkeysProvider>
+          <ToolbarProvider>
+            {/* 工具栏 */}
+            <Toolbar />
+          </ToolbarProvider>
+          {/* 内容区域 */}
+          <ContentWrapper>
+            <StyledRow>
+              <Col span={12}>
+                {/* 编辑区 */}
+                <Editor />
+              </Col>
+              <Col span={12}>
+                {/* 渲染区 */}
+                <Preview content={deferredContent} />
+              </Col>
+              <Col span={10}>
+                {/* 渲染区 */}
+                123
+              </Col>
+            </StyledRow>
+            {/* 分割线 */}
+            <Divider />
+          </ContentWrapper>
+        </HotkeysProvider>
         {/* 底部状态栏 */}
         {config.status ? <Status /> : null}
       </ConfigProvider>

@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useRef } from "react";
+import { FC, useCallback, useContext, useEffect, useMemo, useRef } from "react";
 import styled from "styled-components";
 import CodeMirror, { type EditorView, ViewUpdate } from "@uiw/react-codemirror";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
@@ -8,6 +8,8 @@ import { useEditorContentStore } from "@/store/editor";
 import { handleEditorScroll } from "@/utils/handle-scroll";
 import { safeLocalStorage } from "@/utils/storage";
 import { EDITOR_CONTENT_KEY, SYNC_SCROLL_STATUS } from "@/common";
+import { useEditorShortcuts } from "@/hooks/use-editor-shortcuts";
+import { HotkeysContext } from "../providers/hotkeys-provider";
 
 const ScrollWrapper = styled.div`
   width: 100%;
@@ -57,6 +59,7 @@ const Editor: FC = () => {
     },
     [editorViewRef],
   );
+  useEditorShortcuts();
 
   // 处理重加载后的光标位置
   useEffect(() => {
@@ -95,16 +98,24 @@ const Editor: FC = () => {
     setScrollWrapper("editor");
   };
 
+  const { createKeymapExtension } = useContext(HotkeysContext);
+  // 创建扩展数组
+  const extensions = useMemo(
+    () => [
+      markdown({ base: markdownLanguage, codeLanguages: languages }),
+      scrollWrapper === "editor" ? eventExt : [],
+      createKeymapExtension!(),
+    ],
+    [scrollWrapper, createKeymapExtension],
+  );
+
   return (
     <ScrollWrapper>
       <CodeMirror
         className="markdown-editor-content"
         onCreateEditor={handleCreate}
         value={content}
-        extensions={[
-          markdown({ base: markdownLanguage, codeLanguages: languages }),
-          scrollWrapper === "editor" ? eventExt : [],
-        ]}
+        extensions={extensions}
         basicSetup={{
           lineNumbers: false,
           foldGutter: false,
@@ -112,6 +123,7 @@ const Editor: FC = () => {
           highlightActiveLineGutter: false,
           searchKeymap: false,
           autocompletion: false,
+          defaultKeymap: false,
         }}
         autoFocus={true}
         style={{ height: "100%" }}
