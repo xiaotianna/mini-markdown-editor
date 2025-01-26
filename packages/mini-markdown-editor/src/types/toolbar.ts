@@ -6,6 +6,7 @@ export interface ToolbarItem {
   disabled?: boolean;
   visible?: boolean;
   onClick?: () => void;
+  component?: React.ReactNode;
 }
 
 export interface ToolbarItemListItem {
@@ -52,5 +53,4 @@ export type ToolbarType =
   | "preview"
   | "contents"
   | "help"
-  | "html"
   | "pdf";

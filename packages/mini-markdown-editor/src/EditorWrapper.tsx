@@ -9,6 +9,7 @@ import { Row, Col } from "antd";
 import { ToolbarProvider } from "@/components/providers/toolbar-provider";
 import { ConfigProvider } from "@/components/providers/config-provider";
 import { GlobalConfig } from "./types/global-config";
+import { useToolbarStore } from "./store/toolbar";
 
 const Container = styled.div`
   width: 100%;
@@ -20,6 +21,17 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #fff;
+  &.md-editor-fullscreen {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 10000 !important;
+    width: auto !important;
+    max-width: none !important;
+    height: auto !important;
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -58,9 +70,10 @@ const Divider = styled.div`
 const EditorWrapper: FC<GlobalConfig> = (config) => {
   const content = useEditorContentStore((state) => state.content);
   const deferredContent = useDeferredValue(content);
+  const isFullScreen = useToolbarStore((state) => state.isFullScreen);
 
   return (
-    <Container>
+    <Container className={`md-editor ${isFullScreen && "md-editor-fullscreen"}`}>
       <ConfigProvider config={config}>
         <ToolbarProvider>
           {/* 工具栏 */}
@@ -76,6 +89,10 @@ const EditorWrapper: FC<GlobalConfig> = (config) => {
             <Col span={12}>
               {/* 渲染区 */}
               <Preview content={deferredContent} />
+            </Col>
+            <Col span={10}>
+              {/* 渲染区 */}
+              123
             </Col>
           </StyledRow>
           {/* 分割线 */}

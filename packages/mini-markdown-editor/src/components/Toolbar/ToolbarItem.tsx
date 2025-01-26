@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { DropDownMenu } from "../base/DropDownMenu";
 import IconTooltip from "../base/IconTooltip";
 import { FC, memo } from "react";
-import { ToolbarItemListItem, ToolbarType } from "@/types/toolbar";
+import type { ToolbarItem as ToolbarItemType } from "@/types/toolbar";
 
 const ToolbarItemWrapper = styled.div`
   width: 16px;
@@ -27,28 +27,34 @@ const ToolbarItemWrapper = styled.div`
   }
 `;
 
-interface ToolbarItemProps {
-  icon: string | undefined;
-  title: string | undefined;
-  type: ToolbarType;
-  list?: Array<ToolbarItemListItem>;
-  onClick?: (...args: any[]) => void | (() => void);
-}
-
-export const ToolbarItem: FC<ToolbarItemProps> = memo(({ icon, title, list, onClick }) => {
-  return (
-    <ToolbarItemWrapper className="item" onClick={list ? undefined : onClick}>
-      {list ? (
+const ToolbarItemRender: FC<ToolbarItemType> = ({ list, title, icon, onClick, component }) => {
+  if (list && list.length > 0) {
+    return (
+      <>
         <IconTooltip content={title}>
           <DropDownMenu list={list}>
             <img src={icon} alt={title} />
           </DropDownMenu>
         </IconTooltip>
-      ) : (
-        <IconTooltip content={title}>
+      </>
+    );
+  } else if (component) {
+    return <>{component}</>;
+  } else {
+    return (
+      <>
+        <IconTooltip content={title} onClick={onClick}>
           <img src={icon} alt={title} />
         </IconTooltip>
-      )}
+      </>
+    );
+  }
+};
+
+export const ToolbarItem: FC<ToolbarItemType> = memo((props) => {
+  return (
+    <ToolbarItemWrapper className="item">
+      <ToolbarItemRender {...props} />
     </ToolbarItemWrapper>
   );
 });

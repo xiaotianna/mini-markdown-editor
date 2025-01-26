@@ -1,3 +1,4 @@
+// icon
 import HeadingIcon from "@/assets/images/heading.svg";
 import BoldIcon from "@/assets/images/bold.svg";
 import ItalicIcon from "@/assets/images/italic.svg";
@@ -13,16 +14,16 @@ import ImageIcon from "@/assets/images/image.svg";
 import TableIcon from "@/assets/images/table.svg";
 import Undo from "@/assets/images/undo.svg";
 import Redo from "@/assets/images/redo.svg";
-import FullscreenIcon from "@/assets/images/fullscreen.svg";
 import WriteIcon from "@/assets/images/write.svg";
 import PreviewIcon from "@/assets/images/perview.svg";
 import ContentsIcon from "@/assets/images/contents.svg";
 import HelpIcon from "@/assets/images/help.svg";
-import HtmlIcon from "@/assets/images/html.svg";
 import OutputPDFIcon from "@/assets/images/output-pdf.svg";
 import { InsertTextEvent } from "./event";
 import { ToolbarItem } from "@/types/toolbar";
-import Upload from "@/components/base/Upload";
+// 组件
+import Upload from "@/components/Toolbar/Upload";
+import FullScreen from "@/components/Toolbar/FullScreen";
 
 export const toolbar: ToolbarItem[] = [
   {
@@ -165,8 +166,7 @@ export const toolbar: ToolbarItem[] = [
   },
   {
     type: "fullscreen",
-    icon: FullscreenIcon,
-    title: "全屏",
+    component: <FullScreen />,
   },
   {
     type: "write",
@@ -187,11 +187,6 @@ export const toolbar: ToolbarItem[] = [
     type: "help",
     icon: HelpIcon,
     title: "帮助",
-  },
-  {
-    type: "html",
-    icon: HtmlIcon,
-    title: "HTML代码预览",
   },
   {
     type: "pdf",

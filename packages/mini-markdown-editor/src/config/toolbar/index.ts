@@ -1,5 +1,5 @@
 import type { ToolbarItem, ToolbarType } from "@/types/toolbar";
-import { toolbar } from "./toolbar/base";
+import { toolbar } from "./base";
 
 class ToolbarConfig {
   private toolbars: ToolbarItem[];

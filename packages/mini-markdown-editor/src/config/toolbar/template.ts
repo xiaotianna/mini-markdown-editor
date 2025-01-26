@@ -16,7 +16,7 @@ const template: TemplateType = {
     content: `# `,
     selection: {
       // anchor === head 不框选内容
-      anchor: 0, // 光标起始位置
+      anchor: 2, // 光标起始位置
       head: 2, // 光标结束位置
     },
   },
