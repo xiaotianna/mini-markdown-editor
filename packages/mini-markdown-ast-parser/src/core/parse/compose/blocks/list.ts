@@ -4,10 +4,29 @@ import { parseInlineElements } from "../inline";
 import { TokenTypeVal } from "@/types/tokens-types";
 
 // 转换 list
-export const parseList = ({ line, lines, index, currentStatus, root }: ParseFnParams) => {
+export const parseList = ({
+  line,
+  lines,
+  index,
+  currentStatus,
+  root,
+  resetCurrentStatus,
+}: ParseFnParams) => {
+  // 检查是否存在列表中断
+  if (currentStatus.currentList && index > 0) {
+    const prevLine = lines[index - 1].trimStart();
+    const isPrevLineList = /^(-|\d+\.)\s+.*/.test(prevLine);
+    const isCurrentLineEmpty = line.trim() === "";
+
+    // 如果前一行是列表项，但当前行是空行或非列表项，则重置列表状态
+    if (isPrevLineList && (isCurrentLineEmpty || !line.trimStart().match(/^(-|\d+\.)\s+.*/))) {
+      resetCurrentStatus();
+    }
+  }
+
   // 列表项处理
   const trimmedLine = line.trimStart();
-  const indent = line.length - trimmedLine.length;
+  let indent = line.length - trimmedLine.length;
   const match = trimmedLine.match(/^(-|\d+\.)\s+(.*)/);
   if (match) {
     const [_, marker, content] = match;
@@ -57,7 +76,15 @@ export const parseList = ({ line, lines, index, currentStatus, root }: ParseFnPa
 
     if (indent > currentStatus.currentIndent) {
       if (currentStatus.currentListItem) {
-        if (!currentStatus.currentListItem.children?.some((child) => child.type === "list")) {
+        // 标准化缩进级别，确保每级缩进为2个空格
+        const indentLevel = Math.floor((indent - currentStatus.currentIndent) / 2);
+        indent = currentStatus.currentIndent + indentLevel * 2;
+
+        // 检查当前列表项是否已经包含子列表
+        const existingList = currentStatus.currentListItem.children?.find(
+          (child) => child.type === "list",
+        );
+        if (!existingList) {
           const newList = {
             type: "list",
             ordered,
@@ -69,19 +96,54 @@ export const parseList = ({ line, lines, index, currentStatus, root }: ParseFnPa
           currentStatus.currentListItem.children?.push(newList as Tokens);
           currentStatus.listStack.push(currentStatus.currentList as Tokens);
           currentStatus.currentList = newList as Tokens;
+        } else {
+          // 如果已存在子列表，但类型不同，则创建新的列表
+          if (existingList.ordered !== ordered) {
+            const newList = {
+              type: "list",
+              ordered,
+              start: null,
+              spread: false,
+              children: [],
+              position: listItem.position,
+            };
+            currentStatus.currentListItem.children?.push(newList as Tokens);
+            currentStatus.listStack.push(currentStatus.currentList as Tokens);
+            currentStatus.currentList = newList as Tokens;
+          } else {
+            currentStatus.currentList = existingList as Tokens;
+          }
         }
         currentStatus.currentList?.children?.push(listItem as Tokens);
       }
     } else if (indent < currentStatus.currentIndent) {
+      // 回到合适的父级列表
       while (
         currentStatus.listStack.length > 0 &&
-        currentStatus.listStack[currentStatus.listStack.length - 1].position.start.column >= indent
+        currentStatus.listStack[currentStatus.listStack.length - 1].position.start.column > indent
       ) {
         currentStatus.currentList = currentStatus.listStack.pop() as Tokens;
       }
+
       if (currentStatus.currentList) {
-        currentStatus.currentList.children?.push(listItem as Tokens);
+        // 检查当前列表类型是否匹配
+        if (currentStatus.currentList.ordered !== ordered) {
+          // 创建新的同级列表
+          const newList = {
+            type: "list",
+            ordered,
+            start: null,
+            spread: false,
+            children: [listItem],
+            position: listItem.position,
+          } as Tokens;
+          root.children.push(newList);
+          currentStatus.currentList = newList;
+        } else {
+          currentStatus.currentList.children?.push(listItem as Tokens);
+        }
       } else {
+        // 创建新的根级列表
         root.children.push({
           type: "list" as TokenTypeVal,
           ordered,
@@ -95,24 +157,38 @@ export const parseList = ({ line, lines, index, currentStatus, root }: ParseFnPa
     } else {
       // 如果当前列表类型与新列表项类型不同，则创建新的列表节点
       if (currentStatus.currentList && currentStatus.currentList.ordered !== ordered) {
-        currentStatus.currentList = null;
-        currentStatus.listStack = [];
-      }
-      if (!currentStatus.currentList) {
-        root.children.push({
+        // 完全重置列表状态
+        resetCurrentStatus();
+        // 创建新的根级列表
+        const newList = {
           type: "list",
           ordered,
           start: null,
           spread: false,
-          children: [listItem as Tokens],
+          children: [listItem],
           position: listItem.position,
-        } as Tokens);
-        currentStatus.currentList = root.children[root.children.length - 1];
+        } as Tokens;
+        root.children.push(newList);
+        currentStatus.currentList = newList;
+      } else if (!currentStatus.currentList) {
+        const newList = {
+          type: "list",
+          ordered,
+          start: null,
+          spread: false,
+          children: [listItem],
+          position: listItem.position,
+        } as Tokens;
+        root.children.push(newList);
+        currentStatus.currentList = newList;
       } else {
         currentStatus.currentList.children?.push(listItem as Tokens);
+        // 更新父列表的结束位置
+        currentStatus.currentList.position.end = listItem.position.end;
       }
     }
 
+    // 更新当前状态
     currentStatus.currentListItem = listItem as Tokens;
     currentStatus.currentIndent = indent;
     return true;
