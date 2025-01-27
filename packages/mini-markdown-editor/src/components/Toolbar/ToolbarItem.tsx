@@ -24,6 +24,7 @@ const ToolbarItemWrapper = styled.div`
     height: 16px;
     display: block;
     flex-shrink: 0;
+    user-select: none;
   }
 `;
 
