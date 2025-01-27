@@ -14,6 +14,7 @@ const ScrollWrapper = styled.div`
   height: 100%;
   overflow: auto;
   padding: 10px;
+  word-wrap: break-word;
 `;
 
 const Preview: FC<{ content: string }> = ({ content }) => {

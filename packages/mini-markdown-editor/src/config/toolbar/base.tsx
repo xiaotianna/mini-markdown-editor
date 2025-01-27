@@ -14,15 +14,13 @@ import ImageIcon from "@/assets/images/image.svg";
 import TableIcon from "@/assets/images/table.svg";
 import Undo from "@/assets/images/undo.svg";
 import Redo from "@/assets/images/redo.svg";
-import ContentsIcon from "@/assets/images/contents.svg";
-import HelpIcon from "@/assets/images/help.svg";
 import OutputPDFIcon from "@/assets/images/output-pdf.svg";
 import { InsertTextEvent } from "./event";
 import { ToolbarItem } from "@/types/toolbar";
 // 组件
 import Upload from "@/components/Toolbar/Upload";
 import FullScreen from "@/components/Toolbar/FullScreen";
-import { Read, Write } from "@/components/Toolbar/ShowLayout";
+import { Contents, Read, Write, Help } from "@/components/Toolbar/ShowLayout";
 
 export const toolbar: ToolbarItem[] = [
   {
@@ -177,13 +175,11 @@ export const toolbar: ToolbarItem[] = [
   },
   {
     type: "contents",
-    icon: ContentsIcon,
-    title: "目录",
+    component: <Contents />,
   },
   {
     type: "help",
-    icon: HelpIcon,
-    title: "帮助",
+    component: <Help />,
   },
   {
     type: "pdf",
