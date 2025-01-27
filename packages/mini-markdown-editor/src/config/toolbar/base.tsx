@@ -14,8 +14,6 @@ import ImageIcon from "@/assets/images/image.svg";
 import TableIcon from "@/assets/images/table.svg";
 import Undo from "@/assets/images/undo.svg";
 import Redo from "@/assets/images/redo.svg";
-import WriteIcon from "@/assets/images/write.svg";
-import PreviewIcon from "@/assets/images/perview.svg";
 import ContentsIcon from "@/assets/images/contents.svg";
 import HelpIcon from "@/assets/images/help.svg";
 import OutputPDFIcon from "@/assets/images/output-pdf.svg";
@@ -24,6 +22,7 @@ import { ToolbarItem } from "@/types/toolbar";
 // 组件
 import Upload from "@/components/Toolbar/Upload";
 import FullScreen from "@/components/Toolbar/FullScreen";
+import { Read, Write } from "@/components/Toolbar/ShowLayout";
 
 export const toolbar: ToolbarItem[] = [
   {
@@ -170,13 +169,11 @@ export const toolbar: ToolbarItem[] = [
   },
   {
     type: "write",
-    icon: WriteIcon,
-    title: "只写",
+    component: <Write />,
   },
   {
     type: "preview",
-    icon: PreviewIcon,
-    title: "仅预览",
+    component: <Read />,
   },
   {
     type: "contents",
