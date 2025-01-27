@@ -9,6 +9,8 @@ export interface ToolbarStoreType {
   setIsOnlyPreview: () => void;
   isSidebar: boolean;
   sidebarComponent: React.ReactNode | null;
+  componentMark: string | null;
+  setSidebar: (sidebarComponent: React.ReactNode | null, componentMark: string | null) => void;
 }
 
 const useToolbarStore = create<ToolbarStoreType>((set, get) => ({
@@ -30,6 +32,15 @@ const useToolbarStore = create<ToolbarStoreType>((set, get) => ({
   // 侧边栏
   isSidebar: false,
   sidebarComponent: null,
+  componentMark: null,
+  setSidebar: (sidebarComponent, componentMark) => {
+    const { isSidebar, componentMark: oldMark } = get();
+    if (componentMark === oldMark) {
+      set({ isSidebar: !isSidebar });
+    } else {
+      set({ isSidebar: true, sidebarComponent, componentMark });
+    }
+  },
 }));
 
 export { useToolbarStore };

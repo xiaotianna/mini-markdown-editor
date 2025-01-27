@@ -6,7 +6,7 @@ import { message } from "antd";
 
 const AppWrapper = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 95vh;
   background-color: #fafafa;
   padding: 50px;
   display: flex;
