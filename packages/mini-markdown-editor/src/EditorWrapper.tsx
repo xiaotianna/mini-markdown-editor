@@ -1,4 +1,4 @@
-import { FC, useDeferredValue } from "react";
+import { FC, Fragment, useDeferredValue } from "react";
 import styled from "styled-components";
 import { useEditorContentStore } from "@/store/editor";
 import Toolbar from "@/components/Toolbar";
@@ -42,7 +42,10 @@ const ContentWrapper = styled.div`
 `;
 
 const StyledRow = styled(Row)`
+  width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
   .ant-col {
     height: 100%;
     overflow-y: auto;
@@ -62,11 +65,79 @@ const Divider = styled.div`
   height: 100%;
   width: 1px;
   position: absolute;
-  left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
   z-index: 1;
 `;
+
+// 布局配置映射
+const LayoutConfig = {
+  // 只写模式
+  WRITE_ONLY: { cols: [18], components: ["editor"] },
+  // 仅预览模式
+  READ_ONLY: { cols: [18], components: ["preview"] },
+  // 读写模式
+  READ_WRITE: { cols: [12, 12], components: ["editor", "preview"] },
+  // 只写+侧边栏
+  WRITE_ONLY_SIDEBAR: { cols: [18, 6], components: ["editor", "sidebar"] },
+  // 仅预览+侧边栏
+  READ_ONLY_SIDEBAR: { cols: [18, 6], components: ["preview", "sidebar"] },
+  // 读写+侧边栏
+  READ_WRITE_SIDEBAR: { cols: [9, 9, 6], components: ["editor", "preview", "sidebar"] },
+};
+
+// 渲染不同分区
+const RenderRow: FC<{
+  editor: React.ReactNode;
+  preview: React.ReactNode;
+}> = ({ editor, preview }) => {
+  const { isOnlyWrite, isOnlyPreview, isSidebar, sidebarComponent } = useToolbarStore();
+
+  // 根据状态确定布局配置
+  const getLayoutConfig = () => {
+    // 处理只写模式
+    if (isOnlyWrite && !isOnlyPreview) {
+      return isSidebar ? LayoutConfig.WRITE_ONLY_SIDEBAR : LayoutConfig.WRITE_ONLY;
+    }
+    // 处理只读模式
+    if (!isOnlyWrite && isOnlyPreview) {
+      return isSidebar ? LayoutConfig.READ_ONLY_SIDEBAR : LayoutConfig.READ_ONLY;
+    }
+    // 处理读写模式（默认模式）
+    if (!isOnlyWrite && !isOnlyPreview) {
+      return isSidebar ? LayoutConfig.READ_WRITE_SIDEBAR : LayoutConfig.READ_WRITE;
+    }
+    // 处理异常情况（都为true的情况），默认返回只写模式
+    return isSidebar ? LayoutConfig.WRITE_ONLY_SIDEBAR : LayoutConfig.WRITE_ONLY;
+  };
+
+  const layout = getLayoutConfig();
+  const components = {
+    editor,
+    preview,
+    sidebar: sidebarComponent,
+  };
+  // 两列以上时显示分割线
+  const showDivider = layout.cols.length > 1;
+
+  return (
+    <>
+      {layout.cols.map((span, index) => {
+        const offset =
+          (layout.cols.slice(0, index + 1).reduce((acc, curr) => acc + curr, 0) /
+            layout.cols.reduce((acc, curr) => acc + curr, 0)) *
+          100;
+        return (
+          <Fragment key={`col-${index}`}>
+            <Col span={span}>{components[layout.components[index] as keyof typeof components]}</Col>
+            {showDivider && (
+              <Divider style={{ left: `${offset}%`, transform: `translate(-${offset}%, -50%)` }} />
+            )}
+          </Fragment>
+        );
+      })}
+    </>
+  );
+};
 
 const EditorWrapper: FC<GlobalConfig> = (config) => {
   const content = useEditorContentStore((state) => state.content);
@@ -84,21 +155,8 @@ const EditorWrapper: FC<GlobalConfig> = (config) => {
           {/* 内容区域 */}
           <ContentWrapper>
             <StyledRow>
-              <Col span={12}>
-                {/* 编辑区 */}
-                <Editor />
-              </Col>
-              <Col span={12}>
-                {/* 渲染区 */}
-                <Preview content={deferredContent} />
-              </Col>
-              <Col span={10}>
-                {/* 渲染区 */}
-                123
-              </Col>
+              <RenderRow editor={<Editor />} preview={<Preview content={deferredContent} />} />
             </StyledRow>
-            {/* 分割线 */}
-            <Divider />
           </ContentWrapper>
         </HotkeysProvider>
         {/* 底部状态栏 */}
