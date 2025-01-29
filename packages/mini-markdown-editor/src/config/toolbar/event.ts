@@ -22,12 +22,4 @@ export const InsertImageEvent = (url: string, alt: string) => {
 
 // 重做
 
-// 只写
-
-// 仅预览
-
-// 打开目录
-
-// 帮助
-
 // 导出为PDF

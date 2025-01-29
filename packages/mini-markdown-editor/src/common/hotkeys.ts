@@ -12,7 +12,7 @@ export class Hotkey {
     SIXTH: new Hotkey("mod+6", "heaing-6"),
   } as const;
   static readonly BOLD = new Hotkey("mod+b", "bold"); // **text**
-  static readonly ITALIC = new Hotkey("mod+i", "italic"); // *text*
+  static readonly ITALIC = new Hotkey("mod+i", "italic"); // _text_
   static readonly UNDERLINE = new Hotkey("mod+u", "underline"); // --text--
   static readonly DELETE = new Hotkey("mod+shift+x", "delete"); // ~~text~~
   static readonly BLOCKQUOTE = new Hotkey("mod+shift+9", "blockquote"); // > text

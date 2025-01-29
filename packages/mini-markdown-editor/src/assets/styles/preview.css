@@ -56,6 +56,7 @@
 }
 
 .mini-md-image {
+  width: 100%;
   max-width: 100%;
   border: 1px solid #e6e6e6;
   border-radius: 3px;

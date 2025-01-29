@@ -72,15 +72,15 @@ const Divider = styled.div`
 // 布局配置映射
 const LayoutConfig = {
   // 只写模式
-  WRITE_ONLY: { cols: [18], components: ["editor"] },
+  WRITE_ONLY: { cols: [18, 0, 0], components: ["editor", "preview", "sidebar"] },
   // 仅预览模式
-  READ_ONLY: { cols: [18], components: ["preview"] },
+  READ_ONLY: { cols: [0, 18, 0], components: ["editor", "preview", "sidebar"] },
   // 读写模式
-  READ_WRITE: { cols: [12, 12], components: ["editor", "preview"] },
+  READ_WRITE: { cols: [12, 12, 0], components: ["editor", "preview", "sidebar"] },
   // 只写+侧边栏
-  WRITE_ONLY_SIDEBAR: { cols: [18, 6], components: ["editor", "sidebar"] },
+  WRITE_ONLY_SIDEBAR: { cols: [18, 0, 6], components: ["editor", "preview", "sidebar"] },
   // 仅预览+侧边栏
-  READ_ONLY_SIDEBAR: { cols: [18, 6], components: ["preview", "sidebar"] },
+  READ_ONLY_SIDEBAR: { cols: [0, 18, 6], components: ["editor", "preview", "sidebar"] },
   // 读写+侧边栏
   READ_WRITE_SIDEBAR: { cols: [9, 9, 6], components: ["editor", "preview", "sidebar"] },
 };
