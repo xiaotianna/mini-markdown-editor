@@ -8,7 +8,7 @@
     "dev": "pnpm build:ast && vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview" 
+    "preview": "vite preview"
   },
   "dependencies": {
     "@codemirror/lang-markdown": "^6.3.2",
