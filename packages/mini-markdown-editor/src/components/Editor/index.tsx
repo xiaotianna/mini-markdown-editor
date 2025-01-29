@@ -59,6 +59,7 @@ const Editor: FC = () => {
     },
     [editorViewRef],
   );
+  // 监听快捷键
   useEditorShortcuts();
 
   // 处理重加载后的光标位置
