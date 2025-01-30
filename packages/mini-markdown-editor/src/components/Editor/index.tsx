@@ -95,9 +95,7 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
     scroll: () => {
       if (scrollWrapper !== "editor") return;
       const view = editorViewRef.current;
-      console.log(view);
       if (!(view && previewView && isSyncScroll)) return;
-      console.log(isSyncScroll);
       handleEditorScroll({ editorView: view, previewView });
     },
   });
