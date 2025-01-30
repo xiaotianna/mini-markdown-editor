@@ -120,7 +120,7 @@ export const parseList = ({
       // 回到合适的父级列表
       while (
         currentStatus.listStack.length > 0 &&
-        currentStatus.listStack[currentStatus.listStack.length - 1].position.start.column > indent
+        currentStatus.listStack[currentStatus.listStack.length - 1]?.position.start.column > indent
       ) {
         currentStatus.currentList = currentStatus.listStack.pop() as Tokens;
       }
