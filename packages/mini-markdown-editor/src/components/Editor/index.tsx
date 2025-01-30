@@ -6,8 +6,6 @@ import { languages } from "@codemirror/language-data";
 import * as events from "@uiw/codemirror-extensions-events";
 import { useEditorContentStore } from "@/store/editor";
 import { handleEditorScroll } from "@/utils/handle-scroll";
-import { safeLocalStorage } from "@/utils/storage";
-import { SYNC_SCROLL_STATUS } from "@/common";
 import { useEditorShortcuts } from "@/hooks/use-editor-shortcuts";
 import { HotkeysContext } from "../providers/hotkeys-provider";
 import { usePersistEditorContent } from "@/hooks/use-persist-editor-content";
@@ -39,7 +37,7 @@ const ScrollWrapper = styled.div`
   }
 `;
 
-const Editor: FC = () => {
+const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
   const {
     content,
     setContent,
@@ -49,7 +47,6 @@ const Editor: FC = () => {
     previewView,
     editorView,
   } = useEditorContentStore();
-  const localStorage = safeLocalStorage();
   // ref转发
   const editorViewRef = useRef<EditorView>();
   // 存储实例
@@ -98,7 +95,9 @@ const Editor: FC = () => {
     scroll: () => {
       if (scrollWrapper !== "editor") return;
       const view = editorViewRef.current;
-      if (!(view && previewView && localStorage.getItem(SYNC_SCROLL_STATUS) === "true")) return;
+      console.log(view);
+      if (!(view && previewView && isSyncScroll)) return;
+      console.log(isSyncScroll);
       handleEditorScroll({ editorView: view, previewView });
     },
   });

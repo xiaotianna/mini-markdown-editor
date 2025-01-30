@@ -11,6 +11,7 @@ import { ConfigProvider } from "@/components/providers/config-provider";
 import { HotkeysProvider } from "@/components/providers/hotkeys-provider";
 import { GlobalConfig } from "./types/global-config";
 import { useToolbarStore } from "./store/toolbar";
+import { useInitSyncScrollStatus } from "./hooks/use-init-sync-scroll-status";
 
 const Container = styled.div`
   width: 100%;
@@ -143,6 +144,7 @@ const EditorWrapper: FC<GlobalConfig> = (config) => {
   const content = useEditorContentStore((state) => state.content);
   const deferredContent = useDeferredValue(content);
   const isFullScreen = useToolbarStore((state) => state.isFullScreen);
+  const { isSyncScroll, updateSyncScrollStatus } = useInitSyncScrollStatus();
 
   return (
     <Container className={`md-editor ${isFullScreen && "md-editor-fullscreen"}`}>
@@ -155,12 +157,17 @@ const EditorWrapper: FC<GlobalConfig> = (config) => {
           {/* 内容区域 */}
           <ContentWrapper>
             <StyledRow>
-              <RenderRow editor={<Editor />} preview={<Preview content={deferredContent} />} />
+              <RenderRow
+                editor={<Editor isSyncScroll={isSyncScroll} />}
+                preview={<Preview content={deferredContent} isSyncScroll={isSyncScroll} />}
+              />
             </StyledRow>
           </ContentWrapper>
         </HotkeysProvider>
         {/* 底部状态栏 */}
-        {config.status ? <Status /> : null}
+        {config.status ? (
+          <Status isSyncScroll={isSyncScroll} updateSyncScrollStatus={updateSyncScrollStatus} />
+        ) : null}
       </ConfigProvider>
     </Container>
   );
