@@ -7,9 +7,10 @@ import * as events from "@uiw/codemirror-extensions-events";
 import { useEditorContentStore } from "@/store/editor";
 import { handleEditorScroll } from "@/utils/handle-scroll";
 import { safeLocalStorage } from "@/utils/storage";
-import { EDITOR_CONTENT_KEY, SYNC_SCROLL_STATUS } from "@/common";
+import { SYNC_SCROLL_STATUS } from "@/common";
 import { useEditorShortcuts } from "@/hooks/use-editor-shortcuts";
 import { HotkeysContext } from "../providers/hotkeys-provider";
+import { usePersistEditorContent } from "@/hooks/use-persist-editor-content";
 
 const ScrollWrapper = styled.div`
   width: 100%;
@@ -61,6 +62,8 @@ const Editor: FC = () => {
   );
   // 监听快捷键
   useEditorShortcuts();
+  // 持久化存储内容
+  const { saveContent, getContent } = usePersistEditorContent();
 
   // 处理重加载后的光标位置
   useEffect(() => {
@@ -72,6 +75,11 @@ const Editor: FC = () => {
     }
   }, [editorView]);
 
+  // 初始化时获取本地存储的内容
+  useEffect(() => {
+    setContent(getContent());
+  }, []);
+
   // 编辑器挂载完成后将编辑器示例存储起来
   const handleCreate = (view: EditorView) => {
     setEditorViewInstance(view);
@@ -81,7 +89,7 @@ const Editor: FC = () => {
     // 更新store
     setContent(val);
     // 本地同步存储
-    localStorage.setItem(EDITOR_CONTENT_KEY, val);
+    saveContent(val);
     // 更新编辑器实例
     setEditorViewInstance(editView.view);
   };
