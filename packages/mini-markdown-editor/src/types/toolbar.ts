@@ -53,4 +53,4 @@ export type ToolbarType =
   | "preview"
   | "contents"
   | "help"
-  | "pdf";
+  | "output";
