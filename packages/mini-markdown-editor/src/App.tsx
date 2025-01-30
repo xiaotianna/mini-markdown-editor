@@ -18,7 +18,7 @@ const App: FC = () => {
   const handleUpload = async (file: File, callback: Callback) => {
     await new Promise((resolve) => {
       setTimeout(() => {
-        console.log("settimout 上传成功", file);
+        console.log("settimeout 上传成功", file);
         resolve({});
       }, 1500);
     });
@@ -30,7 +30,7 @@ const App: FC = () => {
   };
   return (
     <AppWrapper>
-      <EditorWrapper status={true} onUpload={handleUpload} />
+      <EditorWrapper status={true} onUpload={handleUpload} local={true} />
     </AppWrapper>
   );
 };
