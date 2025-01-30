@@ -5,9 +5,11 @@ import WriteIcon from "@/assets/images/write.svg?raw";
 import PreviewIcon from "@/assets/images/perview.svg?raw";
 import ContentsIcon from "@/assets/images/contents.svg?raw";
 import HelpIcon from "@/assets/images/help.svg?raw";
+import OutputIcon from "@/assets/images/output.svg?raw";
 import { useToolbarStore } from "@/store/toolbar";
 import SidebarContents from "@/components/Sidebar/Contents";
 import SidebarHelp from "@/components/Sidebar/Help";
+import SidebarOutput from "@/components/Sidebar/Output";
 
 const Wrapper = styled.div<{ $isSelect: boolean }>`
   display: flex;
@@ -74,6 +76,22 @@ export const Help: FC = () => {
           $isSelect={isSidebar && componentMark === ComponentsMark}
           dangerouslySetInnerHTML={{ __html: HelpIcon }}
         ></Wrapper>
+      </IconTooltip>
+    </>
+  );
+};
+
+// 导出按钮
+export const Output: FC = () => {
+  const ComponentsMark = "Output";
+  const { isSidebar, componentMark, setSidebar } = useToolbarStore();
+  return (
+    <>
+      <IconTooltip content={"导出"} onClick={() => setSidebar(<SidebarOutput />, ComponentsMark)}>
+        <Wrapper
+          $isSelect={isSidebar && componentMark === ComponentsMark}
+          dangerouslySetInnerHTML={{ __html: OutputIcon }}
+        />
       </IconTooltip>
     </>
   );

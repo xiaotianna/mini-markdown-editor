@@ -14,13 +14,12 @@ import ImageIcon from "@/assets/images/image.svg";
 import TableIcon from "@/assets/images/table.svg";
 import Undo from "@/assets/images/undo.svg";
 import Redo from "@/assets/images/redo.svg";
-import OutputPDFIcon from "@/assets/images/output-pdf.svg";
 import { InsertTextEvent } from "./event";
 import { ToolbarItem } from "@/types/toolbar";
 // 组件
 import Upload from "@/components/Toolbar/Upload";
 import FullScreen from "@/components/Toolbar/FullScreen";
-import { Contents, Read, Write, Help } from "@/components/Toolbar/ShowLayout";
+import { Contents, Read, Write, Help, Output } from "@/components/Toolbar/ShowLayout";
 
 export const toolbar: ToolbarItem[] = [
   {
@@ -182,13 +181,12 @@ export const toolbar: ToolbarItem[] = [
     component: <Help />,
   },
   {
-    type: "pdf",
-    icon: OutputPDFIcon,
-    title: "导出为PDF",
+    type: "output",
+    component: <Output />,
   },
 ];
 
-// 渲染其他定制节点
+// 渲染列表其他定制节点
 export const render = {
   "image-upload": <Upload />,
 };
