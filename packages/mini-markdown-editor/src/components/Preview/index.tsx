@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from "react";
+import { FC, useEffect, useRef, useCallback } from "react";
 import { parseMarkdown, transformHtml } from "@mini-markdown/ast-parser";
 import "@/assets/styles/preview.css";
 import "highlight.js/styles/atom-one-dark.css";
@@ -16,43 +16,54 @@ const ScrollWrapper = styled.div`
 `;
 
 const Preview: FC<{ content: string; isSyncScroll: boolean }> = ({ content, isSyncScroll }) => {
-  // store
   const { scrollWrapper, setScrollWrapper, setPreviewView, editorView } = useEditorContentStore();
+
+  const previewRef = useRef<HTMLDivElement>(null);
+
+  // 更新预览视图
+  const updatePreviewView = useCallback(
+    (element: HTMLDivElement | null) => {
+      if (element) {
+        setPreviewView(element);
+      }
+    },
+    [setPreviewView],
+  );
 
   // 渲染 html 节点
   const node = React.useMemo(() => {
     const ast = parseMarkdown(content);
     return transformHtml(ast);
   }, [content]);
-  const previewRef = useRef<HTMLDivElement>(null);
 
   // 更新渲染实例
   useEffect(() => {
-    if (previewRef.current && node) {
-      setPreviewView(previewRef.current);
-    }
-  }, [node]);
+    updatePreviewView(previewRef.current);
+  }, [updatePreviewView, node]);
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    if (scrollWrapper !== "preview") return;
-    const previewView = e.currentTarget;
-    if (!(editorView && previewView && isSyncScroll)) return;
-    handlePreviewScroll({ previewView, editorView });
-  };
+  const handleScroll = useCallback(
+    (e: React.UIEvent<HTMLDivElement>) => {
+      if (scrollWrapper !== "preview") return;
+      const previewView = e.currentTarget;
+      if (!(editorView && previewView && isSyncScroll)) return;
+      handlePreviewScroll({ previewView, editorView });
+    },
+    [scrollWrapper, editorView, isSyncScroll],
+  );
 
-  const handleMoseEnter = () => {
+  const handleMouseEnter = useCallback(() => {
     setScrollWrapper("preview");
-  };
+  }, [setScrollWrapper]);
 
   return (
-    // className='markdown-editor-preview' 重置样式的节点
     <ScrollWrapper
       className="markdown-editor-preview"
       onScroll={handleScroll}
-      onMouseEnter={handleMoseEnter}
+      onMouseEnter={handleMouseEnter}
       ref={previewRef}
       dangerouslySetInnerHTML={{ __html: node.toString() }}
-    ></ScrollWrapper>
+    />
   );
 };
-export default Preview;
+
+export default React.memo(Preview);
