@@ -9,6 +9,7 @@
   padding: 0 10px;
   word-wrap: break-word;
   color: #3f4a54;
+  margin: 0.8em 0;
 }
 
 .mini-md-h1 {
@@ -106,6 +107,7 @@
 .mini-md-ul,
 .mini-md-ol {
   margin: 0.6em 0;
+  padding-inline-start: 30px;
 }
 
 .mini-md-li::marker {
