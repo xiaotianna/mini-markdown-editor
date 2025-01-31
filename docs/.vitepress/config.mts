@@ -1,11 +1,22 @@
 import { defineConfig } from 'vitepress'
 import { sidebar } from './sidebar'
+import { vitepressDemoPlugin } from 'vitepress-demo-plugin'
+import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons'
 
 export default defineConfig({
   title: "Mini Markdown Editor",
   description: "字节青训营项目: mini markdown editor",
   markdown: {
-    lineNumbers: true
+    lineNumbers: true,
+    config(md) {
+      md.use(vitepressDemoPlugin);
+      md.use(groupIconMdPlugin);
+    },
+  },
+  vite: {
+    plugins: [
+      groupIconVitePlugin()
+    ],
   },
   head: [
     ['link', { rel: 'icon', href: '/logo.svg' }]
@@ -45,6 +56,7 @@ export default defineConfig({
     nav: [
       { text: '指南', link: '/guide', activeMatch: '/guide' },
       { text: '文档', link: '/docs', activeMatch: '/docs' },
+      { text: '示例', link: '/example', activeMatch: '/example' },
       { text: '关于我们', link: '/team', activeMatch: '/team' },
     ],
     sidebar,
@@ -52,6 +64,9 @@ export default defineConfig({
     socialLinks: [
       { icon: 'github', link: 'https://github.com/xiaotianna/mini-markdown-editor' },
       { icon: 'gitee', link: 'https://gitee.com/lin-yaozhen/mini-markdown-editor' }
-    ]
+    ],
+    footer: {
+      message: '2025 字节青训营「前端」',
+    }
   }
 })
