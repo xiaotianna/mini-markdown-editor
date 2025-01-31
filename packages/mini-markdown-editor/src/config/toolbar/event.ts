@@ -19,7 +19,13 @@ export const InsertImageEvent = (url: string, alt: string) => {
 };
 
 // 撤销
+export const UndoEvent = () => {
+  insertContent.undo();
+};
 
 // 重做
+export const RedoEvent = () => {
+  insertContent.redo();
+};
 
 // 导出为PDF

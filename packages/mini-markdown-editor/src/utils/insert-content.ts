@@ -1,4 +1,5 @@
 import { EditorView } from "@uiw/react-codemirror";
+import { undo, redo } from "@codemirror/commands";
 
 class InsertContent {
   private editorView: EditorView | null = null;
@@ -28,6 +29,19 @@ class InsertContent {
         head: range.from + head, // 终点（移动点）
       },
     });
+  }
+
+  // 撤销
+  public undo() {
+    const view = this.editorView;
+    if (!view) return;
+    undo(view);
+  }
+  // 重做
+  public redo() {
+    const view = this.editorView;
+    if (!view) return;
+    redo(view);
   }
 }
 
