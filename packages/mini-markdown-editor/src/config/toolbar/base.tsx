@@ -14,7 +14,7 @@ import ImageIcon from "@/assets/images/image.svg";
 import TableIcon from "@/assets/images/table.svg";
 import Undo from "@/assets/images/undo.svg";
 import Redo from "@/assets/images/redo.svg";
-import { InsertTextEvent } from "./event";
+import { InsertTextEvent, RedoEvent, UndoEvent } from "./event";
 import { ToolbarItem } from "@/types/toolbar";
 // 组件
 import Upload from "@/components/Toolbar/Upload";
@@ -151,11 +151,13 @@ export const toolbar: ToolbarItem[] = [
     type: "undo",
     icon: Undo,
     title: "撤销",
+    onClick: () => UndoEvent(),
   },
   {
     type: "redo",
     icon: Redo,
     title: "重做",
+    onClick: () => RedoEvent(),
   },
   {
     type: "line",

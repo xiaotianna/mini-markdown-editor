@@ -4,6 +4,7 @@ import CodeMirror, { type EditorView, ViewUpdate } from "@uiw/react-codemirror";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
 import * as events from "@uiw/codemirror-extensions-events";
+import { history } from "@codemirror/commands";
 import { useEditorContentStore } from "@/store/editor";
 import { handleEditorScroll } from "@/utils/handle-scroll";
 import { useEditorShortcuts } from "@/hooks/use-editor-shortcuts";
@@ -111,6 +112,7 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
       markdown({ base: markdownLanguage, codeLanguages: languages }),
       scrollWrapper === "editor" ? eventExt : [],
       createKeymapExtension!(),
+      history(),
     ],
     [scrollWrapper, createKeymapExtension],
   );
