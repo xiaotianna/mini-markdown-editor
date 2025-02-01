@@ -1,19 +1,19 @@
 // icon
-import HeadingIcon from "@/assets/images/heading.svg";
-import BoldIcon from "@/assets/images/bold.svg";
-import ItalicIcon from "@/assets/images/italic.svg";
-import UnderlineIcon from "@/assets/images/underline.svg";
-import DeleteIcon from "@/assets/images/delete.svg";
-import BlockquoteIcon from "@/assets/images/blockquote.svg";
-import UlIcon from "@/assets/images/ul.svg";
-import OlIcon from "@/assets/images/ol.svg";
-import InlineCodeIcon from "@/assets/images/inlinecode.svg";
-import CodeIcon from "@/assets/images/code.svg";
-import LinkIcon from "@/assets/images/link.svg";
-import ImageIcon from "@/assets/images/image.svg";
-import TableIcon from "@/assets/images/table.svg";
-import Undo from "@/assets/images/undo.svg";
-import Redo from "@/assets/images/redo.svg";
+import HeadingIcon from "@/assets/images/heading.svg?raw";
+import BoldIcon from "@/assets/images/bold.svg?raw";
+import ItalicIcon from "@/assets/images/italic.svg?raw";
+import UnderlineIcon from "@/assets/images/underline.svg?raw";
+import DeleteIcon from "@/assets/images/delete.svg?raw";
+import BlockquoteIcon from "@/assets/images/blockquote.svg?raw";
+import UlIcon from "@/assets/images/ul.svg?raw";
+import OlIcon from "@/assets/images/ol.svg?raw";
+import InlineCodeIcon from "@/assets/images/inlinecode.svg?raw";
+import CodeIcon from "@/assets/images/code.svg?raw";
+import LinkIcon from "@/assets/images/link.svg?raw";
+import ImageIcon from "@/assets/images/image.svg?raw";
+import TableIcon from "@/assets/images/table.svg?raw";
+import Undo from "@/assets/images/undo.svg?raw";
+import Redo from "@/assets/images/redo.svg?raw";
 import { InsertTextEvent, RedoEvent, UndoEvent } from "./event";
 import { ToolbarItem } from "@/types/toolbar";
 // 组件

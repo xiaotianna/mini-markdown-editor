@@ -10,6 +10,7 @@ import { handleEditorScroll } from "@/utils/handle-scroll";
 import { useEditorShortcuts } from "@/hooks/use-editor-shortcuts";
 import { HotkeysContext } from "../providers/hotkeys-provider";
 import { usePersistEditorContent } from "@/hooks/use-persist-editor-content";
+import { ConfigContext } from "../providers/config-provider";
 
 const ScrollWrapper = styled.div`
   width: 100%;
@@ -29,12 +30,14 @@ const ScrollWrapper = styled.div`
   .cm-editor {
     outline: none;
     height: 100%;
+    background-color: ${(props) => props.theme.background};
   }
   .cm-editor.cm-focused {
     outline: none;
   }
   .cm-scroller {
     height: 100%;
+    background-color: ${(props) => props.theme.background};
   }
 `;
 
@@ -117,11 +120,14 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
     [scrollWrapper, createKeymapExtension],
   );
 
+  const { theme } = useContext(ConfigContext);
+
   return (
     <ScrollWrapper>
       <CodeMirror
         className="markdown-editor-content"
         onCreateEditor={handleCreate}
+        theme={theme}
         value={content}
         extensions={extensions}
         basicSetup={{

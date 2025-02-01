@@ -17,7 +17,7 @@ const Wrapper = styled.div<{ $isSelect: boolean }>`
   justify-content: center;
   width: 100%;
   height: 100%;
-  color: ${(props) => (props.$isSelect ? "#0366d6" : "")};
+  color: ${(props) => (props.$isSelect ? "#0366d6" : props.theme.color)};
 `;
 
 // 只写按钮

@@ -1,16 +1,14 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import styled from "styled-components";
 import EditorWrapper from "./EditorWrapper";
 import { Callback } from "./types/global-config";
-import { message } from "antd";
+import { Button, message } from "antd";
 
 const AppWrapper = styled.div`
   width: 100%;
   height: 95vh;
   background-color: #fafafa;
   padding: 50px;
-  display: flex;
-  justify-content: center;
 `;
 
 const App: FC = () => {
@@ -28,9 +26,20 @@ const App: FC = () => {
     });
     message.success("上传成功");
   };
+
+  const [theme, setTheme] = useState("light");
+  const changeTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
   return (
     <AppWrapper>
-      <EditorWrapper status={true} onUpload={handleUpload} local={true} />
+      <Button onClick={changeTheme}>主题切换{theme}</Button>
+      <EditorWrapper
+        status={true}
+        onUpload={handleUpload}
+        local={true}
+        theme={theme as "light" | "dark"}
+      />
     </AppWrapper>
   );
 };

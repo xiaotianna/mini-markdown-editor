@@ -1,0 +1,26 @@
+export const previewTheme = {
+  light: {
+    color: "#333",
+    "special-color": "#3f4a54",
+    "inlincode-color": "#3594f7",
+    "inlincode-bg-color": "rgba(59, 170, 250, 0.1)",
+    "border-color": "#e6e6e6",
+    "blockquote-color": "#3f4a54",
+    "blockquote-border-color": "#d0d7de",
+    "table-border-color": "#ddd",
+    "th-bg-color": "#f2f2f2",
+    "table-hover-bg-color": "#f5f5f5",
+  },
+  dark: {
+    color: "#fff",
+    "special-color": "#bac6d2",
+    "inlincode-color": "#c9d1d9",
+    "inlincode-bg-color": "#2d3339",
+    "border-color": "#2d2d2d",
+    "blockquote-color": "#8b949e",
+    "blockquote-border-color": "#444c56",
+    "table-border-color": "#30363d",
+    "th-bg-color": "#252525",
+    "table-hover-bg-color": "#222222",
+  },
+};

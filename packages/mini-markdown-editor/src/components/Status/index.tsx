@@ -7,8 +7,10 @@ import type { CheckboxProps } from "antd";
 const StatusWrapper = styled.div`
   width: 100%;
   height: 24px;
-  color: #3f4a54;
-  border-top: 1px solid #e6e6e6;
+  /* color: #3f4a54; */
+  color: ${(props) => props.theme.statusColor};
+  /* border-top: 1px solid #e6e6e6; */
+  border-top: 1px solid ${(props) => props.theme.borderColor};
   display: flex;
   flex-shrink: 0;
   font-size: 12px;
@@ -28,6 +30,7 @@ const StatusWrapper = styled.div`
       gap: 10px;
       .checkbox-text {
         font-size: 12px;
+        color: ${(props) => props.theme.statusColor};
       }
       .scroll-top {
         cursor: pointer;
