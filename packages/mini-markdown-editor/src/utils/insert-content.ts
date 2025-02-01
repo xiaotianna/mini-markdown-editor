@@ -15,7 +15,13 @@ class InsertContent {
     // 获取光标
     view.focus();
     const range = view.state.selection.ranges[0];
-    const { anchor, head } = selection;
+    let { anchor, head } = selection;
+    if (range.from !== range.to) {
+      // 获取选中的内容
+      const selectedText = view.state.sliceDoc(range.from, range.to);
+      content = content.slice(0, anchor) + selectedText + content.slice(head);
+      head = anchor + selectedText.length;
+    }
 
     // 插入指定内容
     view.dispatch({
