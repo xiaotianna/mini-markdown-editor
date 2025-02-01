@@ -9,13 +9,15 @@ const Wrapper = styled.div`
   .title {
     font-weight: 600;
     margin: 5px 0 16px;
-    color: #3f4a54;
+    /* color: #3f4a54; */
+    color: ${(props) => props.theme.silderHelpTitleColor};
   }
   .grammar-list {
     margin: 0;
     padding: 0;
     list-style: none;
-    color: #959da5;
+    /* color: #959da5; */
+    color: ${(props) => props.theme.silderHelpTextColor};
     padding-bottom: 5px;
     box-sizing: content-box;
     .grammar-item {
@@ -29,7 +31,8 @@ const Wrapper = styled.div`
         justify-content: center;
         align-items: center;
         margin-right: 7.5px;
-        fill: #959da5;
+        /* fill: #959da5; */
+        fill: ${(props) => props.theme.silderHelpTextColor};
       }
       .rule {
         margin-left: auto;

@@ -17,14 +17,26 @@ const ToolbarItemWrapper = styled.div`
   margin: 0 2px;
   transition: all 0.3s;
   &:hover {
-    background-color: #e6e6e6;
+    /* background-color: #e6e6e6; */
+    background-color: ${(props) => props.theme.toolbarHoverBg};
   }
-  img {
+  /* img {
     width: 16px;
     height: 16px;
     display: block;
     flex-shrink: 0;
     user-select: none;
+  } */
+  .icon {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    user-select: none;
+    color: ${(props) => props.theme.color};
+    fill: ${(props) => props.theme.color};
   }
 `;
 
@@ -34,7 +46,8 @@ const ToolbarItemRender: FC<ToolbarItemType> = ({ list, title, icon, onClick, co
       <>
         <IconTooltip content={title}>
           <DropDownMenu list={list}>
-            <img src={icon} alt={title} />
+            {/* <img src={icon} alt={title} /> */}
+            {icon && <div className="icon" dangerouslySetInnerHTML={{ __html: icon }}></div>}
           </DropDownMenu>
         </IconTooltip>
       </>
@@ -45,7 +58,8 @@ const ToolbarItemRender: FC<ToolbarItemType> = ({ list, title, icon, onClick, co
     return (
       <>
         <IconTooltip content={title} onClick={onClick}>
-          <img src={icon} alt={title} />
+          {/* <img src={icon} alt={title} /> */}
+          {icon && <div className="icon" dangerouslySetInnerHTML={{ __html: icon }}></div>}
         </IconTooltip>
       </>
     );

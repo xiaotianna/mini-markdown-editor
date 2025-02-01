@@ -5,13 +5,14 @@ import Toolbar from "@/components/Toolbar";
 import Editor from "@/components/Editor";
 import Preview from "@/components/Preview";
 import Status from "@/components/Status";
-import { Row, Col } from "antd";
+import { Row, Col, ConfigProvider as AntdConfigProvider, theme as AntdTheme } from "antd";
 import { ToolbarProvider } from "@/components/providers/toolbar-provider";
 import { ConfigProvider } from "@/components/providers/config-provider";
 import { HotkeysProvider } from "@/components/providers/hotkeys-provider";
 import { GlobalConfig } from "./types/global-config";
 import { useToolbarStore } from "./store/toolbar";
 import { useInitSyncScrollStatus } from "./hooks/use-init-sync-scroll-status";
+import GlobalTheme from "./theme/global-theme";
 
 const Container = styled.div`
   width: 100%;
@@ -19,10 +20,12 @@ const Container = styled.div`
   max-width: 1200px;
   min-height: 500px;
   height: 100%;
-  border: 1px solid #e6e6e6;
+  /* border: 1px solid #e6e6e6; */
+  border: 1px solid ${(props) => props.theme.borderColor};
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  /* background-color: #fff; */
+  background-color: ${(props) => props.theme.background};
   &.md-editor-fullscreen {
     position: fixed !important;
     top: 0;
@@ -51,17 +54,20 @@ const StyledRow = styled(Row)`
     height: 100%;
     overflow-y: auto;
     &::-webkit-scrollbar-thumb {
-      background-color: #d9d9d9;
+      /* background-color: #d9d9d9; */
+      background-color: ${(props) => props.theme.scrollbarThumbBgColor};
       border-radius: 3px;
     }
     &::-webkit-scrollbar-track {
-      background-color: #f5f5f5;
+      /* background-color: #f5f5f5; */
+      background-color: ${(props) => props.theme.scrollbarTrackBgColor};
     }
   }
 `;
 
 const Divider = styled.div`
-  background-color: #e6e6e6;
+  /* background-color: #e6e6e6; */
+  background-color: ${(props) => props.theme.borderColor};
   display: inline-block;
   height: 100%;
   width: 1px;
@@ -130,7 +136,7 @@ const RenderRow: FC<{
         return (
           <Fragment key={`col-${index}`}>
             <Col span={span}>{components[layout.components[index] as keyof typeof components]}</Col>
-            {showDivider && (
+            {showDivider && offset !== 100 && (
               <Divider style={{ left: `${offset}%`, transform: `translate(-${offset}%, -50%)` }} />
             )}
           </Fragment>
@@ -147,29 +153,36 @@ const EditorWrapper: FC<GlobalConfig> = (config) => {
   const { isSyncScroll, updateSyncScrollStatus } = useInitSyncScrollStatus();
 
   return (
-    <Container className={`md-editor ${isFullScreen && "md-editor-fullscreen"}`}>
-      <ConfigProvider config={config}>
-        <HotkeysProvider>
-          <ToolbarProvider>
-            {/* 工具栏 */}
-            <Toolbar />
-          </ToolbarProvider>
-          {/* 内容区域 */}
-          <ContentWrapper>
-            <StyledRow>
-              <RenderRow
-                editor={<Editor isSyncScroll={isSyncScroll} />}
-                preview={<Preview content={deferredContent} isSyncScroll={isSyncScroll} />}
-              />
-            </StyledRow>
-          </ContentWrapper>
-        </HotkeysProvider>
-        {/* 底部状态栏 */}
-        {config.status ? (
-          <Status isSyncScroll={isSyncScroll} updateSyncScrollStatus={updateSyncScrollStatus} />
-        ) : null}
-      </ConfigProvider>
-    </Container>
+    <GlobalTheme theme={config.theme}>
+      <Container className={`md-editor ${isFullScreen && "md-editor-fullscreen"}`}>
+        <ConfigProvider config={config}>
+          {/* antd 主题样式 */}
+          <AntdConfigProvider
+            theme={{ algorithm: config.theme === "light" ? undefined : AntdTheme.darkAlgorithm }}
+          >
+            <HotkeysProvider>
+              <ToolbarProvider>
+                {/* 工具栏 */}
+                <Toolbar />
+              </ToolbarProvider>
+              {/* 内容区域 */}
+              <ContentWrapper>
+                <StyledRow>
+                  <RenderRow
+                    editor={<Editor isSyncScroll={isSyncScroll} />}
+                    preview={<Preview content={deferredContent} isSyncScroll={isSyncScroll} />}
+                  />
+                </StyledRow>
+              </ContentWrapper>
+            </HotkeysProvider>
+            {/* 底部状态栏 */}
+            {config.status ? (
+              <Status isSyncScroll={isSyncScroll} updateSyncScrollStatus={updateSyncScrollStatus} />
+            ) : null}
+          </AntdConfigProvider>
+        </ConfigProvider>
+      </Container>
+    </GlobalTheme>
   );
 };
 
