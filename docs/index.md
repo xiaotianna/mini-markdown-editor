@@ -3,7 +3,8 @@ layout: home
 
 hero:
   name: Mini Markdown Editor
-  tagline: 轻量级、高性能 markdown 编辑器
+  text: 轻量级、高性能 markdown 编辑器
+  tagline: 「前端」字节青训营项目
   actions:
     - theme: brand
       text: 快速开始

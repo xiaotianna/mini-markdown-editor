@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useRef, useCallback, useContext } from "react";
 import { parseMarkdown, transformHtml } from "@mini-markdown/ast-parser";
-import "highlight.js/styles/atom-one-dark.css";
 import styled from "styled-components";
 import { useEditorContentStore } from "@/store/editor";
 import { handlePreviewScroll } from "@/utils/handle-scroll";
