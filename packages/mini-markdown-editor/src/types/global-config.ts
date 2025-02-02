@@ -1,3 +1,4 @@
+import { ViewUpdate } from "@uiw/react-codemirror";
 import { ToolbarType } from "./toolbar";
 
 export interface GlobalConfig {
@@ -18,20 +19,15 @@ export interface GlobalConfig {
    */
   theme?: "light" | "dark";
   /**
-   * 代码块主题
-   * @type {"default" | "atom" | "github"}
-   */
-  codeTheme?: "default" | "atom" | "github";
-  /**
    * 是否开启本地存储
    * @type {boolean}
    */
   local?: boolean; // 是否开启本地存储
   /**
    * 改变编辑器内容时触发
-   * @type {(value: string) => void}
+   * @type {(value: string, editorView: ViewUpdate) => void}
    */
-  onChange?: (value: string) => void;
+  onChange?: (value: string, editorView: ViewUpdate) => void;
   /**
    * 上传图片时触发
    * @type {(file: File, callback: Callback) => void}

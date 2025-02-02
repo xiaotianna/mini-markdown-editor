@@ -86,6 +86,8 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
     setEditorViewInstance(view);
   };
 
+  const { onChange } = useContext(ConfigContext);
+
   const handleChange = (val: string, editView: ViewUpdate) => {
     // 更新store
     setContent(val);
@@ -93,6 +95,10 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
     saveContent(val);
     // 更新编辑器实例
     setEditorViewInstance(editView.view);
+    // 将事件暴露给外部
+    if (onChange) {
+      onChange(val, editView);
+    }
   };
 
   const eventExt = events.scroll({
