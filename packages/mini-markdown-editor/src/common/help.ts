@@ -11,8 +11,14 @@ import Ol from "@/assets/images/ol.svg?raw";
 import InlineCode from "@/assets/images/inlinecode.svg?raw";
 import Code from "@/assets/images/code.svg?raw";
 import Link from "@/assets/images/link.svg?raw";
+import TableIcon from "@/assets/images/table.svg?raw";
+import Undo from "@/assets/images/undo.svg?raw";
+import Redo from "@/assets/images/redo.svg?raw";
 import Image from "@/assets/images/image.svg?raw";
 import ThematicBreak from "@/assets/images/thematic-break.svg?raw";
+import FullScreenIcon from "@/assets/images/fullscreen.svg?raw";
+
+import { Hotkey } from "./hotkeys";
 
 // markdown语法规则
 export const grammar = [
@@ -31,6 +37,21 @@ export const grammar = [
     icon: Heading3,
     rule: "### heading",
   },
+  // {
+  //   title: "四级标题",
+  //   icon: Heading4,
+  //   rule: "#### heading",
+  // },
+  // {
+  //   title: "五级标题",
+  //   icon: Heading5,
+  //   rule: "##### heading",
+  // },
+  // {
+  //   title: "六级标题",
+  //   icon: Heading6,
+  //   rule: "###### heading",
+  // },
   {
     title: "加粗",
     icon: Bold,
@@ -93,28 +114,81 @@ export const grammar = [
   },
 ];
 
-const isMac = /Mac/.test(navigator.userAgent);
-
 // 快捷键
 export const shortcuts = [
   {
     title: "加粗",
     icon: Bold,
-    rule: isMac ? "Cmd + B" : "Ctrl + B",
+    rule: Hotkey.BOLD.helpCommand,
   },
   {
     title: "斜体",
     icon: Italic,
-    rule: isMac ? "Cmd + I" : "Ctrl + I",
+    rule: Hotkey.ITALIC.helpCommand,
   },
   {
     title: "下划线",
     icon: Underline,
-    rule: isMac ? "Cmd + U" : "Ctrl + U",
+    rule: Hotkey.UNDERLINE.helpCommand,
   },
   {
     title: "删除线",
     icon: Delete,
-    rule: isMac ? "Cmd + D" : "Ctrl + D",
+    rule: Hotkey.DELETE.helpCommand,
+  },
+  {
+    title: "引用",
+    icon: Blockquote,
+    rule: Hotkey.BLOCKQUOTE.helpCommand,
+  },
+  {
+    title: "无序列表",
+    icon: Ul,
+    rule: Hotkey.UNORDERED_LIST.helpCommand,
+  },
+  {
+    title: "有序列表",
+    icon: Ol,
+    rule: Hotkey.ORDERED_LIST.helpCommand,
+  },
+  {
+    title: "内联代码",
+    icon: InlineCode,
+    rule: Hotkey.INLINE_CODE.helpCommand,
+  },
+  {
+    title: "代码块",
+    icon: Code,
+    rule: Hotkey.CODE_BLOCK.helpCommand,
+  },
+  {
+    title: "链接",
+    icon: Link,
+    rule: Hotkey.LINK.helpCommand,
+  },
+  {
+    title: "表格",
+    icon: TableIcon,
+    rule: Hotkey.TABLE.helpCommand,
+  },
+  {
+    title: "撤销",
+    icon: Undo,
+    rule: Hotkey.UNDO.helpCommand,
+  },
+  {
+    title: "重做",
+    icon: Redo,
+    rule: Hotkey.REDO.helpCommand,
+  },
+  {
+    title: "全屏",
+    icon: FullScreenIcon,
+    rule: Hotkey.FULL_SCREEN.helpCommand,
+  },
+  {
+    title: "保存",
+    icon: "",
+    rule: Hotkey.SAVE.helpCommand,
   },
 ];

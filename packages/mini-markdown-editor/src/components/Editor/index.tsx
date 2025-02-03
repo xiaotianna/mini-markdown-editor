@@ -1,16 +1,13 @@
 import { FC, useCallback, useContext, useEffect, useMemo, useRef } from "react";
 import styled from "styled-components";
 import CodeMirror, { type EditorView, ViewUpdate } from "@uiw/react-codemirror";
-import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
-import { languages } from "@codemirror/language-data";
 import * as events from "@uiw/codemirror-extensions-events";
-import { history } from "@codemirror/commands";
 import { useEditorContentStore } from "@/store/editor";
 import { handleEditorScroll } from "@/utils/handle-scroll";
-import { useEditorShortcuts } from "@/hooks/use-editor-shortcuts";
-import { HotkeysContext } from "../providers/hotkeys-provider";
+// import { useEditorShortcuts } from "@/hooks/use-editor-shortcuts";
 import { usePersistEditorContent } from "@/hooks/use-persist-editor-content";
 import { ConfigContext } from "../providers/config-provider";
+import { createEditorExtensions } from "@/extensions/codemirror";
 
 const ScrollWrapper = styled.div`
   width: 100%;
@@ -62,7 +59,7 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
     [editorViewRef],
   );
   // 监听快捷键
-  useEditorShortcuts();
+  // useEditorShortcuts();
   // 持久化存储内容
   const { saveContent, getContent } = usePersistEditorContent();
 
@@ -114,16 +111,10 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
     setScrollWrapper("editor");
   };
 
-  const { createKeymapExtension } = useContext(HotkeysContext);
-  // 创建扩展数组
+  // 创建编辑器扩展
   const extensions = useMemo(
-    () => [
-      markdown({ base: markdownLanguage, codeLanguages: languages }),
-      scrollWrapper === "editor" ? eventExt : [],
-      createKeymapExtension!(),
-      history(),
-    ],
-    [scrollWrapper, createKeymapExtension],
+    () => createEditorExtensions({ scrollWrapper, eventExt }),
+    [scrollWrapper],
   );
 
   const { theme } = useContext(ConfigContext);
@@ -143,7 +134,7 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
           highlightActiveLineGutter: false,
           searchKeymap: false,
           autocompletion: false,
-          defaultKeymap: false,
+          defaultKeymap: true,
         }}
         autoFocus={true}
         style={{ height: "100%" }}

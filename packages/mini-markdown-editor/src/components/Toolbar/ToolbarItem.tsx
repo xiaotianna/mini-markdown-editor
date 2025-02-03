@@ -40,11 +40,18 @@ const ToolbarItemWrapper = styled.div`
   }
 `;
 
-const ToolbarItemRender: FC<ToolbarItemType> = ({ list, title, icon, onClick, component }) => {
+const ToolbarItemRender: FC<ToolbarItemType> = ({
+  list,
+  title,
+  description,
+  icon,
+  onClick,
+  component,
+}) => {
   if (list && list.length > 0) {
     return (
       <>
-        <IconTooltip content={title}>
+        <IconTooltip content={title} description={description}>
           <DropDownMenu list={list}>
             {/* <img src={icon} alt={title} /> */}
             {icon && <div className="icon" dangerouslySetInnerHTML={{ __html: icon }}></div>}
@@ -57,7 +64,7 @@ const ToolbarItemRender: FC<ToolbarItemType> = ({ list, title, icon, onClick, co
   } else {
     return (
       <>
-        <IconTooltip content={title} onClick={onClick}>
+        <IconTooltip content={title} description={description} onClick={onClick}>
           {/* <img src={icon} alt={title} /> */}
           {icon && <div className="icon" dangerouslySetInnerHTML={{ __html: icon }}></div>}
         </IconTooltip>

@@ -4,12 +4,12 @@ type Description = string;
 export class Hotkey {
   // Tools
   static readonly TITLE = {
-    FIRST: new Hotkey("mod+1", "heaing-1"),
-    SECOND: new Hotkey("mod+2", "heaing-2"),
-    THIRD: new Hotkey("mod+3", "heaing-3"),
-    FOURTH: new Hotkey("mod+4", "heaing-4"),
-    FIFTH: new Hotkey("mod+5", "heaing-5"),
-    SIXTH: new Hotkey("mod+6", "heaing-6"),
+    FIRST: new Hotkey("mod+1", "heading-1"),
+    SECOND: new Hotkey("mod+2", "heading-2"),
+    THIRD: new Hotkey("mod+3", "heading-3"),
+    FOURTH: new Hotkey("mod+4", "heading-4"),
+    FIFTH: new Hotkey("mod+5", "heading-5"),
+    SIXTH: new Hotkey("mod+6", "heading-6"),
   } as const;
   static readonly BOLD = new Hotkey("mod+b", "bold"); // **text**
   static readonly ITALIC = new Hotkey("mod+i", "italic"); // _text_
@@ -22,7 +22,9 @@ export class Hotkey {
   static readonly CODE_BLOCK = new Hotkey("mod+alt+c", "code"); // ```code```
   static readonly LINK = new Hotkey("mod+k", "link"); // [text](url)
   static readonly TABLE = new Hotkey("mod+alt+t", "table"); // table
-  //? undo和redo在此不定义，此快捷键在文本框自带
+  //! 为避免冲突，此处使用cm的history插件，不手动实现undo和redo功能
+  static readonly UNDO = new Hotkey("mod+z", "undo"); // undo
+  static readonly REDO = new Hotkey("mod+shift+z", "redo"); // redo
   static readonly FULL_SCREEN = new Hotkey("mod+alt+f", "fullscreen"); // fullscreen
 
   // Actions
@@ -31,6 +33,7 @@ export class Hotkey {
   private constructor(
     public readonly command: Command,
     public readonly description: Description,
+    public readonly handle?: void | (() => void),
   ) {
     Hotkey.validateCommand(command);
   }
@@ -43,18 +46,29 @@ export class Hotkey {
     return /Mac|iPod|iPhone|iPad/.test(navigator.userAgent);
   })();
 
+  // 调整为 CodeMirror 支持的快捷键形式
+  get codeMirrorCommand(): string {
+    return this.command
+      .split("+")
+      .map((key) => {
+        if (key === "mod") return "Mod";
+        if (key === "shift") return "Shift";
+        if (key === "alt") return "Alt";
+        if (key === "ctrl") return "Ctrl";
+        return key.charAt(0).toLowerCase() + key.slice(1);
+      })
+      .join("-");
+  }
+
   // 键值映射表
   private static readonly KEY_MAPPING = {
     mod: Hotkey.isMac ? "⌘" : "Ctrl",
     shift: "⇧",
     alt: Hotkey.isMac ? "⌥" : "Alt",
     ctrl: Hotkey.isMac ? "⌃" : "Ctrl",
-    equal: "=",
-    minus: "-",
-    plus: "+",
   } as const;
 
-  // 优化后的readableCommand方法
+  // 供工具栏使用的可读性更好的快捷键
   get readableCommand(): string {
     return this.command
       .split("+")
@@ -63,37 +77,22 @@ export class Hotkey {
           Hotkey.KEY_MAPPING[key as keyof typeof Hotkey.KEY_MAPPING] ||
           key.charAt(0).toUpperCase() + key.slice(1),
       )
-      .join(" ");
+      .join(" + ");
   }
-  // 第一版-非常朴素的写法
-  // get readableCommand() {
-  //   const isMac = process.platform === "darwin";
-  //   return this.command
-  //     .replace("mod", isMac ? "⌘" : "Ctrl")
-  //     .split("+")
-  //     .map((value) => {
-  //       if (value === "shift") {
-  //         return "⇧";
-  //       }
-  //       if (value === "alt") {
-  //         return isMac ? "⌥" : "Alt";
-  //       }
-  //       if (value === "ctrl") {
-  //         return isMac ? "⌃" : "Ctrl";
-  //       }
-  //       if (value === "equal") {
-  //         return "=";
-  //       }
-  //       if (value === "minus") {
-  //         return "-";
-  //       }
-  //       if (value === "plus") {
-  //         return "+";
-  //       }
-  //       return value.charAt(0).toUpperCase() + value.slice(1);
-  //     })
-  //     .join(" ");
-  // }
+
+  // 供帮助文档使用的可读性更好的快捷键
+  get helpCommand(): string {
+    return this.command
+      .split("+")
+      .map((key) => {
+        if (key === "mod") return "Mod";
+        if (key === "shift") return "Shift";
+        if (key === "alt") return "Alt";
+        if (key === "ctrl") return "Ctrl";
+        return key.charAt(0).toUpperCase() + key.slice(1);
+      })
+      .join("+");
+  }
 
   // 添加修饰键验证机制
   //! 如果后续添加单键支持要修改这里，否则不生效

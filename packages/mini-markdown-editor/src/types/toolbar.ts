@@ -2,6 +2,7 @@ export interface ToolbarItem {
   type: ToolbarType;
   icon?: string;
   title?: string;
+  description?: string;
   list?: ToolbarItemListItem[];
   disabled?: boolean;
   visible?: boolean;
