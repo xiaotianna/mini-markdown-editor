@@ -4,7 +4,7 @@ import CodeMirror, { type EditorView, ViewUpdate } from "@uiw/react-codemirror";
 import * as events from "@uiw/codemirror-extensions-events";
 import { useEditorContentStore } from "@/store/editor";
 import { handleEditorScroll } from "@/utils/handle-scroll";
-import { useEditorShortcuts } from "@/hooks/use-editor-shortcuts";
+// import { useEditorShortcuts } from "@/hooks/use-editor-shortcuts";
 import { usePersistEditorContent } from "@/hooks/use-persist-editor-content";
 import { ConfigContext } from "../providers/config-provider";
 import { createEditorExtensions } from "@/extensions/codemirror";
@@ -59,7 +59,7 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
     [editorViewRef],
   );
   // 监听快捷键
-  useEditorShortcuts();
+  // useEditorShortcuts();
   // 持久化存储内容
   const { saveContent, getContent } = usePersistEditorContent();
 

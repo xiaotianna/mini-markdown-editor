@@ -22,7 +22,9 @@ export class Hotkey {
   static readonly CODE_BLOCK = new Hotkey("mod+alt+c", "code"); // ```code```
   static readonly LINK = new Hotkey("mod+k", "link"); // [text](url)
   static readonly TABLE = new Hotkey("mod+alt+t", "table"); // table
-  //? undo和redo在此不定义，此快捷键在文本框自带
+  //! 为避免冲突，此处使用cm的history插件，不手动实现undo和redo功能
+  static readonly UNDO = new Hotkey("mod+z", "undo"); // undo
+  static readonly REDO = new Hotkey("mod+shift+z", "redo"); // redo
   static readonly FULL_SCREEN = new Hotkey("mod+alt+f", "fullscreen"); // fullscreen
 
   // Actions
@@ -56,6 +58,20 @@ export class Hotkey {
         return key.charAt(0).toLowerCase() + key.slice(1);
       })
       .join("-");
+  }
+
+  // 实现供展示快捷键的转换
+  get displayCommand(): string {
+    return this.command
+      .split("+")
+      .map((key) => {
+        if (key === "mod") return Hotkey.isMac ? "⌘" : "Ctrl";
+        if (key === "shift") return "⇧";
+        if (key === "alt") return Hotkey.isMac ? "⌥" : "Alt";
+        if (key === "ctrl") return Hotkey.isMac ? "⌃" : "Ctrl";
+        return key.charAt(0).toUpperCase() + key.slice(1);
+      })
+      .join(" + ");
   }
 
   // 键值映射表

@@ -20,6 +20,8 @@ import { ToolbarItem } from "@/types/toolbar";
 import Upload from "@/components/Toolbar/Upload";
 import FullScreen from "@/components/Toolbar/FullScreen";
 import { Contents, Read, Write, Help, Output } from "@/components/Toolbar/ShowLayout";
+// 快捷键描述
+import { Hotkey } from "@/common/hotkeys";
 
 export const toolbar: ToolbarItem[] = [
   {
@@ -63,24 +65,28 @@ export const toolbar: ToolbarItem[] = [
     type: "bold",
     icon: BoldIcon,
     title: "加粗",
+    description: Hotkey.BOLD.displayCommand,
     onClick: () => InsertTextEvent("bold"),
   },
   {
     type: "italic",
     icon: ItalicIcon,
     title: "斜体",
+    description: Hotkey.ITALIC.displayCommand,
     onClick: () => InsertTextEvent("italic"),
   },
   {
     type: "underline",
     icon: UnderlineIcon,
     title: "下划线",
+    description: Hotkey.UNDERLINE.displayCommand,
     onClick: () => InsertTextEvent("underline"),
   },
   {
     type: "delete",
     icon: DeleteIcon,
     title: "删除线",
+    description: Hotkey.DELETE.displayCommand,
     onClick: () => InsertTextEvent("delete"),
   },
   {
@@ -90,36 +96,42 @@ export const toolbar: ToolbarItem[] = [
     type: "blockquote",
     icon: BlockquoteIcon,
     title: "引用",
+    description: Hotkey.BLOCKQUOTE.displayCommand,
     onClick: () => InsertTextEvent("blockquote"),
   },
   {
     type: "ul",
     icon: UlIcon,
     title: "无序列表",
+    description: Hotkey.UNORDERED_LIST.displayCommand,
     onClick: () => InsertTextEvent("ul"),
   },
   {
     type: "ol",
     icon: OlIcon,
     title: "有序列表",
+    description: Hotkey.ORDERED_LIST.displayCommand,
     onClick: () => InsertTextEvent("ol"),
   },
   {
     type: "inlinecode",
     icon: InlineCodeIcon,
     title: "行内代码",
+    description: Hotkey.INLINE_CODE.displayCommand,
     onClick: () => InsertTextEvent("inlinecode"),
   },
   {
     type: "code",
     icon: CodeIcon,
     title: "代码块",
+    description: Hotkey.CODE_BLOCK.displayCommand,
     onClick: () => InsertTextEvent("code"),
   },
   {
     type: "link",
     icon: LinkIcon,
     title: "链接",
+    description: Hotkey.LINK.displayCommand,
     onClick: () => InsertTextEvent("link"),
   },
   {
@@ -142,6 +154,7 @@ export const toolbar: ToolbarItem[] = [
     type: "table",
     icon: TableIcon,
     title: "表格",
+    description: Hotkey.TABLE.displayCommand,
     onClick: () => InsertTextEvent("table"),
   },
   {
@@ -151,12 +164,14 @@ export const toolbar: ToolbarItem[] = [
     type: "undo",
     icon: Undo,
     title: "撤销",
+    description: Hotkey.UNDO.displayCommand,
     onClick: () => UndoEvent(),
   },
   {
     type: "redo",
     icon: Redo,
     title: "重做",
+    description: Hotkey.REDO.displayCommand,
     onClick: () => RedoEvent(),
   },
   {

@@ -31,6 +31,21 @@ export const grammar = [
     icon: Heading3,
     rule: "### heading",
   },
+  // {
+  //   title: "四级标题",
+  //   icon: Heading4,
+  //   rule: "#### heading",
+  // },
+  // {
+  //   title: "五级标题",
+  //   icon: Heading5,
+  //   rule: "##### heading",
+  // },
+  // {
+  //   title: "六级标题",
+  //   icon: Heading6,
+  //   rule: "###### heading",
+  // },
   {
     title: "加粗",
     icon: Bold,
