@@ -60,32 +60,15 @@ export class Hotkey {
       .join("-");
   }
 
-  // 实现供展示快捷键的转换
-  get displayCommand(): string {
-    return this.command
-      .split("+")
-      .map((key) => {
-        if (key === "mod") return Hotkey.isMac ? "⌘" : "Ctrl";
-        if (key === "shift") return "⇧";
-        if (key === "alt") return Hotkey.isMac ? "⌥" : "Alt";
-        if (key === "ctrl") return Hotkey.isMac ? "⌃" : "Ctrl";
-        return key.charAt(0).toUpperCase() + key.slice(1);
-      })
-      .join(" + ");
-  }
-
   // 键值映射表
   private static readonly KEY_MAPPING = {
     mod: Hotkey.isMac ? "⌘" : "Ctrl",
     shift: "⇧",
     alt: Hotkey.isMac ? "⌥" : "Alt",
     ctrl: Hotkey.isMac ? "⌃" : "Ctrl",
-    equal: "=",
-    minus: "-",
-    plus: "+",
   } as const;
 
-  // 优化后的readableCommand方法
+  // 供工具栏使用的可读性更好的快捷键
   get readableCommand(): string {
     return this.command
       .split("+")
@@ -94,37 +77,22 @@ export class Hotkey {
           Hotkey.KEY_MAPPING[key as keyof typeof Hotkey.KEY_MAPPING] ||
           key.charAt(0).toUpperCase() + key.slice(1),
       )
-      .join(" ");
+      .join(" + ");
   }
-  // 第一版-非常朴素的写法
-  // get readableCommand() {
-  //   const isMac = process.platform === "darwin";
-  //   return this.command
-  //     .replace("mod", isMac ? "⌘" : "Ctrl")
-  //     .split("+")
-  //     .map((value) => {
-  //       if (value === "shift") {
-  //         return "⇧";
-  //       }
-  //       if (value === "alt") {
-  //         return isMac ? "⌥" : "Alt";
-  //       }
-  //       if (value === "ctrl") {
-  //         return isMac ? "⌃" : "Ctrl";
-  //       }
-  //       if (value === "equal") {
-  //         return "=";
-  //       }
-  //       if (value === "minus") {
-  //         return "-";
-  //       }
-  //       if (value === "plus") {
-  //         return "+";
-  //       }
-  //       return value.charAt(0).toUpperCase() + value.slice(1);
-  //     })
-  //     .join(" ");
-  // }
+
+  // 供帮助文档使用的可读性更好的快捷键
+  get helpCommand(): string {
+    return this.command
+      .split("+")
+      .map((key) => {
+        if (key === "mod") return "Mod";
+        if (key === "shift") return "Shift";
+        if (key === "alt") return "Alt";
+        if (key === "ctrl") return "Ctrl";
+        return key.charAt(0).toUpperCase() + key.slice(1);
+      })
+      .join("+");
+  }
 
   // 添加修饰键验证机制
   //! 如果后续添加单键支持要修改这里，否则不生效
