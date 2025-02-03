@@ -16,6 +16,7 @@ import Undo from "@/assets/images/undo.svg?raw";
 import Redo from "@/assets/images/redo.svg?raw";
 import Image from "@/assets/images/image.svg?raw";
 import ThematicBreak from "@/assets/images/thematic-break.svg?raw";
+import FullScreenIcon from "@/assets/images/fullscreen.svg?raw";
 
 import { Hotkey } from "./hotkeys";
 
@@ -182,7 +183,7 @@ export const shortcuts = [
   },
   {
     title: "全屏",
-    icon: "",
+    icon: FullScreenIcon,
     rule: Hotkey.FULL_SCREEN.helpCommand,
   },
   {

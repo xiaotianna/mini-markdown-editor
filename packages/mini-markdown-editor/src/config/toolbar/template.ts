@@ -23,35 +23,35 @@ const template: TemplateType = {
   "heading-2": {
     content: `## `,
     selection: {
-      anchor: 0,
+      anchor: 3,
       head: 3,
     },
   },
   "heading-3": {
     content: `### `,
     selection: {
-      anchor: 0,
+      anchor: 4,
       head: 4,
     },
   },
   "heading-4": {
     content: `#### `,
     selection: {
-      anchor: 0,
+      anchor: 5,
       head: 5,
     },
   },
   "heading-5": {
     content: `##### `,
     selection: {
-      anchor: 0,
+      anchor: 6,
       head: 6,
     },
   },
   "heading-6": {
     content: `###### `,
     selection: {
-      anchor: 0,
+      anchor: 7,
       head: 7,
     },
   },
