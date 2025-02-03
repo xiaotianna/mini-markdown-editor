@@ -29,6 +29,7 @@ export const tokenizer = (lines: string[], root: RootTokens) => {
     // html
     htmlContent: "",
     inHtmlBlock: false,
+    htmlBlockTag: "",
   };
   const resetCurrentStatus = () => {
     currentStatus = {
@@ -46,6 +47,7 @@ export const tokenizer = (lines: string[], root: RootTokens) => {
       currentTable: null,
       htmlContent: "",
       inHtmlBlock: false,
+      htmlBlockTag: "",
     };
   };
 
