@@ -4,12 +4,12 @@ type Description = string;
 export class Hotkey {
   // Tools
   static readonly TITLE = {
-    FIRST: new Hotkey("mod+1", "heaing-1"),
-    SECOND: new Hotkey("mod+2", "heaing-2"),
-    THIRD: new Hotkey("mod+3", "heaing-3"),
-    FOURTH: new Hotkey("mod+4", "heaing-4"),
-    FIFTH: new Hotkey("mod+5", "heaing-5"),
-    SIXTH: new Hotkey("mod+6", "heaing-6"),
+    FIRST: new Hotkey("mod+1", "heading-1"),
+    SECOND: new Hotkey("mod+2", "heading-2"),
+    THIRD: new Hotkey("mod+3", "heading-3"),
+    FOURTH: new Hotkey("mod+4", "heading-4"),
+    FIFTH: new Hotkey("mod+5", "heading-5"),
+    SIXTH: new Hotkey("mod+6", "heading-6"),
   } as const;
   static readonly BOLD = new Hotkey("mod+b", "bold"); // **text**
   static readonly ITALIC = new Hotkey("mod+i", "italic"); // _text_
@@ -31,6 +31,7 @@ export class Hotkey {
   private constructor(
     public readonly command: Command,
     public readonly description: Description,
+    public readonly handle?: void | (() => void),
   ) {
     Hotkey.validateCommand(command);
   }
@@ -42,6 +43,20 @@ export class Hotkey {
     }
     return /Mac|iPod|iPhone|iPad/.test(navigator.userAgent);
   })();
+
+  // 调整为 CodeMirror 支持的快捷键形式
+  get codeMirrorCommand(): string {
+    return this.command
+      .split("+")
+      .map((key) => {
+        if (key === "mod") return "Mod";
+        if (key === "shift") return "Shift";
+        if (key === "alt") return "Alt";
+        if (key === "ctrl") return "Ctrl";
+        return key.charAt(0).toLowerCase() + key.slice(1);
+      })
+      .join("-");
+  }
 
   // 键值映射表
   private static readonly KEY_MAPPING = {

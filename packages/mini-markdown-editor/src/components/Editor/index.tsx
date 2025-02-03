@@ -8,9 +8,10 @@ import { history } from "@codemirror/commands";
 import { useEditorContentStore } from "@/store/editor";
 import { handleEditorScroll } from "@/utils/handle-scroll";
 import { useEditorShortcuts } from "@/hooks/use-editor-shortcuts";
-import { HotkeysContext } from "../providers/hotkeys-provider";
+// import { HotkeysContext } from "../providers/hotkeys-provider";
 import { usePersistEditorContent } from "@/hooks/use-persist-editor-content";
 import { ConfigContext } from "../providers/config-provider";
+import { markdownHotkeys } from "@/plugins/markdown-hotkeys";
 
 const ScrollWrapper = styled.div`
   width: 100%;
@@ -114,16 +115,16 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
     setScrollWrapper("editor");
   };
 
-  const { createKeymapExtension } = useContext(HotkeysContext);
-  // 创建扩展数组
+  // const { createKeymapExtension } = useContext(HotkeysContext);
+  // // 创建扩展数组
   const extensions = useMemo(
     () => [
+      markdownHotkeys(),
       markdown({ base: markdownLanguage, codeLanguages: languages }),
       scrollWrapper === "editor" ? eventExt : [],
-      createKeymapExtension!(),
       history(),
     ],
-    [scrollWrapper, createKeymapExtension],
+    [scrollWrapper],
   );
 
   const { theme } = useContext(ConfigContext);
@@ -143,7 +144,7 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
           highlightActiveLineGutter: false,
           searchKeymap: false,
           autocompletion: false,
-          defaultKeymap: false,
+          defaultKeymap: true,
         }}
         autoFocus={true}
         style={{ height: "100%" }}
