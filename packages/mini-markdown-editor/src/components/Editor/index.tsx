@@ -1,17 +1,13 @@
 import { FC, useCallback, useContext, useEffect, useMemo, useRef } from "react";
 import styled from "styled-components";
 import CodeMirror, { type EditorView, ViewUpdate } from "@uiw/react-codemirror";
-import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
-import { languages } from "@codemirror/language-data";
 import * as events from "@uiw/codemirror-extensions-events";
-import { history } from "@codemirror/commands";
 import { useEditorContentStore } from "@/store/editor";
 import { handleEditorScroll } from "@/utils/handle-scroll";
 import { useEditorShortcuts } from "@/hooks/use-editor-shortcuts";
-// import { HotkeysContext } from "../providers/hotkeys-provider";
 import { usePersistEditorContent } from "@/hooks/use-persist-editor-content";
 import { ConfigContext } from "../providers/config-provider";
-import { markdownHotkeys } from "@/plugins/markdown-hotkeys";
+import { createEditorExtensions } from "@/extensions/codemirror";
 
 const ScrollWrapper = styled.div`
   width: 100%;
@@ -115,15 +111,9 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
     setScrollWrapper("editor");
   };
 
-  // const { createKeymapExtension } = useContext(HotkeysContext);
-  // // 创建扩展数组
+  // 创建编辑器扩展
   const extensions = useMemo(
-    () => [
-      markdownHotkeys(),
-      markdown({ base: markdownLanguage, codeLanguages: languages }),
-      scrollWrapper === "editor" ? eventExt : [],
-      history(),
-    ],
+    () => createEditorExtensions({ scrollWrapper, eventExt }),
     [scrollWrapper],
   );
 

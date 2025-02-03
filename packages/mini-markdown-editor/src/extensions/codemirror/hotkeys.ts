@@ -171,7 +171,7 @@ const KEYMAP = {
   },
 };
 
-export function markdownHotkeys(): Extension {
+export function createHotkeysExtension(): Extension {
   return keymap.of([
     ...Object.entries(KEYMAP).map(([key, value]) => ({
       key,
