@@ -91,7 +91,7 @@ export const parseHtml = ({
     }
 
     currentStatus.inHtmlBlock = true;
-    currentStatus.htmlBlockTag = tagName; // 记录最外层的标签名
+    currentStatus.htmlBlockTag = tagName || null; // 记录最外层的标签名
 
     // 添加 data-line 属性
     const dataLineAttr = ` data-line="${index + 1}"`;

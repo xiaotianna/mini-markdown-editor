@@ -48,7 +48,7 @@ export type ParseFnParams = {
     currentTable: Tokens | null;
     htmlContent: string;
     inHtmlBlock: boolean;
-    htmlBlockTag: string;
+    htmlBlockTag: string | null;
   };
   resetCurrentStatus: () => void;
 };
