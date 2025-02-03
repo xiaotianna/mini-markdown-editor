@@ -26,6 +26,9 @@ export const tokenizer = (lines: string[], root: RootTokens) => {
     listStack: [], // 用于存储列表栈
     // table
     currentTable: null,
+    // html
+    htmlContent: "",
+    inHtmlBlock: false,
   };
   const resetCurrentStatus = () => {
     currentStatus = {
@@ -41,6 +44,8 @@ export const tokenizer = (lines: string[], root: RootTokens) => {
       currentIndent: 0,
       listStack: [],
       currentTable: null,
+      htmlContent: "",
+      inHtmlBlock: false,
     };
   };
 

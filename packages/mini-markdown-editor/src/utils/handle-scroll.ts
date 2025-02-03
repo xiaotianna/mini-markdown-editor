@@ -56,7 +56,7 @@ class ScrollSynchronizer {
   private getValidPreviewNodes(previewView: HTMLElement): Element[] {
     return Array.from(previewView.childNodes).filter((node: ChildNode) => {
       const element = node as HTMLElement;
-      return !(element.clientHeight === 0 && node.nodeName === "P");
+      return !((element.clientHeight === 0 && node.nodeName === "P") || node.nodeType === 3);
     }) as Element[];
   }
 
