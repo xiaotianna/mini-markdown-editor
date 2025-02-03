@@ -31,6 +31,8 @@ export const parseHtml = ({
   const htmlBlockStartRegex = /^\s*<([a-zA-Z][a-zA-Z0-9]*)(?![^>]*\/>)[^>]*>/;
   const htmlBlockEndRegex = /<\/([a-zA-Z][a-zA-Z0-9]*)>\s*$/;
   const selfClosingTagRegex = /^\s*<([a-zA-Z][a-zA-Z0-9]*)[^>]*\/>\s*$/;
+  // 添加新的单标签正则
+  const voidElementRegex = /^\s*<([a-zA-Z][a-zA-Z0-9]*)[^>]*>/;
 
   // 如果在HTML块内，优先处理内容
   if (currentStatus.inHtmlBlock) {
@@ -63,14 +65,22 @@ export const parseHtml = ({
   }
 
   // 检查是否是HTML块的开始
-  if (!currentStatus.inHtmlBlock && htmlBlockStartRegex.test(trimmedLine)) {
-    const match = trimmedLine.match(htmlBlockStartRegex);
-    const tagName = match?.[1].toLowerCase();
+  if (
+    !currentStatus.inHtmlBlock &&
+    (htmlBlockStartRegex.test(trimmedLine) || selfClosingTagRegex.test(trimmedLine))
+  ) {
+    // 优先检查是否是单标签
+    const voidMatch = trimmedLine.match(voidElementRegex);
+    const tagName = voidMatch?.[1].toLowerCase();
 
     // 如果是单标签，直接处理并返回
     if (tagName && voidElements.has(tagName)) {
       const dataLineAttr = ` data-line="${index + 1}"`;
-      const content = line.replace(/>/, `${dataLineAttr}>`);
+      // 处理自闭合和非自闭合两种情况
+      const content = selfClosingTagRegex.test(trimmedLine)
+        ? line.replace("/>", `${dataLineAttr} />`)
+        : line.replace(/>/, `${dataLineAttr}>`);
+
       root.children.push({
         type: "html",
         value: content.trim(),
