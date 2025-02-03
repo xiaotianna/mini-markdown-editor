@@ -24,25 +24,39 @@ export const parseHtml = ({
       // 开始标签
       currentStatus.htmlContent = line.replace(/>/, `${dataLineAttr}>`) + "\n";
     }
+    // 检查是否是单行的HTML块
+    const singleLineHtmlMatch = trimmedLine.match(htmlBlockStartRegex);
+    if (singleLineHtmlMatch) {
+      const tagName = singleLineHtmlMatch[1];
+      const endTagRegex = new RegExp(`<\/${tagName}\\s*>$`);
+      if (endTagRegex.test(trimmedLine)) {
+        currentStatus.inHtmlBlock = false;
+        root.children.push({
+          type: "html",
+          value: trimmedLine,
+          position: {
+            start: {
+              line: index + 1,
+              column: 1,
+              offset: currentOffset,
+            },
+            end: {
+              line: index + 1,
+              column: trimmedLine.length + 1,
+              offset: currentOffset + trimmedLine.length,
+            },
+          },
+        });
+        currentStatus.htmlContent = "";
+        return true;
+      }
+    }
     return true;
   }
 
   // 如果在HTML块内
   if (currentStatus.inHtmlBlock) {
-    // 检查并添加 data-line 属性到每一行的开始标签
-    const htmlBlockStartRegex = /^\s*<([a-zA-Z][a-zA-Z0-9]*)(?![^>]*\/>)[^>]*>/;
-    if (htmlBlockStartRegex.test(trimmedLine)) {
-      const dataLineAttr = ` data-line="${index + 1}"`;
-      if (trimmedLine.endsWith("/>")) {
-        // 自闭合标签
-        currentStatus.htmlContent += line.replace("/>", `${dataLineAttr} />`) + "\n";
-      } else {
-        // 开始标签
-        currentStatus.htmlContent += line.replace(/>/, `${dataLineAttr}>`) + "\n";
-      }
-    } else {
-      currentStatus.htmlContent += line + "\n";
-    }
+    currentStatus.htmlContent += line + "\n";
     // 检查是否是HTML块的结束
     if (htmlBlockEndRegex.test(trimmedLine)) {
       currentStatus.inHtmlBlock = false;
