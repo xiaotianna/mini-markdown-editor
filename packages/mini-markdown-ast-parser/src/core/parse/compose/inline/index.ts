@@ -65,14 +65,6 @@ const MARKDOWN_PATTERNS: Record<string, MarkdownPattern> = {
       position: createPosition(match, context),
     }),
   },
-  html: {
-    regex: /<(?<tag>[a-zA-Z0-9]+)(?<attrs>[^>]*)>(?<content>.*?)<\/\1>/g,
-    process: (match, context) => ({
-      type: "html",
-      value: match[0],
-      position: createPosition(match, context),
-    }),
-  },
 };
 
 // 创建位置信息
