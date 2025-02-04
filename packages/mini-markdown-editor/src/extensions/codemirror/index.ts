@@ -22,5 +22,7 @@ export const createEditorExtensions = (options: ExtensionOptions = {}): Extensio
     createMarkdownExtension(),
     createEventExtension({ scrollWrapper, eventExt }),
     history(),
+    //? 自动换行，可以考虑添加配置项
+    EditorView.lineWrapping,
   ];
 };

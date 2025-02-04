@@ -4,5 +4,5 @@ import { GlobalConfig } from "@/types/global-config";
 export const defaultGlobalConfig: GlobalConfig = {
   status: true,
   theme: "light", // 主题
-  local: false, // 是否开启本地存储
+  local: true, // 是否开启本地存储
 };
