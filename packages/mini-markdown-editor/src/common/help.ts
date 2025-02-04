@@ -17,6 +17,7 @@ import Redo from "@/assets/images/redo.svg?raw";
 import Image from "@/assets/images/image.svg?raw";
 import ThematicBreak from "@/assets/images/thematic-break.svg?raw";
 import FullScreenIcon from "@/assets/images/fullscreen.svg?raw";
+import SaveIcon from "@/assets/images/save.svg?raw";
 
 import { Hotkey } from "./hotkeys";
 
@@ -188,7 +189,7 @@ export const shortcuts = [
   },
   {
     title: "保存",
-    icon: "",
+    icon: SaveIcon,
     rule: Hotkey.SAVE.helpCommand,
   },
 ];
