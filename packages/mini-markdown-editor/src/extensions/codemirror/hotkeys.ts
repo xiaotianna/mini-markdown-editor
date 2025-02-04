@@ -6,7 +6,7 @@ import { ToolbarType } from "@/types/toolbar";
 
 // 定义默认快捷键支持
 const KEYMAP = {
-  // Headings
+  // Text
   [Hotkey.TITLE.FIRST.codeMirrorCommand]: {
     run: () => {
       Hotkey.TITLE.FIRST.handle?.();
@@ -55,8 +55,6 @@ const KEYMAP = {
     },
     preventDefault: true,
   },
-
-  // Text
   [Hotkey.BOLD.codeMirrorCommand]: {
     run: () => {
       Hotkey.BOLD.handle?.();
@@ -89,8 +87,6 @@ const KEYMAP = {
     },
     preventDefault: true,
   },
-
-  // Block elements
   [Hotkey.BLOCKQUOTE.codeMirrorCommand]: {
     run: () => {
       Hotkey.BLOCKQUOTE.handle?.();
@@ -115,8 +111,6 @@ const KEYMAP = {
     },
     preventDefault: true,
   },
-
-  // Code
   [Hotkey.INLINE_CODE.codeMirrorCommand]: {
     run: () => {
       Hotkey.INLINE_CODE.handle?.();
@@ -133,8 +127,6 @@ const KEYMAP = {
     },
     preventDefault: true,
   },
-
-  // Other elements
   [Hotkey.LINK.codeMirrorCommand]: {
     run: () => {
       Hotkey.LINK.handle?.();

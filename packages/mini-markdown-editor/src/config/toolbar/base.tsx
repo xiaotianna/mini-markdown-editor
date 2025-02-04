@@ -12,14 +12,15 @@ import CodeIcon from "@/assets/images/code.svg?raw";
 import LinkIcon from "@/assets/images/link.svg?raw";
 import ImageIcon from "@/assets/images/image.svg?raw";
 import TableIcon from "@/assets/images/table.svg?raw";
-import Undo from "@/assets/images/undo.svg?raw";
-import Redo from "@/assets/images/redo.svg?raw";
+import UndoIcon from "@/assets/images/undo.svg?raw";
+import RedoIcon from "@/assets/images/redo.svg?raw";
 import { InsertTextEvent, RedoEvent, UndoEvent } from "./event";
 import { ToolbarItem } from "@/types/toolbar";
 // 组件
 import Upload from "@/components/Toolbar/Upload";
 import FullScreen from "@/components/Toolbar/FullScreen";
 import { Contents, Read, Write, Help, Output } from "@/components/Toolbar/ShowLayout";
+import { Emoji } from "@/components/Toolbar/Emoji";
 // 快捷键描述
 import { Hotkey } from "@/common/hotkeys";
 
@@ -158,18 +159,22 @@ export const toolbar: ToolbarItem[] = [
     onClick: () => InsertTextEvent("table"),
   },
   {
+    type: "emoji",
+    component: <Emoji />,
+  },
+  {
     type: "line",
   },
   {
     type: "undo",
-    icon: Undo,
+    icon: UndoIcon,
     title: "撤销",
     description: Hotkey.UNDO.readableCommand,
     onClick: () => UndoEvent(),
   },
   {
     type: "redo",
-    icon: Redo,
+    icon: RedoIcon,
     title: "重做",
     description: Hotkey.REDO.readableCommand,
     onClick: () => RedoEvent(),

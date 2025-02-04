@@ -28,4 +28,10 @@ export const RedoEvent = () => {
   insertContent.redo();
 };
 
+// Emoji
+export const InsertEmojiEvent = (emoji: any) => {
+  insertContent.insertTextAtCursor(emoji.native);
+  console.log(emoji);
+};
+
 // 导出为PDF

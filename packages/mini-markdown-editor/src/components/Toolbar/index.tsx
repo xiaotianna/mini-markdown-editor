@@ -53,6 +53,7 @@ const Toolbar: FC = () => {
           ),
         )}
       </ToolbarLeft>
+
       <ToolbarRight>
         <CopyCodeButton />
       </ToolbarRight>

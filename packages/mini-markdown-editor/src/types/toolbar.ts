@@ -54,4 +54,5 @@ export type ToolbarType =
   | "preview"
   | "contents"
   | "help"
-  | "output";
+  | "output"
+  | "emoji";

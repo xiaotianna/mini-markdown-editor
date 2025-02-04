@@ -14,6 +14,8 @@
     "@codemirror/commands": "^6.8.0",
     "@codemirror/lang-markdown": "^6.3.2",
     "@codemirror/language-data": "^6.5.1",
+    "@emoji-mart/data": "^1.2.1",
+    "@emoji-mart/react": "^1.1.1",
     "@mini-markdown/material": "workspace:^1.0.0",
     "@uiw/codemirror-extensions-events": "^4.23.7",
     "@uiw/react-codemirror": "^4.23.7",

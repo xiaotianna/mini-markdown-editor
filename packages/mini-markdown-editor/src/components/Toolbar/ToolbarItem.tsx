@@ -51,12 +51,10 @@ const ToolbarItemRender: FC<ToolbarItemType> = ({
   if (list && list.length > 0) {
     return (
       <>
-        <IconTooltip content={title} description={description}>
-          <DropDownMenu list={list}>
-            {/* <img src={icon} alt={title} /> */}
-            {icon && <div className="icon" dangerouslySetInnerHTML={{ __html: icon }}></div>}
-          </DropDownMenu>
-        </IconTooltip>
+        <DropDownMenu list={list}>
+          {/* <img src={icon} alt={title} /> */}
+          {icon && <div className="icon" dangerouslySetInnerHTML={{ __html: icon }}></div>}
+        </DropDownMenu>
       </>
     );
   } else if (component) {

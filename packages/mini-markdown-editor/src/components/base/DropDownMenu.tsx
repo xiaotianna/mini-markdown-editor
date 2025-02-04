@@ -6,11 +6,15 @@ import { render, renderKey } from "@/config/toolbar/base";
 
 interface DropDownMenuProps {
   children: React.ReactNode;
-  list: ToolbarItemListItem[];
+  list?: ToolbarItemListItem[];
+  dropdownRender?: () => React.ReactNode;
 }
 
-export const DropDownMenu = memo(({ children, list }: DropDownMenuProps) => {
+export const DropDownMenu = memo(({ children, list, dropdownRender }: DropDownMenuProps) => {
+  // list
   const items: MenuProps["items"] = useMemo(() => {
+    if (!list) return undefined;
+
     const renderKeys = Object.keys(render) as renderKey[];
     return list.map((item) => {
       return {
@@ -21,14 +25,25 @@ export const DropDownMenu = memo(({ children, list }: DropDownMenuProps) => {
       };
     });
   }, [list]);
-
+  // 处理 list 的点击事件
   const handleMenuClick: MenuProps["onClick"] = (e) => {
+    if (!list) return;
+
     const key = e.key;
-    const item = list.filter((item) => item.title === key)[0];
-    if (item && item.onClick) {
+    const item = list.find((item) => item.title === key);
+    if (item?.onClick) {
       item.onClick();
     }
   };
+
+  // 如果提供了自定义渲染函数（组件）
+  if (dropdownRender) {
+    return (
+      <Dropdown dropdownRender={dropdownRender} placement="bottomLeft">
+        {children}
+      </Dropdown>
+    );
+  }
 
   return (
     <Dropdown
