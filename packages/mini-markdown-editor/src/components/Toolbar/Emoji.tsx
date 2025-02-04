@@ -6,7 +6,7 @@ import { FC, useContext, useMemo } from "react";
 import { InsertEmojiEvent } from "@/config/toolbar/event";
 import { ConfigContext } from "@/components/providers/config-provider";
 
-export const Emoji: FC = () => {
+const Emoji: FC = () => {
   const { theme } = useContext(ConfigContext);
 
   // Emoji 选择器
@@ -31,3 +31,5 @@ export const Emoji: FC = () => {
     </DropDownMenu>
   );
 };
+
+export default Emoji;

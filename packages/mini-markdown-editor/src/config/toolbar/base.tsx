@@ -20,7 +20,7 @@ import { ToolbarItem } from "@/types/toolbar";
 import Upload from "@/components/Toolbar/Upload";
 import FullScreen from "@/components/Toolbar/FullScreen";
 import { Contents, Read, Write, Help, Output } from "@/components/Toolbar/ShowLayout";
-import { Emoji } from "@/components/Toolbar/Emoji";
+import Emoji from "@/components/Toolbar/Emoji";
 // 快捷键描述
 import { Hotkey } from "@/common/hotkeys";
 
