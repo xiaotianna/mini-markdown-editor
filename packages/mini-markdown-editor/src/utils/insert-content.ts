@@ -37,6 +37,7 @@ class InsertContent {
     });
   }
 
+  // 模拟输入
   public insertTextAtCursor(content: string) {
     const view = this.editorView;
     if (!view) return;

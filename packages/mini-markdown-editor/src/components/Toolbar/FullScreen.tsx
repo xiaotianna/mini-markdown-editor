@@ -5,17 +5,16 @@ import { useToolbarStore } from "@/store/toolbar";
 import { Hotkey } from "@/common/hotkeys";
 
 const FullScreen = () => {
-  const isFullScreen = useToolbarStore((state) => state.isFullScreen);
-  const setIsFullScreen = useToolbarStore((state) => state.setIsFullScreen);
+  const { isFullScreen, setIsFullScreen } = useToolbarStore();
 
   return (
     <>
       <IconTooltip
         content={"全屏"}
         description={Hotkey.FULL_SCREEN.readableCommand}
+        placement={isFullScreen ? "bottom" : "top"}
         onClick={() => setIsFullScreen(!isFullScreen)}
       >
-        {/* <img src={isFullScreen ? ExitFullScreenIcon : FullScreenIcon} alt={"全屏"} /> */}
         <div
           className="icon"
           dangerouslySetInnerHTML={{ __html: isFullScreen ? ExitFullScreenIcon : FullScreenIcon }}
