@@ -83,6 +83,7 @@ const ScrollWrapper = styled.div`
     /* color: #3f4a54; */
     color: var(--md-preview-special-color);
     margin: 0.8em 0;
+    font-weight: 700;
   }
 
   .mini-md-h1 {
@@ -132,7 +133,7 @@ const ScrollWrapper = styled.div`
   }
 
   .mini-md-image {
-    max-width: 100%;
+    width: 100%;
     /* border: 1px solid #e6e6e6; */
     border: 1px solid var(--md-preview-border-color);
     border-radius: 3px;
@@ -187,10 +188,32 @@ const ScrollWrapper = styled.div`
   .mini-md-ol {
     margin: 0.6em 0;
     padding-inline-start: 30px;
+    list-style: initial;
+    .mini-md-li {
+      list-style: initial;
+      &::marker {
+        color: #1456f0;
+      }
+    }
   }
 
-  .mini-md-li::marker {
-    color: #1456f0;
+  .mini-md-ul > .mini-md-li {
+    list-style-type: disc;
+  }
+  .mini-md-ul .mini-md-ul > .mini-md-li {
+    list-style-type: circle;
+  }
+  .mini-md-ul .mini-md-ul .mini-md-ul > .mini-md-li {
+    list-style-type: square;
+  }
+  .mini-md-ol > .mini-md-li {
+    list-style-type: decimal;
+  }
+  .mini-md-ol .mini-md-ol > .mini-md-li {
+    list-style-type: lower-alpha;
+  }
+  .mini-md-ol .mini-md-ol .mini-md-ol > .mini-md-li {
+    list-style-type: lower-roman;
   }
 
   .mini-md-code-container {

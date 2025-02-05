@@ -67,7 +67,12 @@ const Status: FC<{ isSyncScroll: boolean; updateSyncScrollStatus: (val: boolean)
     <StatusWrapper>
       <div className="status-left">字数: {contentNum}</div>
       <div className="status-right">
-        <Checkbox className="checkbox" checked={isSyncScroll} onChange={handleSyncScrollChange}>
+        <Checkbox
+          className="checkbox"
+          name="sync-scroll"
+          checked={isSyncScroll}
+          onChange={handleSyncScrollChange}
+        >
           <span className="checkbox-text">同步滚动</span>
         </Checkbox>
         <div className="scroll-top" onClick={handleAreaScrollTop}>

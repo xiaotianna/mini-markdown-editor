@@ -1,12 +1,29 @@
 {
   "name": "@mini-markdown/editor",
-  "private": true,
   "version": "0.0.0",
   "type": "module",
+  "description": "mini-markdown-editor",
+  "keywords": [
+    "markdown",
+    "editor",
+    "markdown-editor",
+    "react",
+    "react-markdown-editor"
+  ],
+  "main": "./dist/mini-markdown-editor.umd.cjs",
+  "module": "./dist/mini-markdown-editor.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/mini-markdown-editor.js",
+      "require": "./dist/mini-markdown-editor.umd.cjs"
+    }
+  },
   "scripts": {
     "build:ast": "pnpm -F @mini-markdown/ast-parser build",
     "dev": "pnpm build:ast && vite",
-    "build": "tsc -b && vite build",
+    "build": "pnpm build:ast && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
@@ -14,21 +31,13 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@codemirror/commands": "^6.8.0",
-    "@codemirror/lang-markdown": "^6.3.2",
-    "@codemirror/language-data": "^6.5.1",
     "@emoji-mart/data": "^1.2.1",
     "@emoji-mart/react": "^1.1.1",
-    "@mini-markdown/material": "workspace:^1.0.0",
-    "@uiw/codemirror-extensions-events": "^4.23.7",
-    "@uiw/react-codemirror": "^4.23.7",
     "ahooks": "^3.8.4",
     "antd": "^5.23.2",
     "emoji-mart": "^5.6.0",
     "highlight.js": "^11.11.1",
     "html2pdf.js": "^0.10.2",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
     "react-hotkeys-hook": "^4.6.1",
     "zustand": "^5.0.3"
   },
@@ -51,6 +60,23 @@
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.18.2",
     "vite": "^6.0.5",
-    "vitest": "^3.0.5"
+    "vite-plugin-dts": "^4.5.0",
+    "vitest": "^3.0.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "@codemirror/commands": "^6.8.0",
+    "@codemirror/lang-markdown": "^6.3.2",
+    "@codemirror/language-data": "^6.5.1",
+    "@uiw/codemirror-extensions-events": "^4.23.7",
+    "@uiw/react-codemirror": "^4.23.7"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "@codemirror/commands": "^6.8.0",
+    "@codemirror/lang-markdown": "^6.3.2",
+    "@codemirror/language-data": "^6.5.1",
+    "@uiw/codemirror-extensions-events": "^4.23.7",
+    "@uiw/react-codemirror": "^4.23.7"
   }
 }
