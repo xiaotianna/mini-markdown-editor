@@ -99,6 +99,12 @@ class ScrollSynchronizer {
     return element.scrollTop >= element.scrollHeight - element.clientHeight;
   }
 
+  // 滚动到顶部
+  private scrollToTop(editorView: EditorView, previewView: HTMLElement): void {
+    editorView.scrollDOM.scrollTop = 0;
+    previewView.scrollTop = 0;
+  }
+
   // 滚动到底部
   private scrollToBottom(targetElement: Element): void {
     const targetScrollTop = targetElement.scrollHeight - targetElement.clientHeight;
@@ -180,16 +186,23 @@ class ScrollSynchronizer {
 
   // 处理编辑器滚动
   public handleEditorScroll(editorView: EditorView, previewView: HTMLElement | null): void {
-    if (!previewView || false) return;
+    if (!previewView) return;
     this.computeHeightMapping({ previewView, editorView });
     this.synchronizeScroll("editor", { editorView, previewView });
   }
 
   // 处理预览区滚动
   public handlePreviewScroll(previewView: HTMLElement | null, editorView: EditorView): void {
-    if (!previewView || false) return;
+    if (!previewView) return;
     this.computeHeightMapping({ previewView, editorView });
     this.synchronizeScroll("preview", { editorView, previewView });
+  }
+
+  // 处理双区域滚动到顶部
+  public handleScrollTop(editorView: EditorView, previewView: HTMLElement | null): void {
+    if (!previewView) return;
+    this.computeHeightMapping({ previewView, editorView });
+    this.scrollToTop(editorView, previewView);
   }
 }
 
@@ -202,4 +215,8 @@ export const handleEditorScroll = ({ editorView, previewView }: InstancesType): 
 
 export const handlePreviewScroll = ({ editorView, previewView }: InstancesType): void => {
   scrollSynchronizer.handlePreviewScroll(previewView, editorView);
+};
+
+export const handleScrollTop = ({ editorView, previewView }: InstancesType): void => {
+  scrollSynchronizer.handleScrollTop(editorView, previewView);
 };

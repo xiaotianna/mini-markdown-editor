@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useEditorContentStore } from "@/store/editor";
 import { Checkbox } from "antd";
 import type { CheckboxProps } from "antd";
+import { handleScrollTop } from "@/utils/handle-scroll";
 
 const StatusWrapper = styled.div`
   width: 100%;
@@ -43,15 +44,23 @@ const Status: FC<{ isSyncScroll: boolean; updateSyncScrollStatus: (val: boolean)
   isSyncScroll,
   updateSyncScrollStatus,
 }) => {
-  const content = useEditorContentStore((state) => state.content);
+  const { content, editorView, previewView } = useEditorContentStore();
 
   const contentNum = useMemo(() => {
     return content.replace(/[\s\n]/g, "").length;
   }, [content]);
 
-  // 状态改变处理函数
+  // 同步滚动状态改变处理函数
   const handleSyncScrollChange: CheckboxProps["onChange"] = (e) => {
     updateSyncScrollStatus(e.target.checked);
+  };
+
+  // 滚动到顶部
+  const handleAreaScrollTop = () => {
+    if (editorView && previewView) {
+      handleScrollTop({ editorView, previewView });
+    }
+    // TODO: 处理同步滚动后的操作
   };
 
   return (
@@ -61,7 +70,9 @@ const Status: FC<{ isSyncScroll: boolean; updateSyncScrollStatus: (val: boolean)
         <Checkbox className="checkbox" checked={isSyncScroll} onChange={handleSyncScrollChange}>
           <span className="checkbox-text">同步滚动</span>
         </Checkbox>
-        <div className="scroll-top">滚动到顶部</div>
+        <div className="scroll-top" onClick={handleAreaScrollTop}>
+          滚动到顶部
+        </div>
       </div>
     </StatusWrapper>
   );
