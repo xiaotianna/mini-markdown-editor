@@ -101,8 +101,14 @@ class ScrollSynchronizer {
 
   // 滚动到顶部
   private scrollToTop(editorView: EditorView, previewView: HTMLElement): void {
-    editorView.scrollDOM.scrollTop = 0;
-    previewView.scrollTop = 0;
+    editorView.scrollDOM.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+    previewView.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }
 
   // 滚动到底部
@@ -199,7 +205,7 @@ class ScrollSynchronizer {
   }
 
   // 处理双区域滚动到顶部
-  public handleScrollTop(editorView: EditorView, previewView: HTMLElement | null): void {
+  public handleScrollTop(editorView: EditorView, previewView: HTMLElement): void {
     if (!previewView) return;
     this.computeHeightMapping({ previewView, editorView });
     this.scrollToTop(editorView, previewView);
