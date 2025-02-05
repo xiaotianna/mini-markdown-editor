@@ -21,6 +21,7 @@
     "@uiw/react-codemirror": "^4.23.7",
     "ahooks": "^3.8.4",
     "antd": "^5.23.2",
+    "emoji-mart": "^5.6.0",
     "highlight.js": "^11.11.1",
     "html2pdf.js": "^0.10.2",
     "react": "^18.3.1",
