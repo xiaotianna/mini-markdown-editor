@@ -14,6 +14,8 @@ class ScrollSynchronizer {
   // 滚动动画的配置参数
   private static readonly SCROLL_ANIMATION_DURATION = 100; // ms
   private static readonly MIN_SCROLL_DISTANCE = 10; // px
+  // 添加底部滚动阈值
+  private static readonly BOTTOM_THRESHOLD = 1; // px
 
   // 计算编辑器和预览区域高度的对应关系
   private computeHeightMapping({ previewView, editorView }: InstancesType): void {
@@ -44,6 +46,13 @@ class ScrollSynchronizer {
     );
     if (!scrollElement || !targetElement) return;
 
+    // 顶部边界检查
+    if (scrollElement.scrollTop <= 0) {
+      targetElement.scrollTop = 0;
+      return;
+    }
+
+    // 底部边界检查
     if (this.isScrolledToBottom(scrollElement)) {
       this.scrollToBottom(targetElement);
       return;
@@ -96,7 +105,10 @@ class ScrollSynchronizer {
 
   // 判断是否滚动到底部
   private isScrolledToBottom(element: Element): boolean {
-    return element.scrollTop >= element.scrollHeight - element.clientHeight;
+    return (
+      element.scrollTop + element.clientHeight + ScrollSynchronizer.BOTTOM_THRESHOLD >=
+      element.scrollHeight
+    );
   }
 
   // 滚动到顶部
@@ -185,7 +197,12 @@ class ScrollSynchronizer {
     }
 
     const ratio = Math.max(0, Math.min(1, (scrollTop - sourceList[index]) / sourceDistance));
-    const targetScrollTop = targetList[index] + targetDistance * ratio;
+    let targetScrollTop = targetList[index] + targetDistance * ratio;
+
+    //* 边界修正
+    if (targetScrollTop < 0) targetScrollTop = 0; // 顶部边界保护
+    const maxScroll = targetList[targetList.length - 1];
+    if (targetScrollTop > maxScroll) targetScrollTop = maxScroll; // 底部边界保护
 
     return { ratio, targetScrollTop };
   }
