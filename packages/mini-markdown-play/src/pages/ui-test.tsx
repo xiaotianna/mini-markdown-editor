@@ -1,43 +1,56 @@
-import CodeMirror from '@uiw/react-codemirror'
-import { markdown, markdownLanguage } from '@codemirror/lang-markdown'
-import { languages } from '@codemirror/language-data'
+import { FC, useState } from "react";
+import styled from "styled-components";
+import { Editor } from "@mini-markdown/editor";
+import type { Callback } from "@mini-markdown/editor";
+import { Button, message } from "antd";
+// 可根据需要引入不同的主题
+import "highlight.js/styles/atom-one-dark.css";
+import { ViewUpdate } from "@mini-markdown/editor";
 
-const code = `## Title
+const AppWrapper = styled.div`
+  width: 100%;
+  height: 95vh;
+  background-color: #fafafa;
+  padding: 50px;
+`;
 
-\`\`\`jsx
-function Demo() {
-  return <div>demo</div>
-}
-\`\`\`
+const App: FC = () => {
+  // 请求测试
+  const handleUpload = async (file: File, callback: Callback) => {
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        console.log("settimeout 上传成功", file);
+        resolve({});
+      }, 1500);
+    });
+    callback({
+      url: "https://www.baidu.com/img/flexible/logo/pc/result@2.png",
+      alt: "alt",
+    });
+    message.success("上传成功");
+  };
 
-\`\`\`bash
-# Not dependent on uiw.
-npm install @codemirror/lang-markdown --save
-npm install @codemirror/language-data --save
-\`\`\`
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const changeTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
 
-[weisit ulr](https://uiwjs.github.io/react-codemirror/)
+  const handleChange = (val: string, view: ViewUpdate) => {
+    console.log(val, view);
+  };
 
-\`\`\`go
-package main
-import "fmt"
-func main() {
-  fmt.Println("Hello, 世界")
-}
-\`\`\`
-`
-
-export default function App() {
   return (
-    <CodeMirror
-      value={code}
-      extensions={[
-        markdown({ base: markdownLanguage, codeLanguages: languages }),
-      ]}
-      basicSetup={{
-        lineNumbers: false,
-        foldGutter: false,
-      }}
-    />
-  )
-}
+    <AppWrapper>
+      <Button onClick={changeTheme}>主题切换{theme}</Button>
+      <Editor
+        status={true}
+        onUpload={handleUpload}
+        local={true}
+        theme={theme}
+        onChange={handleChange}
+      />
+    </AppWrapper>
+  );
+};
+
+export default App;
