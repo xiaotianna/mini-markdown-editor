@@ -46,6 +46,7 @@ const App: FC = () => {
         status={true}
         onUpload={handleUpload}
         local={true}
+        lineNumbers={true}
         theme={theme as "light" | "dark"}
         onChange={handleChange}
       />

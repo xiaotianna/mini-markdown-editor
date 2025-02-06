@@ -4,16 +4,17 @@ import CodeMirror, { type EditorView, ViewUpdate } from "@uiw/react-codemirror";
 import * as events from "@uiw/codemirror-extensions-events";
 import { useEditorContentStore } from "@/store/editor";
 import { handleEditorScroll } from "@/utils/handle-scroll";
-// import { useEditorShortcuts } from "@/hooks/use-editor-shortcuts";
 import { usePersistEditorContent } from "@/hooks/use-persist-editor-content";
 import { ConfigContext } from "../providers/config-provider";
 import { createEditorExtensions } from "@/extensions/codemirror";
 
-const ScrollWrapper = styled.div`
+const ScrollWrapper = styled.div<{
+  $lineNumbers?: boolean;
+}>`
   width: 100%;
   height: 100%;
   overflow: auto;
-  padding: 5px 10px;
+  padding: 5px ${({ $lineNumbers }) => ($lineNumbers ? "0px" : "10px")};
   display: flex;
   flex-direction: column;
 
@@ -58,8 +59,6 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
     },
     [editorViewRef],
   );
-  // 监听快捷键
-  // useEditorShortcuts();
   // 持久化存储内容
   const { saveContent, getContent } = usePersistEditorContent();
 
@@ -117,10 +116,10 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
     [scrollWrapper],
   );
 
-  const { theme } = useContext(ConfigContext);
+  const { theme, lineNumbers } = useContext(ConfigContext);
 
   return (
-    <ScrollWrapper>
+    <ScrollWrapper $lineNumbers={lineNumbers}>
       <CodeMirror
         className="markdown-editor-content"
         onCreateEditor={handleCreate}
@@ -128,7 +127,7 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
         value={content}
         extensions={extensions}
         basicSetup={{
-          lineNumbers: false,
+          lineNumbers: lineNumbers || false,
           foldGutter: false,
           highlightActiveLine: false,
           highlightActiveLineGutter: false,

@@ -24,6 +24,11 @@ export interface GlobalConfig {
    */
   local?: boolean; // 是否开启本地存储
   /**
+   * 编辑区是否显示行号
+   * @type {boolean}
+   */
+  lineNumbers?: boolean;
+  /**
    * 改变编辑器内容时触发
    * @type {(value: string, editorView: ViewUpdate) => void}
    */
@@ -33,6 +38,11 @@ export interface GlobalConfig {
    * @type {(file: File, callback: Callback) => void}
    */
   onUpload?: (file: File, callback: Callback) => void;
+  /**
+   * 拖拽上传图片时触发
+   * @type {(file: File, callback: Callback) => void}
+   */
+  onDragUpload?: (file: File, callback: Callback) => void;
 }
 
 export type Callback = (param: { url: string; alt?: string }) => void;
