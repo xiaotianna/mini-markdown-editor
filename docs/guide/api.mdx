@@ -1,0 +1,240 @@
+# API
+
+## 属性
+
+### toolbar
+
+- 类型：`ToolbarType[] | Record<ToolbarType, boolean>`
+- 默认值：`undefined`
+
+需要渲染的 toolbar，默认全部渲染。你可以随意排序工具栏，通过 `'-'` 分割两个工具栏。
+
+```tsx
+// 配置方法1
+<Editor
+  toolbar={[
+    "heading",
+    "bold",
+    "italic",
+    "-",
+    "undo",
+    "redo"
+  ]}
+/>
+
+// 配置方法2
+<Editor
+  toolbar={{
+    heading: true,
+    bold: true,
+    italic: true,
+    line: true // 分割线
+  }}
+/>
+```
+
+### status
+
+- 类型：`boolean`
+- 默认值：`true`
+
+底部状态栏是否显示，默认显示。
+
+```tsx
+<Editor status={false} />
+```
+
+### theme
+
+- 类型：`"light" | "dark"`
+- 默认值：`"light"`
+
+编辑器主题。
+
+```tsx
+const App = () => {
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const handleChange = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
+  return (
+    <>
+      <button onClick={handleChange}>切换主题</button>
+      <Editor theme={theme} />
+    </>
+  );
+};
+```
+
+### local
+
+- 类型：`boolean`
+- 默认值：`true`
+
+是否开启本地存储，默认开启。
+
+> `localStorage` 存储的 key 为 `markdown-editor-content`
+
+```tsx
+<Editor local={false} />
+```
+
+### lineNumbers
+
+- 类型：`boolean`
+- 默认值：`false`
+
+编辑区是否显示行号，默认不显示。
+
+```tsx
+<Editor lineNumbers={true} />
+```
+
+## 事件
+
+### onChange
+
+- 类型：`(value: string, editorView: ViewUpdate) => void`
+  - value：编辑器内容
+  - editorView：编辑器实例
+
+编辑器内容变化时触发。
+
+```tsx
+<Editor
+  onChange={(value, editorView) => {
+    console.log(value, editorView);
+  }}
+/>
+```
+
+### onSave
+
+- 类型：`(value: string, editorView: ViewUpdate) => void`
+
+保存事件，当点击 `保存按钮` / `按下快捷键` 时触发。
+
+```tsx
+<Editor
+  onSave={(value, editorView) => {
+    // 上传服务器
+    console.log(value, editorView);
+  }}
+/>
+```
+
+### onUpload
+
+- 类型：`(file: File, callback: Callback) => void`
+  - file：`File` 对象
+  - callback：`Callback`
+
+```ts
+type Callback = (param: { url: string; alt?: string }) => void;
+```
+
+上传图片事件，等待上传结果，务必将上传后的 url 作为 callback 入参回传。
+
+```tsx {5,12-15,19}
+import { message } from "antd";
+
+const App: FC = () => {
+  // 请求测试
+  const handleUpload = async (file: File, callback: Callback) => {
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        console.log("settimeout 上传成功", file);
+        resolve({});
+      }, 1500);
+    });
+    callback({
+      url: "https://www.baidu.com/img/flexible/logo/pc/result@2.png",
+      alt: "alt",
+    });
+    message.success("上传成功");
+  };
+
+  return <EditorWrapper onUpload={handleUpload} />;
+};
+```
+
+### onDragUpload
+
+- 类型：`(files: File, callback: Callback) => void`
+
+拖拽上传图片事件（同上）。
+
+## 类型
+
+### EditorView、ViewUpdate
+
+编辑区使用的是 `CodeMirror`，对外暴露了 `EditorView` 和 `ViewUpdate` 两个类型，可供使用。
+
+```ts
+import type { EditorView, ViewUpdate } from "mini-markdown-editor";
+```
+
+### ToolbarType
+
+工具栏类型，用于配置 `toolbar`。
+
+```ts
+type ToolbarType =
+  | "heading"
+  | "heading-1"
+  | "heading-2"
+  | "heading-3"
+  | "heading-4"
+  | "heading-5"
+  | "heading-6"
+  | "bold"
+  | "italic"
+  | "underline"
+  | "delete"
+  | "line"
+  | "blockquote"
+  | "ul"
+  | "ol"
+  | "inlinecode"
+  | "code"
+  | "link"
+  | "image"
+  | "image-link"
+  | "image-upload"
+  | "table"
+  | "undo"
+  | "redo"
+  | "fullscreen"
+  | "write"
+  | "preview"
+  | "contents"
+  | "help"
+  | "output"
+  | "emoji";
+```
+
+**使用：**
+
+```ts
+import type { ToolbarType } from "mini-markdown-editor";
+```
+
+### GlobalConfig
+
+全局配置类型。
+
+```ts
+interface GlobalConfig {
+  toolbar?: ToolbarType[] | Record<ToolbarType, boolean>;
+  status?: boolean;
+  theme?: "light" | "dark";
+  local?: boolean; // 是否开启本地存储
+  lineNumbers?: boolean;
+  onChange?: (value: string, editorView: ViewUpdate) => void;
+  onUpload?: (file: File, callback: Callback) => void;
+  onDragUpload?: (file: File, callback: Callback) => void;
+  onSave?: (value: string, editorView: ViewUpdate) => void;
+}
+
+type Callback = (param: { url: string; alt?: string }) => void;
+```

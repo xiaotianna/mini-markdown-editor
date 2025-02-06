@@ -44,7 +44,7 @@ export interface GlobalConfig {
    */
   onDragUpload?: (file: File, callback: Callback) => void;
   /**
-   * 快捷键保存触发
+   * 保存触发
    * @type {(value: string, editorView: ViewUpdate) => void}
    */
   onSave?: (value: string, editorView: ViewUpdate) => void;

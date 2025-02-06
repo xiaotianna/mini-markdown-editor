@@ -1,5 +1,5 @@
 ---
-layout: home
+pageType: home
 
 hero:
   name: Mini Markdown Editor
@@ -18,9 +18,7 @@ hero:
 
 features:
   - title: 支持React
-    icon:
-      dark: /react_dark.svg
-      light: /react_light.svg
+    icon: 🌍
     details: React版的markdown编辑器
   - title: 轻量级、高性能
     icon: 🚀
@@ -29,22 +27,3 @@ features:
     icon: 📝
     details: 快速上手，API简单易用
 ---
-
-<style>
-:root {
-  --vp-home-hero-image-background-image: linear-gradient(-135deg, #bd34fe 50%, #47caff 50%);
-  --vp-home-hero-image-filter: blur(44px);
-}
-
-@media (min-width: 640px) {
-  :root {
-    --vp-home-hero-image-filter: blur(56px);
-  }
-}
-
-@media (min-width: 960px) {
-  :root {
-    --vp-home-hero-image-filter: blur(68px);
-  }
-}
-</style>
