@@ -3,6 +3,7 @@ import { keymap } from "@codemirror/view";
 import { Hotkey } from "@/common/hotkeys";
 import { InsertTextEvent } from "@/config/toolbar/event";
 import { ToolbarType } from "@/types/toolbar";
+import { useToolbarStore } from "@/store/toolbar";
 
 // 定义默认快捷键支持
 const KEYMAP = {
@@ -148,7 +149,10 @@ const KEYMAP = {
   [Hotkey.FULL_SCREEN.codeMirrorCommand]: {
     run: () => {
       Hotkey.FULL_SCREEN.handle?.();
-      InsertTextEvent(Hotkey.FULL_SCREEN.description as ToolbarType);
+      const currentState = useToolbarStore.getState();
+      useToolbarStore.setState({
+        isFullScreen: !currentState.isFullScreen,
+      });
       return true;
     },
     preventDefault: true,
@@ -156,7 +160,7 @@ const KEYMAP = {
   [Hotkey.SAVE.codeMirrorCommand]: {
     run: () => {
       Hotkey.SAVE.handle?.();
-      InsertTextEvent(Hotkey.SAVE.description as ToolbarType);
+      // TODO: 添加保存事件
       return true;
     },
     preventDefault: true,
