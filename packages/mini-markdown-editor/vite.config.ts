@@ -1,3 +1,6 @@
+/// <reference types="vitest/config" />
+//^与测试用同一配置
+
 import { defineConfig, PluginOption } from "vite";
 import react from "@vitejs/plugin-react";
 import { fileURLToPath } from "node:url";
@@ -61,6 +64,17 @@ export default defineConfig(({ mode }) => {
             "highlight.js": "hljs",
           },
         },
+      },
+    },
+
+    //测试
+    test: {
+      environment: "jsdom",
+      globals: true,
+      setupFiles: "./src/test/setup.ts",
+      include: ["src/**/*.{test,spec}.{js,ts,jsx,tsx}"],
+      coverage: {
+        include: ["src/components/**", "src/hooks/**", "src/utils/**", "src/store/**"],
       },
     },
   };
