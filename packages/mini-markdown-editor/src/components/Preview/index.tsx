@@ -61,13 +61,13 @@ const Preview: FC<{ content: string; isSyncScroll: boolean }> = ({ content, isSy
       codeHeaders?.forEach((header) => {
         if (header.querySelector(".copy-code-button")) return;
 
-        // 获取对应的代码内容
         const codeElement = header.closest(".mini-md-code-container")?.querySelector("code");
         if (!codeElement) return;
 
         const copyButtonContainer = document.createElement("div");
         copyButtonContainer.className = "copy-code-button-wrapper";
 
+        // TODO: 尝试使用其它方法
         ReactDOM.render(
           <CopyButton content={codeElement.textContent || ""} />,
           copyButtonContainer,

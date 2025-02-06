@@ -1,5 +1,6 @@
 import { FC, useState } from "react";
 import styled from "styled-components";
+import { useDebounceFn } from "ahooks";
 import CopyIcon from "@/assets/images/copy.svg?raw";
 import CopyDoneIcon from "@/assets/images/copy-done.svg?raw";
 
@@ -11,16 +12,25 @@ interface CopyButtonProps {
 export const CopyButton: FC<CopyButtonProps> = ({ content, className = "" }) => {
   const [copied, setCopied] = useState(false);
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(content);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      // TODO: 错误处理
-      console.log(err);
-    }
-  };
+  const { run: handleCopy } = useDebounceFn(
+    async () => {
+      try {
+        await navigator.clipboard.writeText(content);
+        setCopied(true);
+        setTimeout(() => {
+          setCopied(false);
+        }, 2000);
+      } catch (err) {
+        // TODO: 错误处理
+        console.log(err);
+      }
+    },
+    {
+      wait: 300,
+      leading: true,
+      trailing: false,
+    },
+  );
 
   return (
     <StyledButton
