@@ -62,6 +62,7 @@ export default defineConfig(({ mode }) => {
             "@codemirror/language-data": "languageData$1",
             "@codemirror/view": "view",
             "highlight.js": "hljs",
+            nanoid: "nanoid",
           },
         },
       },
