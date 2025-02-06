@@ -1,7 +1,6 @@
 ---
-
 aside: false
-
+layout: page
 ---
 
 # 在线尝试
