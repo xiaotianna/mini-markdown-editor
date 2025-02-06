@@ -137,6 +137,15 @@ const ScrollWrapper = styled.div`
   padding: 10px;
   word-wrap: break-word;
   color: var(--md-preview-color);
+
+  p {
+    line-height: 20px;
+  }
+
+  strong {
+    font-weight: 700;
+  }
+
   .mini-md-h1,
   .mini-md-h2,
   .mini-md-h3,

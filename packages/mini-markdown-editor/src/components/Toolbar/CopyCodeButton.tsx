@@ -14,7 +14,7 @@ export const CopyCodeButton: FC<CopyCodeButtonProps> = ({
   errorMessage = "复制失败",
 }) => {
   // 仅在开发环境下展示
-  if (process.env.NODE_ENV === "production") {
+  if (import.meta.env.PROD) {
     return null;
   }
 
