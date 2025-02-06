@@ -12,6 +12,10 @@ const AppWrapper = styled.div`
   height: 95vh;
   background-color: #fafafa;
   padding: 50px;
+  // 修改默认颜色
+  .mini-md-h1 {
+    color: orange;
+  }
 `;
 
 const App: FC = () => {
