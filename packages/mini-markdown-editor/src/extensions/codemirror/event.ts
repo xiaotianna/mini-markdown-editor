@@ -10,119 +10,118 @@ interface EventOptions {
   }>;
 }
 
-let currentObjectURL: string | null = null;
+// 实例属性
+// 提供销毁方法，同时有效避免全局 Url 的变量污染
+class ImageHandler {
+  private currentObjectURL: string | null = null;
 
-// 处理图片
-const handleImageFile = (file: File, view: EditorView) => {
-  // TODO: 限制图片大小
-  // if (file.size > 5 * 1024 * 1024) {
-  //   console.warn("图片大小不能超过5MB！");
-  //   return;
-  // }
+  handleImageFile(file: File, view: EditorView) {
+    // TODO: 限制图片大小（可以外露）
+    // if (file.size > 5 * 1024 * 1024) {
+    //   console.warn("图片大小不能超过5MB！");
+    //   return;
+    // }
 
-  if (currentObjectURL) {
-    URL.revokeObjectURL(currentObjectURL);
+    if (this.currentObjectURL) {
+      URL.revokeObjectURL(this.currentObjectURL);
+    }
+
+    const imageUrl = URL.createObjectURL(file);
+    this.currentObjectURL = imageUrl;
+    //* 生成随机八位 alt
+    const imageAlt = nanoid(8);
+
+    const selection = view.state.selection.main;
+    const content = `![${imageAlt}](${imageUrl})`;
+
+    view.dispatch({
+      changes: {
+        from: selection.from,
+        to: selection.to,
+        insert: content,
+      },
+    });
   }
 
-  const imageUrl = URL.createObjectURL(file);
-  currentObjectURL = imageUrl;
-  // alt 设置随机八位
-  const imageAlt = nanoid(8);
-
-  // 获取当前选区
-  const selection = view.state.selection.main;
-
-  // 直接在 view 中处理插入
-  const content = `![${imageAlt}](${imageUrl})`;
-
-  // 直接替换当前选区内容
-  view.dispatch({
-    changes: {
-      from: selection.from,
-      to: selection.to,
-      insert: content,
-    },
-  });
-};
+  destroy() {
+    if (this.currentObjectURL) {
+      URL.revokeObjectURL(this.currentObjectURL);
+    }
+  }
+}
 
 // 创建拖拽插件
-const createDropPlugin = () => {
+const createDropPhotoExtension = () => {
   return ViewPlugin.fromClass(
     class {
+      private handler: ImageHandler;
+      private onDragOver: (e: DragEvent) => void;
+      private onDrop: (e: DragEvent) => void;
+      private view: EditorView;
+
       constructor(view: EditorView) {
-        view.dom.addEventListener("dragover", (e: DragEvent) => {
-          e.preventDefault();
-        });
-        view.dom.addEventListener("drop", (e: DragEvent) => {
-          e.preventDefault();
+        this.view = view;
+        this.handler = new ImageHandler();
 
+        this.onDragOver = (e: DragEvent) => e.preventDefault();
+        this.onDrop = (e: DragEvent) => {
+          e.preventDefault();
           const files = e.dataTransfer?.files;
-          if (!files || files.length === 0) return;
+          if (!files?.[0]?.type.startsWith("image/")) return;
 
-          const file = files[0];
-          if (!file.type.startsWith("image/")) {
-            // Only image files are supported
-            console.warn("只支持图片格式的文件");
-            return;
-          }
-          // 处理图片文件
-          handleImageFile(file, view);
-        });
+          this.handler.handleImageFile(files[0], view);
+        };
+
+        this.view.dom.addEventListener("dragover", this.onDragOver);
+        this.view.dom.addEventListener("drop", this.onDrop);
       }
 
       destroy() {
-        if (currentObjectURL) {
-          URL.revokeObjectURL(currentObjectURL);
-          currentObjectURL = null;
-        }
+        // 必须要移除事件监听，如果不移除的话会重复绑定
+        this.view.dom.removeEventListener("dragover", this.onDragOver);
+        this.view.dom.removeEventListener("drop", this.onDrop);
+        this.handler.destroy();
       }
     },
   );
 };
 
 // 创建粘贴插件
-const createPastePlugin = () => {
+const createPastePhotoExtension = () => {
   return ViewPlugin.fromClass(
     class {
+      private handler: ImageHandler;
+      private onPaste: (e: ClipboardEvent) => void;
+      private view: EditorView;
+
       constructor(view: EditorView) {
-        view.dom.addEventListener("paste", (e: ClipboardEvent) => {
+        this.view = view;
+        this.handler = new ImageHandler();
+
+        this.onPaste = (e: ClipboardEvent) => {
           const items = e.clipboardData?.items;
           if (!items) return;
 
-          // 检查是否有图片内容
-          let hasImageContent = false;
           for (const item of items) {
             if (item.type.startsWith("image/")) {
-              hasImageContent = true;
-              break;
-            }
-          }
-
-          // 如果没有图片内容，使用默认粘贴行为
-          if (!hasImageContent) {
-            return;
-          }
-
-          // 阻止默认粘贴行为
-          e.preventDefault();
-
-          for (const item of items) {
-            if (item.type.startsWith("image/")) {
+              e.preventDefault();
               const file = item.getAsFile();
               if (file) {
-                handleImageFile(file, view);
+                this.handler.handleImageFile(file, view);
+                //! 只处理第一个图片
                 break;
               }
             }
           }
-        });
+        };
+
+        this.view.dom.addEventListener("paste", this.onPaste);
       }
 
       destroy() {
-        if (currentObjectURL) {
-          URL.revokeObjectURL(currentObjectURL);
-          currentObjectURL = null;
-        }
+        // 必须要移除事件监听，如果不移除的话会重复绑定
+        this.view.dom.removeEventListener("paste", this.onPaste);
+        this.handler.destroy();
       }
     },
   );
@@ -133,5 +132,7 @@ export const createEventExtension = (eventOptions: EventOptions): any => {
     return [];
   }
 
-  return [eventOptions.eventExt, createDropPlugin(), createPastePlugin()].filter(Boolean);
+  return [eventOptions.eventExt, createDropPhotoExtension(), createPastePhotoExtension()].filter(
+    Boolean,
+  );
 };
