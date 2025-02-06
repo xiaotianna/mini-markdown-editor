@@ -5,6 +5,8 @@ import { useEditorContentStore } from "@/store/editor";
 import { handlePreviewScroll } from "@/utils/handle-scroll";
 import { usePreviewTheme } from "@/hooks/use-preview-theme";
 import { ConfigContext } from "../providers/config-provider";
+import { CopyButton } from "./CopyCodeButton";
+import ReactDOM from "react-dom";
 
 const Preview: FC<{ content: string; isSyncScroll: boolean }> = ({ content, isSyncScroll }) => {
   const { scrollWrapper, setScrollWrapper, setPreviewView, editorView } = useEditorContentStore();
@@ -49,6 +51,44 @@ const Preview: FC<{ content: string; isSyncScroll: boolean }> = ({ content, isSy
   // 设置css变量
   const { theme } = useContext(ConfigContext);
   usePreviewTheme(theme as "light" | "dark");
+
+  // 处理代码块复制按钮
+  useEffect(() => {
+    if (!previewRef.current) return;
+
+    const addCopyButtons = () => {
+      const codeHeaders = previewRef.current?.querySelectorAll(".mini-md-code-right");
+      codeHeaders?.forEach((header) => {
+        if (header.querySelector(".copy-code-button")) return;
+
+        // 获取对应的代码内容
+        const codeElement = header.closest(".mini-md-code-container")?.querySelector("code");
+        if (!codeElement) return;
+
+        const copyButtonContainer = document.createElement("div");
+        copyButtonContainer.className = "copy-code-button-wrapper";
+
+        ReactDOM.render(
+          <CopyButton content={codeElement.textContent || ""} />,
+          copyButtonContainer,
+        );
+
+        header.appendChild(copyButtonContainer);
+      });
+    };
+
+    addCopyButtons();
+    // 移除组件
+    return () => {
+      const copyButtons = previewRef.current?.querySelectorAll(".copy-code-button-wrapper");
+      copyButtons?.forEach((button) => {
+        if (button) {
+          ReactDOM.unmountComponentAtNode(button);
+          button.remove();
+        }
+      });
+    };
+  }, [node]);
 
   return (
     <ScrollWrapper
@@ -263,9 +303,16 @@ const ScrollWrapper = styled.div`
   }
 
   .mini-md-code-right {
-    margin-top: 10px;
-    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
     color: #a9b7c6;
+
+    .copy-code-button-wrapper {
+      margin-left: 5px;
+      display: inline-flex;
+      align-items: center;
+    }
   }
 
   .mini-md-code-container pre {
