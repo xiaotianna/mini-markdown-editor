@@ -20,7 +20,6 @@ export const usePersistEditorContent = () => {
 
   // 获取内容
   const getContent = (): string => {
-    if (!local) return "";
     return localStorage.getItem(EDITOR_CONTENT_KEY) ?? "";
   };
 

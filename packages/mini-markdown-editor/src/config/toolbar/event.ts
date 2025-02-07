@@ -10,7 +10,7 @@ export const InsertTextEvent = (type: ToolbarType) => {
 
 // 上传图片
 export const InsertImageEvent = (url: string, alt: string) => {
-  const content = `![${alt}](${url})`;
+  const content = `![${alt}](${url})\n`;
   const selection = {
     anchor: 2,
     head: 2 + alt.length,

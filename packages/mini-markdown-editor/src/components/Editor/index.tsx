@@ -83,7 +83,8 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
     setEditorViewInstance(view);
   };
 
-  const { enableShortcuts, onChange, onDragUpload, onPatseUpload } = useContext(ConfigContext);
+  const { theme, lineNumbers, enableShortcuts, onChange, onDragUpload, onPatseUpload } =
+    useContext(ConfigContext);
 
   const handleChange = (val: string, editView: ViewUpdate) => {
     // 更新store
@@ -132,8 +133,6 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
       }),
     [scrollWrapper],
   );
-
-  const { theme, lineNumbers } = useContext(ConfigContext);
 
   return (
     <ScrollWrapper $lineNumbers={lineNumbers}>

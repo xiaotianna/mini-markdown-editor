@@ -6,6 +6,7 @@ import { Button, message } from "antd";
 // 可根据需要引入不同的主题
 import "highlight.js/styles/atom-one-dark.css";
 import { ViewUpdate } from "./types/code-mirror";
+import { EditorView } from "@uiw/react-codemirror";
 
 const AppWrapper = styled.div`
   width: 100%;
@@ -43,6 +44,24 @@ const App: FC = () => {
     console.log(val, view);
   };
 
+  const handleSave = (content: string, view: EditorView) => {
+    console.log(content, view);
+  };
+
+  const handlePatseUpload = async (file: File, callback: Callback) => {
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        console.log("settimeout 上传成功", file);
+        resolve({});
+      }, 1500);
+    });
+    callback({
+      url: "https://www.baidu.com/img/flexible/logo/pc/result@2.png",
+      alt: "123",
+    });
+    message.success("上传成功");
+  };
+
   return (
     <AppWrapper>
       <Button onClick={changeTheme}>主题切换{theme}</Button>
@@ -53,6 +72,9 @@ const App: FC = () => {
         lineNumbers={true}
         theme={theme as "light" | "dark"}
         onChange={handleChange}
+        onSave={handleSave}
+        onDragUpload={handlePatseUpload}
+        onPatseUpload={handlePatseUpload}
       />
     </AppWrapper>
   );

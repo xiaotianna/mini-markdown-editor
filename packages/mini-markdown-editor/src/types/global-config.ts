@@ -1,4 +1,4 @@
-import { ViewUpdate } from "@uiw/react-codemirror";
+import { EditorView, ViewUpdate } from "@uiw/react-codemirror";
 import { ToolbarType } from "./toolbar";
 
 export interface GlobalConfig {
@@ -55,9 +55,9 @@ export interface GlobalConfig {
   onPatseUpload?: (file: File, callback: Callback) => void;
   /**
    * 保存触发
-   * @type {(value: string, editorView: ViewUpdate) => void}
+   * @type {(value: string, editorView: EditorView) => void}
    */
-  onSave?: (value: string, editorView: ViewUpdate) => void;
+  onSave?: (value: string, editorView: EditorView) => void;
 }
 
 export type Callback = (param: { url: string; alt?: string }) => void;
