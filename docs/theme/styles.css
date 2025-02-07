@@ -1,0 +1,11 @@
+@media screen and (min-width: 960px) {
+  .rspress-doc-container .list-disc li {
+    font-size: 18px;
+  }
+  .rspress-doc-container .list-decimal li {
+    font-size: 18px;
+  }
+  .rspress-doc-container p {
+    font-size: 18px;
+  }
+}

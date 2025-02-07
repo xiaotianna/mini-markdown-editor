@@ -90,6 +90,17 @@ const App = () => {
 <Editor lineNumbers={true} />
 ```
 
+### enableShortcuts
+
+- 类型：`boolean`
+- 默认值：`true`
+
+是否开启快捷键支持，默认开启。
+
+```tsx
+<Editor enableShortcuts={true} />
+```
+
 ## 事件
 
 ### onChange
@@ -110,7 +121,7 @@ const App = () => {
 
 ### onSave
 
-- 类型：`(value: string, editorView: ViewUpdate) => void`
+- 类型：`(value: string, editorView: EditorView) => void`
 
 保存事件，当点击 `保存按钮` / `按下快捷键` 时触发。
 
@@ -143,7 +154,6 @@ const App: FC = () => {
   const handleUpload = async (file: File, callback: Callback) => {
     await new Promise((resolve) => {
       setTimeout(() => {
-        console.log("settimeout 上传成功", file);
         resolve({});
       }, 1500);
     });
@@ -160,9 +170,21 @@ const App: FC = () => {
 
 ### onDragUpload
 
-- 类型：`(files: File, callback: Callback) => void`
+- 类型：`(file: File, callback: Callback) => void`
+  - file：`File` 对象
+  - callback：`Callback`
 
-拖拽上传图片事件（同上）。
+```ts
+type Callback = (param: { url: string; alt?: string }) => void;
+```
+
+拖拽上传图片时触发，务必将上传后的 url 作为 callback 入参回传。
+
+> callback的alt是可选项，如果没传的话就是nanoid生成的8位随机数字英文。
+
+### onPatseUpload
+
+同 `onDragUpload` 事件。
 
 ## 类型
 
@@ -225,15 +247,62 @@ import type { ToolbarType } from "mini-markdown-editor";
 
 ```ts
 interface GlobalConfig {
+  /**
+   * 需要渲染的 toolbar，默认全部渲染
+   * @type {ToolbarType[]} 需要渲染的 toolbar 数组
+   * @type {Record<ToolbarType, boolean>} 需要渲染的 toolbar 对象，值为 true 时渲染，false 时不渲染
+   */
   toolbar?: ToolbarType[] | Record<ToolbarType, boolean>;
+  /**
+   * 底部状态栏是否显示，默认显示
+   * @type {boolean}
+   */
   status?: boolean;
+  /**
+   * 编辑器主题
+   * @type {"light" | "dark"}
+   */
   theme?: "light" | "dark";
+  /**
+   * 是否开启本地存储
+   * @type {boolean}
+   */
   local?: boolean; // 是否开启本地存储
+  /**
+   * 编辑区是否显示行号
+   * @type {boolean}
+   */
   lineNumbers?: boolean;
+  /**
+   * 是否开启快捷键支持
+   * @type {boolean}
+   */
+  enableShortcuts?: boolean;
+  /**
+   * 改变编辑器内容时触发
+   * @type {(value: string, editorView: ViewUpdate) => void}
+   */
   onChange?: (value: string, editorView: ViewUpdate) => void;
+  /**
+   * 上传图片时触发
+   * @type {(file: File, callback: Callback) => void}
+   */
   onUpload?: (file: File, callback: Callback) => void;
+  /**
+   * 拖拽上传图片时触发
+   * @type {(file: File, callback: Callback) => void}
+   */
   onDragUpload?: (file: File, callback: Callback) => void;
-  onSave?: (value: string, editorView: ViewUpdate) => void;
+  /**
+   * 粘贴上传图片时触发
+   * @type {(file: File, callback: Callback) => void}
+   */
+  onPatseUpload?: (file: File, callback: Callback) => void;
+  /**
+   * 保存触发
+   * @type {(value: string, editorView: EditorView) => void}
+   */
+  onSave?: (value: string, editorView: EditorView) => void;
 }
 
 type Callback = (param: { url: string; alt?: string }) => void;
