@@ -17,6 +17,7 @@
     "build:ast:play": "pnpm -F @mini-markdown/ast-parser build:play",
     "dev:editor": "pnpm -F @mini-markdown/editor dev",
     "build:editor": "pnpm -F @mini-markdown/editor build",
+    "dev:play": "pnpm -F @mini-markdown/play dev",
     "prepare": "husky",
     "lint": "node ./scripts/zx-lint.js",
     "prettier": "prettier --write ."

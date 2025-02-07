@@ -24,7 +24,7 @@ class ImageHandler {
 
     // 插入临时图片用作预览
     const selection = view.state.selection.main;
-    const content = `![${imageAlt}](${temporaryUrl})`;
+    const content = `![${imageAlt}](${temporaryUrl})\n`;
     const insertPos = selection.from;
 
     view.dispatch({
@@ -33,6 +33,10 @@ class ImageHandler {
         to: selection.to,
         insert: content,
       },
+      selection: {
+        anchor: selection.from + content.length,
+        head: selection.from + content.length,
+      },
     });
 
     // 处理上传后的信息
@@ -40,7 +44,7 @@ class ImageHandler {
     //! 可选传递alt参数，作为图片的描述
     const handleCallback: Callback = (param: { url: string; alt?: string }) => {
       try {
-        const newContent = `![${param.alt || imageAlt}](${param.url})`;
+        const newContent = `![${param.alt || imageAlt}](${param.url})\n`;
 
         // 计算需要替换的范围
         const doc = view.state.doc;

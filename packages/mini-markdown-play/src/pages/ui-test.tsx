@@ -39,6 +39,20 @@ const App: FC = () => {
     console.log(val, view);
   };
 
+  const handlePatseUpload = async (file: File, callback: Callback) => {
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        console.log("settimeout 上传成功", file);
+        resolve({});
+      }, 1500);
+    });
+    callback({
+      url: "123",
+      alt: "123",
+    });
+    message.success("上传成功");
+  };
+
   return (
     <AppWrapper>
       <Button onClick={changeTheme}>主题切换{theme}</Button>
@@ -48,6 +62,7 @@ const App: FC = () => {
         local={true}
         theme={theme}
         onChange={handleChange}
+        onPatseUpload={handlePatseUpload}
       />
     </AppWrapper>
   );
