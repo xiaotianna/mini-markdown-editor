@@ -79,7 +79,7 @@ const Divider = styled.div`
 // 布局配置映射
 const LayoutConfig = {
   // 只写模式
-  WRITE_ONLY: { cols: [18, 0, 0], components: ["editor", "preview", "sidebar"] },
+  WRITE_ONLY: { cols: [24, 0, 0], components: ["editor", "preview", "sidebar"] },
   // 仅预览模式
   READ_ONLY: { cols: [0, 18, 0], components: ["editor", "preview", "sidebar"] },
   // 读写模式
