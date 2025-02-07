@@ -83,7 +83,7 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
     setEditorViewInstance(view);
   };
 
-  const { onChange, onDragUpload, onPatseUpload } = useContext(ConfigContext);
+  const { enableShortcuts, onChange, onDragUpload, onPatseUpload } = useContext(ConfigContext);
 
   const handleChange = (val: string, editView: ViewUpdate) => {
     // 更新store
@@ -124,6 +124,7 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
   const extensions = useMemo(
     () =>
       createEditorExtensions({
+        enableShortcuts,
         scrollWrapper,
         eventExt,
         onDragUpload: handleDragUpload,

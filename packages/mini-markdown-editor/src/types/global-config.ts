@@ -29,6 +29,11 @@ export interface GlobalConfig {
    */
   lineNumbers?: boolean;
   /**
+   * 是否开启快捷键支持
+   * @type {boolean}
+   */
+  enableShortcuts?: boolean;
+  /**
    * 改变编辑器内容时触发
    * @type {(value: string, editorView: ViewUpdate) => void}
    */
