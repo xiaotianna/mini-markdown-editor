@@ -3,6 +3,11 @@ import { ToolbarType } from "./toolbar";
 
 export interface GlobalConfig {
   /**
+   * 编辑器内容
+   * @type {string}
+   */
+  initialValue?: string;
+  /**
    * 需要渲染的 toolbar，默认全部渲染
    * @type {ToolbarType[]} 需要渲染的 toolbar 数组
    * @type {Record<ToolbarType, boolean>} 需要渲染的 toolbar 对象，值为 true 时渲染，false 时不渲染

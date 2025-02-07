@@ -1,4 +1,4 @@
-import { FC, Fragment, useDeferredValue } from "react";
+import { FC, forwardRef, Fragment, useDeferredValue } from "react";
 import styled from "styled-components";
 import { useEditorContentStore } from "@/store/editor";
 import Toolbar from "@/components/Toolbar";
@@ -13,6 +13,8 @@ import { GlobalConfig } from "./types/global-config";
 import { useToolbarStore } from "./store/toolbar";
 import { useInitSyncScrollStatus } from "./hooks/use-init-sync-scroll-status";
 import GlobalTheme from "./theme/global-theme";
+import { EditorRef } from "./types/ref";
+import { useExposeHandle } from "./hooks/use-expose-handle";
 
 const Container = styled.div`
   width: 100%;
@@ -146,11 +148,14 @@ const RenderRow: FC<{
   );
 };
 
-const EditorWrapper: FC<GlobalConfig> = (config) => {
+const EditorWrapper = forwardRef<EditorRef, GlobalConfig>((config, ref) => {
   const content = useEditorContentStore((state) => state.content);
   const deferredContent = useDeferredValue(content);
   const isFullScreen = useToolbarStore((state) => state.isFullScreen);
   const { isSyncScroll, updateSyncScrollStatus } = useInitSyncScrollStatus();
+
+  // 外部ref使用的方法
+  useExposeHandle(ref);
 
   return (
     <GlobalTheme theme={config.theme}>
@@ -184,6 +189,6 @@ const EditorWrapper: FC<GlobalConfig> = (config) => {
       </Container>
     </GlobalTheme>
   );
-};
+});
 
 export default EditorWrapper;

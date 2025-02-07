@@ -1,7 +1,6 @@
 /**
  * 该文件用作打包时的入口文件
  */
-
 import Editor from "./EditorWrapper";
 // 导出组件
 export { Editor };
@@ -10,3 +9,4 @@ export { Editor };
 export * from "@/types/code-mirror";
 export * from "@/types/global-config";
 export * from "@/types/toolbar";
+export * from "@/types/ref";

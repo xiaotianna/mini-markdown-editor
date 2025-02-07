@@ -1,24 +1,15 @@
-import { FC, useEffect, useRef, useState } from "react";
-import styled from "styled-components";
-import EditorWrapper from "./EditorWrapper";
-import { Callback } from "./types/global-config";
+import React, { FC, useEffect, useRef, useState } from "react";
+import { Editor } from "@mini-markdown/editor";
+import type { Callback, EditorRef } from "@mini-markdown/editor";
 import { Button, message } from "antd";
 // 可根据需要引入不同的主题
 import "highlight.js/styles/atom-one-dark.css";
-// import { ViewUpdate } from "./types/code-mirror";
-import { EditorView } from "@uiw/react-codemirror";
-import { EditorRef } from "./types/ref";
+import { ViewUpdate } from "@mini-markdown/editor";
 
-const AppWrapper = styled.div`
-  width: 100%;
-  height: 95vh;
-  background-color: #fafafa;
-  padding: 50px;
-  // 修改默认颜色
-  .mini-md-h1 {
-    color: orange;
-  }
-`;
+export const frontmatter = {
+  // 声明布局类型
+  pageType: "page",
+};
 
 const App: FC = () => {
   // 请求测试
@@ -36,17 +27,13 @@ const App: FC = () => {
     message.success("上传成功");
   };
 
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState<"light" | "dark">("light");
   const changeTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
 
-  // const handleChange = (val: string, view: ViewUpdate) => {
-  //   // console.log(val, view);
-  // };
-
-  const handleSave = (content: string, view: EditorView) => {
-    console.log(content, view);
+  const handleChange = (val: string, view: ViewUpdate) => {
+    console.log(val, view);
   };
 
   const handlePatseUpload = async (file: File, callback: Callback) => {
@@ -72,7 +59,7 @@ const App: FC = () => {
   }, []);
 
   return (
-    <AppWrapper>
+    <>
       <Button onClick={changeTheme}>主题切换{theme}</Button>
       <Button
         onClick={() => {
@@ -142,19 +129,21 @@ const App: FC = () => {
       >
         获取预览区实例
       </Button>
-      <EditorWrapper
+      <Editor
         status={true}
         onUpload={handleUpload}
         local={true}
-        lineNumbers={true}
-        theme={theme as "light" | "dark"}
-        // onChange={handleChange}
-        onSave={handleSave}
+        theme={theme}
+        onChange={handleChange}
+        enableShortcuts={true}
         onDragUpload={handlePatseUpload}
         onPatseUpload={handlePatseUpload}
         ref={editorRef}
+        initialValue={
+          "# 标题\n## 二级标题\n### 三级标题\n#### 四级标题\n##### 五级标题\n###### 六级标题\n"
+        }
       />
-    </AppWrapper>
+    </>
   );
 };
 
