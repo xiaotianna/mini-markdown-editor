@@ -47,7 +47,7 @@ const App: FC = () => {
       }, 1500);
     });
     callback({
-      url: "123",
+      url: "https://www.baidu.com/img/flexible/logo/pc/result@2.png",
       alt: "123",
     });
     message.success("上传成功");
@@ -62,6 +62,8 @@ const App: FC = () => {
         local={true}
         theme={theme}
         onChange={handleChange}
+        enableShortcuts={true}
+        onDragUpload={handlePatseUpload}
         onPatseUpload={handlePatseUpload}
       />
     </AppWrapper>
