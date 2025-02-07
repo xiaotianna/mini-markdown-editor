@@ -44,6 +44,11 @@ export interface GlobalConfig {
    */
   onDragUpload?: (file: File, callback: Callback) => void;
   /**
+   * 粘贴上传图片时触发
+   * @type {(file: File, callback: Callback) => void}
+   */
+  onPatseUpload?: (file: File, callback: Callback) => void;
+  /**
    * 保存触发
    * @type {(value: string, editorView: ViewUpdate) => void}
    */

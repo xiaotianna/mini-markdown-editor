@@ -7,6 +7,7 @@ import { handleEditorScroll } from "@/utils/handle-scroll";
 import { usePersistEditorContent } from "@/hooks/use-persist-editor-content";
 import { ConfigContext } from "../providers/config-provider";
 import { createEditorExtensions } from "@/extensions/codemirror";
+import { Callback } from "@/types/global-config";
 
 const ScrollWrapper = styled.div<{
   $lineNumbers?: boolean;
@@ -82,7 +83,7 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
     setEditorViewInstance(view);
   };
 
-  const { onChange } = useContext(ConfigContext);
+  const { onChange, onDragUpload, onPatseUpload } = useContext(ConfigContext);
 
   const handleChange = (val: string, editView: ViewUpdate) => {
     // 更新store
@@ -110,9 +111,24 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
     setScrollWrapper("editor");
   };
 
+  // 拖拽上传
+  const handleDragUpload = (file: File, Callback: Callback) => {
+    onDragUpload?.(file, Callback);
+  };
+  // 粘贴上传
+  const handlePatseUpload = (file: File, Callback: Callback) => {
+    onPatseUpload?.(file, Callback);
+  };
+
   // 创建编辑器扩展
   const extensions = useMemo(
-    () => createEditorExtensions({ scrollWrapper, eventExt }),
+    () =>
+      createEditorExtensions({
+        scrollWrapper,
+        eventExt,
+        onDragUpload: handleDragUpload,
+        onPasteUpload: handlePatseUpload,
+      }),
     [scrollWrapper],
   );
 

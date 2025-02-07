@@ -1,38 +1,31 @@
 import { EditorView, ViewPlugin } from "@uiw/react-codemirror";
 import { nanoid } from "nanoid";
-
-interface EventOptions {
-  scrollWrapper: string;
-  eventExt?: ViewPlugin<{
-    dom?: HTMLElement;
-    view: EditorView;
-    destroy(): void;
-  }>;
-}
+import type { EventOptions } from "./event.d";
+import { Callback } from "@/types/global-config";
 
 // 实例属性
 // 提供销毁方法，同时有效避免全局 Url 的变量污染
 class ImageHandler {
   private currentObjectURL: string | null = null;
 
-  handleImageFile(file: File, view: EditorView) {
-    // TODO: 限制图片大小（可以外露）
-    // if (file.size > 5 * 1024 * 1024) {
-    //   console.warn("图片大小不能超过5MB！");
-    //   return;
-    // }
-
+  handleImageFile(
+    file: File,
+    view: EditorView,
+    uploadCallback?: (file: File, callback: Callback) => void,
+  ) {
     if (this.currentObjectURL) {
       URL.revokeObjectURL(this.currentObjectURL);
     }
 
-    const imageUrl = URL.createObjectURL(file);
-    this.currentObjectURL = imageUrl;
-    //* 生成随机八位 alt
+    // 创建临时URL
+    const temporaryUrl = URL.createObjectURL(file);
+    this.currentObjectURL = temporaryUrl;
     const imageAlt = nanoid(8);
 
+    // 插入临时图片用作预览
     const selection = view.state.selection.main;
-    const content = `![${imageAlt}](${imageUrl})`;
+    const content = `![${imageAlt}](${temporaryUrl})`;
+    const insertPos = selection.from;
 
     view.dispatch({
       changes: {
@@ -41,6 +34,40 @@ class ImageHandler {
         insert: content,
       },
     });
+
+    // 处理上传后的信息
+    //! 此回调函数内部提供返回的url，作为新图片的地址
+    //! 可选传递alt参数，作为图片的描述
+    const handleCallback: Callback = (param: { url: string; alt?: string }) => {
+      try {
+        const newContent = `![${param.alt || imageAlt}](${param.url})`;
+
+        // 计算需要替换的范围
+        const doc = view.state.doc;
+        const searchStr = content;
+        const searchPos = doc.slice(insertPos, insertPos + searchStr.length).toString();
+        if (searchPos === searchStr) {
+          view.dispatch({
+            changes: {
+              from: insertPos,
+              to: insertPos + searchStr.length,
+              insert: newContent,
+            },
+          });
+        }
+
+        // 清理临时URL
+        URL.revokeObjectURL(temporaryUrl);
+        this.currentObjectURL = null;
+      } catch (err) {
+        console.error("Failed to replace image URL:", err);
+      }
+    };
+
+    // 执行上传回调
+    if (uploadCallback) {
+      uploadCallback(file, handleCallback);
+    }
   }
 
   destroy() {
@@ -51,7 +78,7 @@ class ImageHandler {
 }
 
 // 创建拖拽插件
-const createDropPhotoExtension = () => {
+const createDropPhotoExtension = (onDragUpload?: EventOptions["onDragUpload"]) => {
   return ViewPlugin.fromClass(
     class {
       private handler: ImageHandler;
@@ -69,7 +96,7 @@ const createDropPhotoExtension = () => {
           const files = e.dataTransfer?.files;
           if (!files?.[0]?.type.startsWith("image/")) return;
 
-          this.handler.handleImageFile(files[0], view);
+          this.handler.handleImageFile(files[0], view, onDragUpload);
         };
 
         this.view.dom.addEventListener("dragover", this.onDragOver);
@@ -87,7 +114,7 @@ const createDropPhotoExtension = () => {
 };
 
 // 创建粘贴插件
-const createPastePhotoExtension = () => {
+const createPastePhotoExtension = (onPasteUpload?: EventOptions["onPasteUpload"]) => {
   return ViewPlugin.fromClass(
     class {
       private handler: ImageHandler;
@@ -107,8 +134,7 @@ const createPastePhotoExtension = () => {
               e.preventDefault();
               const file = item.getAsFile();
               if (file) {
-                this.handler.handleImageFile(file, view);
-                //! 只处理第一个图片
+                this.handler.handleImageFile(file, view, onPasteUpload);
                 break;
               }
             }
@@ -132,7 +158,9 @@ export const createEventExtension = (eventOptions: EventOptions): any => {
     return [];
   }
 
-  return [eventOptions.eventExt, createDropPhotoExtension(), createPastePhotoExtension()].filter(
-    Boolean,
-  );
+  return [
+    eventOptions.eventExt,
+    createDropPhotoExtension(eventOptions.onDragUpload),
+    createPastePhotoExtension(eventOptions.onPasteUpload),
+  ].filter(Boolean);
 };
