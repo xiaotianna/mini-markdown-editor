@@ -1,12 +1,17 @@
 import type { ToolbarItem, ToolbarType } from "@/types/toolbar";
 import { toolbar } from "./base";
 import { produce } from "immer";
+import { BaseClass } from "../base";
 
-class ToolbarConfig {
+class ToolbarConfig extends BaseClass {
   private toolbars: ToolbarItem[];
   private readonly defaultToolbars: ToolbarItem[];
 
   constructor(initialToolbars: ToolbarItem[]) {
+    super({
+      name: "toolbarConfig",
+      maxListeners: 10,
+    });
     this.defaultToolbars = [...initialToolbars];
     this.toolbars = this.initToolbars();
   }
