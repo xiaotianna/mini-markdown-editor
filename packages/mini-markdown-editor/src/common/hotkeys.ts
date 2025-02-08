@@ -33,7 +33,7 @@ export class Hotkey {
   constructor(
     public readonly command: Command,
     public readonly description: Description,
-    public readonly handle?: void | (() => void),
+    public readonly handle?: () => void,
   ) {
     Hotkey.validateCommand(command);
   }

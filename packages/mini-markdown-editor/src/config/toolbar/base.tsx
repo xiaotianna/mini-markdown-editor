@@ -25,7 +25,7 @@ import Save from "@/components/Toolbar/Save";
 // 快捷键描述
 import { Hotkey } from "@/common/hotkeys";
 
-export const toolbar: ToolbarItem[] = [
+export const defaultToolbar: ToolbarItem[] = [
   {
     type: "heading",
     icon: HeadingIcon,

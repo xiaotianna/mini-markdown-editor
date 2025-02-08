@@ -61,7 +61,7 @@ export interface ToolbarItemListItem {
   hotkey?: {
     command: string;
     description: string;
-    handle?: void | (() => void);
+    handle?: () => void;
   };
   onClick?: (...args: any[]) => void | (() => void);
 }
@@ -72,7 +72,7 @@ export interface ToolbarItem extends BaseToolbarItem {
   hotkey?: {
     command: string;
     description: string;
-    handle?: void | (() => void);
+    handle?: () => void;
   };
 }
 

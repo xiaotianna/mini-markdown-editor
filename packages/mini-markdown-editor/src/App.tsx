@@ -80,10 +80,10 @@ const App: FC = () => {
     icon: OlIcon,
     description: "我是描述abc",
     hotkey: {
-      command: "mod+p",
-      description: "Make text bold",
+      command: "Mod-p",
+      description: "控制台输出def",
       handle: () => {
-        // 处理加粗逻辑
+        console.log("我是快捷键输出def");
       },
     },
     onClick: () => {

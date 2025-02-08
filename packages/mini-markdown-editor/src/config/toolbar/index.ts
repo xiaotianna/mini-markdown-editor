@@ -1,5 +1,5 @@
 import type { ToolbarItem, ToolbarType } from "@/types/toolbar";
-import { toolbar } from "./base";
+import { defaultToolbar } from "./base";
 import { produce } from "immer";
 import { BaseClass } from "../base";
 
@@ -85,4 +85,4 @@ class ToolbarConfig extends BaseClass {
   }
 }
 
-export const toolbarConfig = new ToolbarConfig(toolbar);
+export const toolbarConfig = new ToolbarConfig(defaultToolbar);
