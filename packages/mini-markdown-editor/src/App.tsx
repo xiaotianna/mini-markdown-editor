@@ -74,22 +74,28 @@ const App: FC = () => {
   }, []);
 
   // 添加abc工具
-  toolbarConfig.addToolbar({
-    type: "abc",
-    title: "我是测试abc",
-    icon: OlIcon,
-    description: "我是描述abc",
-    hotkey: {
-      command: "Mod-p",
-      description: "控制台输出def",
-      handle: () => {
-        console.log("我是快捷键输出def");
-      },
-    },
-    onClick: () => {
-      console.log("我是输出abc");
-    },
-  });
+  useEffect(() => {
+    try {
+      toolbarConfig.addToolbar({
+        type: "abc",
+        title: "我是测试abc",
+        icon: OlIcon,
+        description: "我是描述abc",
+        hotkey: {
+          command: "Mod-p",
+          description: "控制台输出def",
+          handle: () => {
+            console.log("我是快捷键输出def");
+          },
+        },
+        onClick: () => {
+          console.log("我是输出abc");
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
 
   return (
     <AppWrapper>
