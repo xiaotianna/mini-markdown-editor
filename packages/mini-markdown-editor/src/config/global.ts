@@ -1,7 +1,7 @@
-import { GlobalConfig } from "@/types/global-config";
+import { GlobalContextConfig } from "@/types/global-config";
 
 // 默认配置
-export const defaultGlobalConfig: GlobalConfig = {
+export const defaultGlobalConfig: GlobalContextConfig = {
   status: true, // 底部状态栏
   theme: "light", // 主题
   local: true, // 是否开启本地存储

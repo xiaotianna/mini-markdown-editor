@@ -174,7 +174,7 @@ const EditorWrapper = forwardRef<EditorRef, GlobalConfig>((config, ref) => {
             <ContentWrapper>
               <StyledRow>
                 <RenderRow
-                  editor={<Editor isSyncScroll={isSyncScroll} />}
+                  editor={<Editor isSyncScroll={isSyncScroll} {...config} />}
                   preview={<Preview content={deferredContent} isSyncScroll={isSyncScroll} />}
                 />
               </StyledRow>

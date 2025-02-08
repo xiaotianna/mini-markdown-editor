@@ -1,7 +1,7 @@
-import { EditorView, ViewUpdate } from "@uiw/react-codemirror";
+import { EditorView, ReactCodeMirrorProps, ViewUpdate } from "@uiw/react-codemirror";
 import { ToolbarType } from "./toolbar";
 
-export interface GlobalConfig {
+export interface GlobalConfig extends ReactCodeMirrorProps {
   /**
    * 编辑器内容
    * @type {string}
@@ -66,3 +66,20 @@ export interface GlobalConfig {
 }
 
 export type Callback = (param: { url: string; alt?: string }) => void;
+
+export type GlobalContextConfig = Pick<
+  GlobalConfig,
+  | "theme"
+  | "initialValue"
+  | "toolbar"
+  | "status"
+  | "local"
+  | "lineNumbers"
+  | "enableShortcuts"
+  | "onUpload"
+  | "onDragUpload"
+  | "onPatseUpload"
+  | "onSave"
+  | "onChange"
+>;
+export type EditorConfig = Omit<GlobalConfig, keyof GlobalContextConfig>;

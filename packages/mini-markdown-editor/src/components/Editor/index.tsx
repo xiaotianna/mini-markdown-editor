@@ -7,7 +7,8 @@ import { handleEditorScroll } from "@/utils/handle-scroll";
 import { usePersistEditorContent } from "@/hooks/use-persist-editor-content";
 import { ConfigContext } from "../providers/config-provider";
 import { createEditorExtensions } from "@/extensions/codemirror";
-import { Callback } from "@/types/global-config";
+import { Callback, GlobalConfig } from "@/types/global-config";
+import { filterContextProps } from "@/utils/filter-context-props";
 
 const ScrollWrapper = styled.div<{
   $lineNumbers?: boolean;
@@ -40,7 +41,13 @@ const ScrollWrapper = styled.div<{
   }
 `;
 
-const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
+interface EditorProps extends GlobalConfig {
+  className?: string;
+  style?: React.CSSProperties;
+  isSyncScroll: boolean;
+}
+
+const Editor: FC<EditorProps> = (props) => {
   const {
     content,
     setContent,
@@ -86,6 +93,8 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
   const { theme, lineNumbers, enableShortcuts, onChange, onDragUpload, onPatseUpload } =
     useContext(ConfigContext);
 
+  console.log(filterContextProps(useContext(ConfigContext), props));
+
   const handleChange = (val: string, editView: ViewUpdate) => {
     // 更新store
     setContent(val);
@@ -103,7 +112,7 @@ const Editor: FC<{ isSyncScroll: boolean }> = ({ isSyncScroll }) => {
     scroll: () => {
       if (scrollWrapper !== "editor") return;
       const view = editorViewRef.current;
-      if (!(view && previewView && isSyncScroll)) return;
+      if (!(view && previewView && props.isSyncScroll)) return;
       handleEditorScroll({ editorView: view, previewView });
     },
   });
