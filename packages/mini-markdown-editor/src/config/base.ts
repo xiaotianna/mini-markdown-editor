@@ -4,7 +4,7 @@ export interface EventCallback {
   (...args: any[]): void;
 }
 
-export interface BaseConfig {
+interface BaseConfig {
   name?: string;
   // 最大监听器数量
   maxListeners?: number;

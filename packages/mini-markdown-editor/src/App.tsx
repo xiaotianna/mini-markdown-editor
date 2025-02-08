@@ -73,10 +73,22 @@ const App: FC = () => {
     }
   }, []);
 
+  // 添加abc工具
   toolbarConfig.addToolbar({
     type: "abc",
-    title: "abc",
+    title: "我是测试abc",
     icon: OlIcon,
+    description: "我是描述abc",
+    hotkey: {
+      command: "mod+p",
+      description: "Make text bold",
+      handle: () => {
+        // 处理加粗逻辑
+      },
+    },
+    onClick: () => {
+      console.log("我是输出abc");
+    },
   });
 
   return (

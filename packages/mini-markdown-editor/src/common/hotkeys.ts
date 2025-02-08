@@ -30,7 +30,7 @@ export class Hotkey {
   // Actions
   static readonly SAVE = new Hotkey("mod+s", "Save");
 
-  private constructor(
+  constructor(
     public readonly command: Command,
     public readonly description: Description,
     public readonly handle?: void | (() => void),
@@ -103,5 +103,14 @@ export class Hotkey {
     if (!parts.some((part) => validModifiers.includes(part))) {
       throw new Error(`This is must!: ${command}`);
     }
+  }
+
+  // 生成配置对象的方法
+  public toConfig() {
+    return {
+      command: this.codeMirrorCommand,
+      description: this.description,
+      handle: this.handle,
+    };
   }
 }

@@ -1,3 +1,5 @@
+import { Hotkey } from "@/common/hotkeys";
+
 // 基础工具栏类型
 export enum BaseToolbarType {
   HEADING = "heading",
@@ -56,12 +58,22 @@ export interface BaseToolbarItem {
 export interface ToolbarItemListItem {
   title: string;
   type: string;
+  hotkey?: {
+    command: string;
+    description: string;
+    handle?: void | (() => void);
+  };
   onClick?: (...args: any[]) => void | (() => void);
 }
 
 // 完整的工具栏项接口
 export interface ToolbarItem extends BaseToolbarItem {
   list?: ToolbarItemListItem[];
+  hotkey?: {
+    command: string;
+    description: string;
+    handle?: void | (() => void);
+  };
 }
 
 // 工具栏上下文值接口
@@ -85,6 +97,7 @@ export interface ToolbarValidationResult {
 }
 
 // 工具栏配置验证函数
+// 更新验证函数以包含快捷键验证
 export const validateToolbarItem = (item: ToolbarItem): ToolbarValidationResult => {
   const errors: string[] = [];
 
@@ -94,6 +107,14 @@ export const validateToolbarItem = (item: ToolbarItem): ToolbarValidationResult 
 
   if (item.list && !Array.isArray(item.list)) {
     errors.push("Toolbar item list must be an array");
+  }
+
+  if (item.hotkey) {
+    try {
+      new Hotkey(item.hotkey.command, item.hotkey.description || "", item.hotkey.handle);
+    } catch (e) {
+      errors.push(`Invalid hotkey configuration: ${(e as Error).message}`);
+    }
   }
 
   return {
