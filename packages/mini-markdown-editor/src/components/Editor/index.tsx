@@ -93,10 +93,6 @@ const Editor: FC<EditorProps> = (props) => {
   const { theme, lineNumbers, enableShortcuts, onChange, onDragUpload, onPatseUpload } =
     useContext(ConfigContext);
 
-  const CodeMirrorProps = useMemo(() => {
-    return filterContextProps(props);
-  }, [props]);
-
   const handleChange = (val: string, editView: ViewUpdate) => {
     // 更新store
     setContent(val);
@@ -118,6 +114,10 @@ const Editor: FC<EditorProps> = (props) => {
       handleEditorScroll({ editorView: view, previewView });
     },
   });
+
+  const { className, style, ...CodeMirrorProps } = useMemo(() => {
+    return filterContextProps(props);
+  }, [props]);
 
   const handleMouseEnter = () => {
     setScrollWrapper("editor");
@@ -148,7 +148,7 @@ const Editor: FC<EditorProps> = (props) => {
   return (
     <ScrollWrapper $lineNumbers={lineNumbers}>
       <CodeMirror
-        className="markdown-editor-content"
+        className={className || "markdown-editor-content"}
         onCreateEditor={handleCreate}
         theme={theme}
         value={content}
@@ -163,7 +163,7 @@ const Editor: FC<EditorProps> = (props) => {
           defaultKeymap: true,
         }}
         autoFocus={true}
-        style={{ height: "100%" }}
+        style={{ height: "100%", ...(style || {}) }}
         onChange={handleChange}
         onMouseEnter={handleMouseEnter}
         {...CodeMirrorProps}
