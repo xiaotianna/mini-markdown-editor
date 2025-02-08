@@ -169,6 +169,7 @@ const App: FC = () => {
         获取预览区实例
       </Button>
       <EditorWrapper
+        placeholder={"请输入内容..."}
         status={true}
         onUpload={handleUpload}
         local={true}

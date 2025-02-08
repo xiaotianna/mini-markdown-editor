@@ -93,7 +93,9 @@ const Editor: FC<EditorProps> = (props) => {
   const { theme, lineNumbers, enableShortcuts, onChange, onDragUpload, onPatseUpload } =
     useContext(ConfigContext);
 
-  console.log(filterContextProps(useContext(ConfigContext), props));
+  const CodeMirrorProps = useMemo(() => {
+    return filterContextProps(props);
+  }, [props]);
 
   const handleChange = (val: string, editView: ViewUpdate) => {
     // 更新store
@@ -164,6 +166,7 @@ const Editor: FC<EditorProps> = (props) => {
         style={{ height: "100%" }}
         onChange={handleChange}
         onMouseEnter={handleMouseEnter}
+        {...CodeMirrorProps}
       />
     </ScrollWrapper>
   );
