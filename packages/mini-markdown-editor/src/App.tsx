@@ -8,6 +8,8 @@ import "highlight.js/styles/atom-one-dark.css";
 // import { ViewUpdate } from "./types/code-mirror";
 import { EditorView } from "@uiw/react-codemirror";
 import { EditorRef } from "./types/ref";
+import { toolbarConfig } from "./config/toolbar";
+import OlIcon from "@/assets/images/ol.svg?raw";
 
 const AppWrapper = styled.div`
   width: 100%;
@@ -70,6 +72,12 @@ const App: FC = () => {
       console.log(editorRef.current);
     }
   }, []);
+
+  toolbarConfig.addToolbar({
+    type: "abc",
+    title: "abc",
+    icon: OlIcon,
+  });
 
   return (
     <AppWrapper>
