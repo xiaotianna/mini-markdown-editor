@@ -129,20 +129,22 @@ const App: FC = () => {
       >
         获取预览区实例
       </Button>
-      <Editor
-        status={true}
-        onUpload={handleUpload}
-        local={true}
-        theme={theme}
-        onChange={handleChange}
-        enableShortcuts={true}
-        onDragUpload={handlePatseUpload}
-        onPatseUpload={handlePatseUpload}
-        ref={editorRef}
-        initialValue={
-          "# 标题\n## 二级标题\n### 三级标题\n#### 四级标题\n##### 五级标题\n###### 六级标题\n"
-        }
-      />
+      <div style={{ height: "600px" }}>
+        <Editor
+          status={true}
+          onUpload={handleUpload}
+          local={true}
+          theme={theme}
+          onChange={handleChange}
+          enableShortcuts={true}
+          onDragUpload={handlePatseUpload}
+          onPatseUpload={handlePatseUpload}
+          ref={editorRef}
+          initialValue={
+            "# 标题\n## 二级标题\n### 三级标题\n#### 四级标题\n##### 五级标题\n###### 六级标题\n"
+          }
+        />
+      </div>
     </>
   );
 };

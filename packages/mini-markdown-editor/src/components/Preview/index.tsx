@@ -78,6 +78,7 @@ const ScrollWrapper = styled.div`
 
   p {
     line-height: 20px;
+    font-size: 14px;
   }
 
   strong {
