@@ -19,8 +19,11 @@ interface HotkeyType {
 // 创建文本插入类型的处理器
 export const createInsertTextHandler = (hotkey: HotkeyType): HotkeyHandler => ({
   run: () => {
+    if (hotkey.handle) {
+      hotkey.handle?.();
+      return true;
+    }
     InsertTextEvent(hotkey.description as ToolbarType);
-    hotkey.handle?.();
     return true;
   },
   preventDefault: true,

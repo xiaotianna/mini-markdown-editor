@@ -12,9 +12,9 @@ export const ToolbarProvider: React.FC<{
   const [toolbars, setToolbars] = useState<ToolbarItem[]>([]);
 
   useEffect(() => {
-    const defaultToolbars = toolbarManager.getDefaultToolbars();
+    const defaultToolbars = toolbarManager.getDefaultToolbar();
     const additionalTools = toolbarConfig?.addTools || [];
-    // 过滤掉type为toolbarConfig.excludeTools的工具
+    // 过滤设定的工具栏
     if (toolbarConfig?.excludeTools) {
       const excludeTools = toolbarConfig.excludeTools;
       setToolbars([
@@ -25,6 +25,7 @@ export const ToolbarProvider: React.FC<{
     }
 
     setToolbars([...defaultToolbars, ...additionalTools]);
+    toolbarManager.updateToolbars([...defaultToolbars, ...additionalTools]);
   }, [toolbarConfig]);
 
   const values = useMemo(

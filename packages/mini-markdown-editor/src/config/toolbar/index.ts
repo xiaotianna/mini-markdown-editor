@@ -15,19 +15,24 @@ class ToolbarConfig extends BaseClass {
       maxListeners: 10,
     });
     this.defaultToolbars = [...initialToolbars];
-    this.toolbars = this.initToolbars();
+    this.toolbars = this.initToolbar();
     this.initialized = true;
     this.emit(ToolbarEvents.TOOLBAR_RESET, this.toolbars);
   }
 
   // 初始化默认工具栏内容
-  private initToolbars(): ToolbarItem[] {
+  private initToolbar(): ToolbarItem[] {
     return [...this.defaultToolbars];
   }
 
   // 获取默认工具栏内容
-  public getDefaultToolbars(): ToolbarItem[] {
+  public getDefaultToolbar(): ToolbarItem[] {
     return this.defaultToolbars;
+  }
+
+  // 更新工具栏内容
+  public updateToolbars(newToolbars: ToolbarItem[]) {
+    this.toolbars = newToolbars;
   }
 
   // 获取所有工具栏项
@@ -40,8 +45,41 @@ class ToolbarConfig extends BaseClass {
     return this.toolbars.find((toolbar) => toolbar.type === type);
   }
 
+  // 修改特定工具栏项的功能
+  public updateToolbarItem(type: ToolbarType, partialToolbarItem: Partial<ToolbarItem>): void {
+    try {
+      this.checkDestroyed();
+
+      const existingToolbar = this.getToolbarByType(type);
+      if (!existingToolbar) {
+        const error = `Toolbar type ${type} does not exist`;
+        this.emit(ToolbarEvents.TOOLBAR_ERROR, error);
+        throw new Error(error);
+      }
+
+      // 合并现有配置和新配置，保证未提及的项使用默认值
+      const updatedToolbar: ToolbarItem = {
+        ...existingToolbar,
+        ...partialToolbarItem,
+        type: existingToolbar.type,
+      };
+
+      this.toolbars = produce(this.toolbars, (draft) => {
+        const index = draft.findIndex((toolbar) => toolbar.type === type);
+        if (index !== -1) {
+          draft[index] = updatedToolbar;
+        }
+      });
+
+      this.emit(ToolbarEvents.TOOLBAR_UPDATED, updatedToolbar);
+    } catch (error) {
+      this.error("Error updating toolbar:", error);
+      throw error;
+    }
+  }
+
   // 添加指定工具栏项
-  public addToolbar(toolbarItem: ToolbarItem): void {
+  public addToolItem(toolbarItem: ToolbarItem): void {
     try {
       this.checkDestroyed();
 
@@ -68,7 +106,7 @@ class ToolbarConfig extends BaseClass {
   }
 
   // 移除指定工具栏项
-  public removeToolbar(type: ToolbarType): void {
+  public removeToolItem(type: ToolbarType): void {
     try {
       this.checkDestroyed();
 
@@ -89,26 +127,13 @@ class ToolbarConfig extends BaseClass {
     }
   }
 
-  // 更新工具栏
-  public updateToolbar(type: ToolbarType, newConfig: Partial<ToolbarItem>): void {
-    try {
-      this.checkDestroyed();
-
-      this.toolbars = produce(this.toolbars, (draft) => {
-        const index = draft.findIndex((toolbar) => toolbar.type === type);
-        if (index !== -1) {
-          draft[index] = { ...draft[index], ...newConfig };
-          this.emit(ToolbarEvents.TOOLBAR_UPDATED, draft[index]);
-        }
-      });
-    } catch (error) {
-      this.error("Error updating toolbar:", error);
-      throw error;
-    }
+  // 重置工具栏内容
+  public reset(): void {
+    this.toolbars = this.initToolbar();
   }
 
   // TODO: 添加重新排序工具栏顺序（例如拖拽排序？？）的方法
-  public reorderToolbars(newOrder: ToolbarType[]): void {
+  public reorderToolbar(newOrder: ToolbarType[]): void {
     try {
       this.checkDestroyed();
 
@@ -124,18 +149,6 @@ class ToolbarConfig extends BaseClass {
       this.error("Error reordering toolbars:", error);
       throw error;
     }
-  }
-
-  public reset(): void {
-    this.toolbars = this.initToolbars();
-  }
-
-  public enableToolbar(type: ToolbarType): void {
-    this.updateToolbar(type, { disabled: false });
-  }
-
-  public disableToolbar(type: ToolbarType): void {
-    this.updateToolbar(type, { disabled: true });
   }
 }
 

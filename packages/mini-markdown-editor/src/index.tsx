@@ -7,6 +7,7 @@ export { Editor };
 
 // 导出配置
 export { toolbarConfig as ToolbarManager } from "@/config/toolbar";
+export { insertContent } from "@/utils/insert-content";
 
 // 导出 ts 类型
 export * from "@/types/code-mirror";

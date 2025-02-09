@@ -8,8 +8,8 @@ import { usePersistEditorContent } from "@/hooks/use-persist-editor-content";
 import { createEditorExtensions } from "@/extensions/codemirror";
 import { Callback, GlobalConfig } from "@/types/global-config";
 import { filterContextProps } from "@/utils/filter-context-props";
-import { useToolbar } from "@/hooks/use-toolbar";
 import { useGlobalConfig } from "@/hooks/use-global-config";
+import { toolbarConfig } from "@/config/toolbar";
 
 const ScrollWrapper = styled.div<{
   $lineNumbers?: boolean;
@@ -133,7 +133,7 @@ const Editor: FC<EditorProps> = (props) => {
     onPatseUpload?.(file, Callback);
   };
 
-  const { toolbars } = useToolbar();
+  const toolbars = toolbarConfig.getAllToolbars();
   // 创建编辑器扩展
   const extensions = useMemo(
     () =>
@@ -145,7 +145,7 @@ const Editor: FC<EditorProps> = (props) => {
         onDragUpload: handleDragUpload,
         onPasteUpload: handlePatseUpload,
       }),
-    [scrollWrapper],
+    [scrollWrapper, toolbars, enableShortcuts, eventExt],
   );
 
   return (
