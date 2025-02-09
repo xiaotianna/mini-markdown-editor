@@ -1,11 +1,5 @@
 import { EditorView, ReactCodeMirrorProps, ViewUpdate } from "@uiw/react-codemirror";
 import { ToolbarItem } from "./toolbar";
-// import { ToolbarType } from "./toolbar";
-
-export type toolbarSetupType = {
-  addTools?: ToolbarItem[];
-  excludeTools?: string[];
-};
 
 export interface GlobalConfig extends ReactCodeMirrorProps {
   /**
@@ -14,12 +8,11 @@ export interface GlobalConfig extends ReactCodeMirrorProps {
    */
   initialValue?: string;
   /**
-   * 需要渲染的 toolbar，默认全部渲染
-   * @type {ToolbarType[]} 需要渲染的 toolbar 数组
-   * @type {Record<ToolbarType, boolean>} 需要渲染的 toolbar 对象，值为 true 时渲染，false 时不渲染
+   * 配置工具栏
+   * @type {{ addTools?: ToolbarItem[]; excludeTools?: string[] }}
+   * 添加工具; 排除工具
    */
-  // toolbar?: ToolbarType[] | Record<ToolbarType, boolean>;
-  toolbars?: toolbarSetupType;
+  toolbars?: { addTools?: ToolbarItem[]; excludeTools?: string[] };
   /**
    * 底部状态栏是否显示，默认显示
    * @type {boolean}

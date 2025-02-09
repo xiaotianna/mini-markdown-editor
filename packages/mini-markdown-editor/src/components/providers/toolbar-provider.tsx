@@ -1,13 +1,12 @@
 import React, { createContext, useEffect, useMemo, useState } from "react";
 import { ToolbarContextValues, ToolbarItem } from "@/types/toolbar";
 import { toolbarConfig as toolbarManager } from "@/config/toolbar";
-import { toolbarSetupType } from "@/types/global-config";
 
 export const ToolbarContext = createContext<ToolbarContextValues | undefined>(undefined);
 
 export const ToolbarProvider: React.FC<{
   children: React.ReactNode;
-  toolbarConfig?: toolbarSetupType;
+  toolbarConfig?: { addTools?: ToolbarItem[]; excludeTools?: string[] };
 }> = ({ children, toolbarConfig }) => {
   const [toolbars, setToolbars] = useState<ToolbarItem[]>([]);
 
