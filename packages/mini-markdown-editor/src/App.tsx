@@ -201,7 +201,7 @@ const App: FC = () => {
         placeholder={"请输入内容..."}
         status={true}
         onUpload={handleUpload}
-        local={true}
+        local={false}
         lineNumbers={true}
         theme={theme as "light" | "dark"}
         // onChange={handleChange}
@@ -212,6 +212,7 @@ const App: FC = () => {
         toolbars={{
           excludeTools: ["bold"],
         }}
+        value="## Hello World"
       />
     </AppWrapper>
   );

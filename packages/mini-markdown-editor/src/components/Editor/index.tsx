@@ -70,6 +70,8 @@ const Editor: FC<EditorProps> = (props) => {
   );
   // 持久化存储内容
   const { saveContent, getContent } = usePersistEditorContent();
+  const { theme, lineNumbers, enableShortcuts, onChange, onDragUpload, onPatseUpload } =
+    useGlobalConfig();
 
   // 处理重加载后的光标位置
   useEffect(() => {
@@ -90,9 +92,6 @@ const Editor: FC<EditorProps> = (props) => {
   const handleCreate = (view: EditorView) => {
     setEditorViewInstance(view);
   };
-
-  const { theme, lineNumbers, enableShortcuts, onChange, onDragUpload, onPatseUpload } =
-    useGlobalConfig();
 
   const handleChange = (val: string, editView: ViewUpdate) => {
     // 更新store

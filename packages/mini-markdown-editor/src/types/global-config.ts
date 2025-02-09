@@ -3,10 +3,10 @@ import { ToolbarItem } from "./toolbar";
 
 export interface GlobalConfig extends ReactCodeMirrorProps {
   /**
-   * 编辑器内容
+   * 编辑器初始内容
    * @type {string}
    */
-  initialValue?: string;
+  value?: string;
   /**
    * 配置工具栏
    * @type {{ addTools?: ToolbarItem[]; excludeTools?: string[] }}
@@ -70,7 +70,7 @@ export type Callback = (param: { url: string; alt?: string }) => void;
 export type GlobalContextConfig = Pick<
   GlobalConfig,
   | "theme"
-  | "initialValue"
+  | "value"
   | "toolbars"
   | "status"
   | "local"

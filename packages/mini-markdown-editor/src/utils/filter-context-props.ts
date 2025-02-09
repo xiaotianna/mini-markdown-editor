@@ -9,7 +9,9 @@ export const filterContextProps = (props: GlobalConfig): Omit<GlobalConfig, Glob
     Object.keys(defaultGlobalConfig) as Array<GlobalContextKeys>,
   );
 
+  //? 在这里添加的全部不传入 CodeMirror 中
   contextKeys.add("isSyncScroll" as GlobalContextKeys);
+  contextKeys.add("value" as GlobalContextKeys);
 
   const { className, style, ...restProps } = props;
 

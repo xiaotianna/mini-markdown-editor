@@ -5,7 +5,7 @@ import { useGlobalConfig } from "./use-global-config";
 
 export const usePersistEditorContent = () => {
   const localStorage = safeLocalStorage();
-  const { local } = useGlobalConfig();
+  const { local, value } = useGlobalConfig();
 
   // 保存内容
   const { run: saveContent } = useDebounceFn(
@@ -19,6 +19,9 @@ export const usePersistEditorContent = () => {
 
   // 获取内容
   const getContent = (): string => {
+    if (!local && value) {
+      return value;
+    }
     return localStorage.getItem(EDITOR_CONTENT_KEY) ?? "";
   };
 
