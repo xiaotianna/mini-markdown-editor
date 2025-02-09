@@ -85,6 +85,15 @@ export interface ToolbarContextValues {
   reorderToolbars?: (newOrder: ToolbarType[]) => void;
 }
 
+export enum ToolbarEvents {
+  TOOLBAR_ADDED = "toolbar:added",
+  TOOLBAR_REMOVED = "toolbar:removed",
+  TOOLBAR_UPDATED = "toolbar:updated",
+  TOOLBAR_REORDERED = "toolbar:reordered",
+  TOOLBAR_RESET = "toolbar:reset",
+  TOOLBAR_ERROR = "toolbar:error",
+}
+
 // 类型保护函数
 export const isBaseToolbarType = (type: ToolbarType): type is BaseToolbarType => {
   return Object.values(BaseToolbarType).includes(type as BaseToolbarType);

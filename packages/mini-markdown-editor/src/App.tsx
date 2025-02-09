@@ -8,8 +8,9 @@ import "highlight.js/styles/atom-one-dark.css";
 // import { ViewUpdate } from "./types/code-mirror";
 import { EditorView } from "@uiw/react-codemirror";
 import { EditorRef } from "./types/ref";
-import { toolbarConfig } from "./config/toolbar";
-import OlIcon from "@/assets/images/ol.svg?raw";
+// import { toolbarConfig as toolbarManager } from "./config/toolbar";
+import UlIcon from "@/assets/images/ul.svg?raw";
+// import { ToolbarEvents, ToolbarItem } from "./types/toolbar";
 
 const AppWrapper = styled.div`
   width: 100%;
@@ -73,29 +74,50 @@ const App: FC = () => {
     }
   }, []);
 
-  // 添加abc工具
-  useEffect(() => {
-    try {
-      toolbarConfig.addToolbar({
-        type: "abc",
-        title: "我是测试abc",
-        icon: OlIcon,
-        description: "我是描述abc",
-        hotkey: {
-          command: "Mod-p",
-          description: "控制台输出def",
-          handle: () => {
-            console.log("我是快捷键输出def");
-          },
-        },
-        onClick: () => {
-          console.log("我是输出abc");
-        },
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
+  // const [toolbars, setToolbars] = useState<ToolbarItem[]>([]);
+  // // 添加abc工具
+  // useEffect(() => {
+  //   // 监听工具栏变化
+  //   const handleToolbarAdded = (toolbar: ToolbarItem) => {
+  //     console.log("新工具栏已添加:", toolbar);
+  //     setToolbars((prev) => [...prev, toolbar]);
+  //   };
+
+  //   const handleToolbarError = (error: string) => {
+  //     message.error(error);
+  //   };
+
+  //   toolbarManager.on(ToolbarEvents.TOOLBAR_ADDED, handleToolbarAdded);
+  //   toolbarManager.on(ToolbarEvents.TOOLBAR_ERROR, handleToolbarError);
+
+  //   // 组件挂载时添加工具栏
+  //   try {
+  //     toolbarManager.addToolbar({
+  //       type: "abc",
+  //       title: "我是测试abc",
+  //       icon: UlIcon,
+  //       description: "我是描述abc",
+  //       hotkey: {
+  //         command: "Mod-p",
+  //         description: "控制台输出def",
+  //         handle: () => {
+  //           console.log("我是快捷键输出def");
+  //         },
+  //       },
+  //       onClick: () => {
+  //         console.log("我是输出abc");
+  //       },
+  //     });
+  //   } catch (error) {
+  //     console.error("添加工具栏失败:", error);
+  //   }
+
+  //   // 清理函数
+  //   return () => {
+  //     toolbarManager.off(ToolbarEvents.TOOLBAR_ADDED, handleToolbarAdded);
+  //     toolbarManager.off(ToolbarEvents.TOOLBAR_ERROR, handleToolbarError);
+  //   };
+  // }, []);
 
   return (
     <AppWrapper>
@@ -180,6 +202,27 @@ const App: FC = () => {
         onDragUpload={handlePatseUpload}
         onPatseUpload={handlePatseUpload}
         ref={editorRef}
+        toolbars={{
+          addTools: [
+            {
+              type: "abc",
+              title: "我是测试abc",
+              icon: UlIcon,
+              description: "我是描述abc",
+              hotkey: {
+                command: "Mod-p",
+                description: "控制台输出def",
+                handle: () => {
+                  console.log("我是快捷键输出def");
+                },
+              },
+              onClick: () => {
+                console.log("我是输出abc");
+              },
+            },
+          ],
+          excludeTools: ["bold"],
+        }}
       />
     </AppWrapper>
   );

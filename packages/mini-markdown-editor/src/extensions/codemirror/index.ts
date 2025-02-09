@@ -5,9 +5,11 @@ import { createMarkdownExtension } from "./markdown";
 import { createHotkeysExtension } from "./hotkeys";
 import { createEventExtension } from "./event";
 import type { EventOptions } from "./event.d";
+import { ToolbarItem } from "@/types/toolbar";
 
 interface ExtensionOptions extends EventOptions {
   enableShortcuts?: boolean;
+  toolbars?: ToolbarItem[];
 }
 
 export const createEditorExtensions = (options: ExtensionOptions): Extension[] => {
@@ -29,7 +31,7 @@ export const createEditorExtensions = (options: ExtensionOptions): Extension[] =
 
   // 是否开启快捷键支持
   if (enableShortcuts) {
-    extensions.push(createHotkeysExtension());
+    extensions.push(createHotkeysExtension(options.toolbars!));
   }
 
   return extensions;

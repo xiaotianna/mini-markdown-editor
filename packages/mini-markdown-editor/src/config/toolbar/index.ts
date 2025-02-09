@@ -2,10 +2,12 @@ import type { ToolbarItem, ToolbarType } from "@/types/toolbar";
 import { defaultToolbar } from "./base";
 import { produce } from "immer";
 import { BaseClass } from "../base";
+import { ToolbarEvents } from "@/types/toolbar";
 
 class ToolbarConfig extends BaseClass {
   private toolbars: ToolbarItem[];
   private readonly defaultToolbars: ToolbarItem[];
+  private initialized: boolean = false;
 
   constructor(initialToolbars: ToolbarItem[]) {
     super({
@@ -14,11 +16,18 @@ class ToolbarConfig extends BaseClass {
     });
     this.defaultToolbars = [...initialToolbars];
     this.toolbars = this.initToolbars();
+    this.initialized = true;
+    this.emit(ToolbarEvents.TOOLBAR_RESET, this.toolbars);
   }
 
   // 初始化默认工具栏内容
   private initToolbars(): ToolbarItem[] {
     return [...this.defaultToolbars];
+  }
+
+  // 获取默认工具栏内容
+  public getDefaultToolbars(): ToolbarItem[] {
+    return this.defaultToolbars;
   }
 
   // 获取所有工具栏项
@@ -33,43 +42,88 @@ class ToolbarConfig extends BaseClass {
 
   // 添加指定工具栏项
   public addToolbar(toolbarItem: ToolbarItem): void {
-    // 过滤掉重复的工具栏项
-    if (this.getToolbarByType(toolbarItem.type)) {
-      throw new Error(`Toolbar type ${toolbarItem.type} already exists`);
+    try {
+      this.checkDestroyed();
+
+      if (!this.initialized) {
+        throw new Error("ToolbarConfig is not initialized yet");
+      }
+
+      if (this.getToolbarByType(toolbarItem.type)) {
+        const error = `Toolbar type ${toolbarItem.type} already exists`;
+        this.emit(ToolbarEvents.TOOLBAR_ERROR, error);
+        throw new Error(error);
+      }
+
+      this.toolbars = produce(this.toolbars, (draft) => {
+        draft.push(toolbarItem);
+      });
+
+      // 发送工具栏添加事件
+      this.emit(ToolbarEvents.TOOLBAR_ADDED, toolbarItem);
+    } catch (error) {
+      this.error("Error adding toolbar:", error);
+      throw error;
     }
-    this.toolbars = produce(this.toolbars, (draft) => {
-      draft.push(toolbarItem);
-    });
   }
 
   // 移除指定工具栏项
   public removeToolbar(type: ToolbarType): void {
-    this.toolbars = produce(this.toolbars, (draft) => {
-      const index = draft.findIndex((toolbar) => toolbar.type === type);
-      if (index !== -1) {
-        draft.splice(index, 1);
-      }
-    });
+    try {
+      this.checkDestroyed();
+
+      const toolbarToRemove = this.getToolbarByType(type);
+      if (!toolbarToRemove) return;
+
+      this.toolbars = produce(this.toolbars, (draft) => {
+        const index = draft.findIndex((toolbar) => toolbar.type === type);
+        if (index !== -1) {
+          draft.splice(index, 1);
+        }
+      });
+
+      this.emit(ToolbarEvents.TOOLBAR_REMOVED, type);
+    } catch (error) {
+      this.error("Error removing toolbar:", error);
+      throw error;
+    }
   }
 
   // 更新工具栏
   public updateToolbar(type: ToolbarType, newConfig: Partial<ToolbarItem>): void {
-    this.toolbars = produce(this.toolbars, (draft) => {
-      const index = draft.findIndex((toolbar) => toolbar.type === type);
-      if (index !== -1) {
-        draft[index] = { ...draft[index], ...newConfig };
-      }
-    });
+    try {
+      this.checkDestroyed();
+
+      this.toolbars = produce(this.toolbars, (draft) => {
+        const index = draft.findIndex((toolbar) => toolbar.type === type);
+        if (index !== -1) {
+          draft[index] = { ...draft[index], ...newConfig };
+          this.emit(ToolbarEvents.TOOLBAR_UPDATED, draft[index]);
+        }
+      });
+    } catch (error) {
+      this.error("Error updating toolbar:", error);
+      throw error;
+    }
   }
 
   // TODO: 添加重新排序工具栏顺序（例如拖拽排序？？）的方法
   public reorderToolbars(newOrder: ToolbarType[]): void {
-    const toolbarMap = new Map(this.toolbars.map((toolbar) => [toolbar.type, toolbar]));
-    this.toolbars = produce(this.toolbars, () =>
-      newOrder
-        .map((type) => toolbarMap.get(type))
-        .filter((toolbar): toolbar is ToolbarItem => toolbar !== undefined),
-    );
+    try {
+      this.checkDestroyed();
+
+      const toolbarMap = new Map(this.toolbars.map((toolbar) => [toolbar.type, toolbar]));
+      this.toolbars = produce(this.toolbars, () =>
+        newOrder
+          .map((type) => toolbarMap.get(type))
+          .filter((toolbar): toolbar is ToolbarItem => toolbar !== undefined),
+      );
+
+      this.emit(ToolbarEvents.TOOLBAR_REORDERED, this.toolbars);
+    } catch (error) {
+      this.error("Error reordering toolbars:", error);
+      throw error;
+    }
   }
 
   public reset(): void {
