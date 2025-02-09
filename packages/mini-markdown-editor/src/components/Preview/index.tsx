@@ -1,11 +1,11 @@
-import React, { FC, useEffect, useRef, useCallback, useContext } from "react";
+import React, { FC, useEffect, useRef, useCallback } from "react";
 import { parseMarkdown, transformHtml } from "@mini-markdown/ast-parser";
 import styled from "styled-components";
 import { useEditorContentStore } from "@/store/editor";
 import { handlePreviewScroll } from "@/utils/handle-scroll";
 import { usePreviewTheme } from "@/hooks/use-preview-theme";
-import { ConfigContext } from "../providers/config-provider";
 import { useCopyCode } from "@/hooks/use-copy-code";
+import { useGlobalConfig } from "@/hooks/use-global-config";
 
 const Preview: FC<{ content: string; isSyncScroll: boolean }> = ({ content, isSyncScroll }) => {
   const { scrollWrapper, setScrollWrapper, setPreviewView, editorView } = useEditorContentStore();
@@ -49,7 +49,7 @@ const Preview: FC<{ content: string; isSyncScroll: boolean }> = ({ content, isSy
   }, [setScrollWrapper]);
 
   // 设置css变量
-  const { theme } = useContext(ConfigContext);
+  const { theme } = useGlobalConfig();
   usePreviewTheme(theme as "light" | "dark");
 
   // copy按钮

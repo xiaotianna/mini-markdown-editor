@@ -1,12 +1,11 @@
 import { EDITOR_CONTENT_KEY } from "@/common";
-import { ConfigContext } from "@/components/providers/config-provider";
 import { safeLocalStorage } from "@/utils/storage";
 import { useDebounceFn } from "ahooks";
-import { useContext } from "react";
+import { useGlobalConfig } from "./use-global-config";
 
 export const usePersistEditorContent = () => {
   const localStorage = safeLocalStorage();
-  const { local } = useContext(ConfigContext);
+  const { local } = useGlobalConfig();
 
   // 保存内容
   const { run: saveContent } = useDebounceFn(

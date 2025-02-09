@@ -3,13 +3,12 @@ import IconTooltip from "../base/IconTooltip";
 import { Hotkey } from "@/common/hotkeys";
 import { useSaveContent } from "@/hooks/use-save-content";
 import { useEditorContentStore } from "@/store/editor";
-import { useContext } from "react";
-import { ConfigContext } from "../providers/config-provider";
+import { useGlobalConfig } from "@/hooks/use-global-config";
 
 const Save = () => {
   const { content, editorView } = useEditorContentStore();
   const saveContent = useSaveContent();
-  const { onSave } = useContext(ConfigContext);
+  const { onSave } = useGlobalConfig();
 
   const handleSave = () => {
     if (content) {

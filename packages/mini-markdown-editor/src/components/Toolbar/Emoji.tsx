@@ -2,12 +2,12 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import EmojiIcon from "@/assets/images/emoji.svg?raw";
 import { DropDownMenu } from "../base/DropDownMenu";
-import { FC, useContext, useMemo } from "react";
+import { FC, useMemo } from "react";
 import { InsertEmojiEvent } from "@/config/toolbar/event";
-import { ConfigContext } from "@/components/providers/config-provider";
+import { useGlobalConfig } from "@/hooks/use-global-config";
 
 const Emoji: FC = () => {
-  const { theme } = useContext(ConfigContext);
+  const { theme } = useGlobalConfig();
 
   // Emoji 选择器
   const EmojiPickerComponent = useMemo(

@@ -1,10 +1,10 @@
 import { Upload, UploadProps } from "antd";
-import { FC, useContext } from "react";
-import { ConfigContext } from "../providers/config-provider";
+import { FC } from "react";
 import { InsertImageEvent } from "@/config/toolbar/event";
+import { useGlobalConfig } from "@/hooks/use-global-config";
 
 const UploadCom: FC = () => {
-  const { onUpload } = useContext(ConfigContext);
+  const { onUpload } = useGlobalConfig();
   const props: UploadProps = {
     showUploadList: false,
     beforeUpload: (file) => {

@@ -1,15 +1,15 @@
-import { FC, useCallback, useContext, useEffect, useMemo, useRef } from "react";
+import { FC, useCallback, useEffect, useMemo, useRef } from "react";
 import styled from "styled-components";
 import CodeMirror, { type EditorView, ViewUpdate } from "@uiw/react-codemirror";
 import * as events from "@uiw/codemirror-extensions-events";
 import { useEditorContentStore } from "@/store/editor";
 import { handleEditorScroll } from "@/utils/handle-scroll";
 import { usePersistEditorContent } from "@/hooks/use-persist-editor-content";
-import { ConfigContext } from "../providers/config-provider";
 import { createEditorExtensions } from "@/extensions/codemirror";
 import { Callback, GlobalConfig } from "@/types/global-config";
 import { filterContextProps } from "@/utils/filter-context-props";
 import { useToolbar } from "@/hooks/use-toolbar";
+import { useGlobalConfig } from "@/hooks/use-global-config";
 
 const ScrollWrapper = styled.div<{
   $lineNumbers?: boolean;
@@ -92,7 +92,7 @@ const Editor: FC<EditorProps> = (props) => {
   };
 
   const { theme, lineNumbers, enableShortcuts, onChange, onDragUpload, onPatseUpload } =
-    useContext(ConfigContext);
+    useGlobalConfig();
 
   const handleChange = (val: string, editView: ViewUpdate) => {
     // 更新store
