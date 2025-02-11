@@ -167,16 +167,16 @@ const EditorWrapper = forwardRef<EditorRef, GlobalConfig>((config, ref) => {
             <ToolbarProvider toolbarConfig={config.toolbars}>
               {/* 工具栏 */}
               <Toolbar />
+              {/* 内容区域 */}
+              <ContentWrapper>
+                <StyledRow>
+                  <RenderRow
+                    editor={<Editor isSyncScroll={isSyncScroll} {...config} />}
+                    preview={<Preview content={deferredContent} isSyncScroll={isSyncScroll} />}
+                  />
+                </StyledRow>
+              </ContentWrapper>
             </ToolbarProvider>
-            {/* 内容区域 */}
-            <ContentWrapper>
-              <StyledRow>
-                <RenderRow
-                  editor={<Editor isSyncScroll={isSyncScroll} {...config} />}
-                  preview={<Preview content={deferredContent} isSyncScroll={isSyncScroll} />}
-                />
-              </StyledRow>
-            </ContentWrapper>
             {/* 底部状态栏 */}
             {config.status ? (
               <Status isSyncScroll={isSyncScroll} updateSyncScrollStatus={updateSyncScrollStatus} />

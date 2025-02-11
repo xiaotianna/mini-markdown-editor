@@ -10,8 +10,10 @@ import { EditorView } from "@uiw/react-codemirror";
 import { EditorRef } from "./types/ref";
 // import { toolbarConfig as toolbarManager } from "./config/toolbar";
 import UlIcon from "@/assets/images/ul.svg?raw";
-import { insertContent } from "@/utils/insert-content";
 import { toolbarConfig } from "./config/toolbar";
+import { insertContent } from "./utils/insert-content";
+// import { insertContent } from "@/utils/insert-content";
+// import { toolbarConfig } from "./config/toolbar";
 // import { ToolbarEvents, ToolbarItem } from "./types/toolbar";
 
 const AppWrapper = styled.div`
@@ -109,7 +111,7 @@ const App: FC = () => {
         icon: UlIcon,
         description: "我是描述abc",
         hotkey: {
-          command: "Mod-p",
+          command: "Mod-l",
           description: "控制台输出def",
           handle: () => {
             console.log("我是快捷键输出def");
@@ -121,6 +123,7 @@ const App: FC = () => {
           insertContent.insertTextAtCursor("123");
         },
       });
+      console.log("添加工具栏成功");
     } catch (error) {
       console.error("添加工具栏失败:", error);
     }
@@ -210,7 +213,7 @@ const App: FC = () => {
         onPatseUpload={handlePatseUpload}
         ref={editorRef}
         toolbars={{
-          excludeTools: ["bold", "italic"],
+          excludeTools: ["italic"],
           addTools: [
             {
               type: "123",
@@ -218,13 +221,15 @@ const App: FC = () => {
               icon: UlIcon,
               description: "我是描述123",
               hotkey: {
-                command: "Mod-alt-w",
-                description: "控制台输出def123",
+                command: "Mod-p",
+                description: "控制台输出123",
                 handle: () => {
-                  console.log("我是快捷键输出def123");
+                  console.log("我是快捷键输出123");
                 },
               },
-              onClick: () => {},
+              onClick: () => {
+                console.log("我是快捷键输出123");
+              },
             },
           ],
         }}
