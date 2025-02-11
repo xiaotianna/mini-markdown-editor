@@ -210,7 +210,23 @@ const App: FC = () => {
         onPatseUpload={handlePatseUpload}
         ref={editorRef}
         toolbars={{
-          excludeTools: ["bold"],
+          excludeTools: ["bold", "italic"],
+          addTools: [
+            {
+              type: "123",
+              title: "我是测试123",
+              icon: UlIcon,
+              description: "我是描述123",
+              hotkey: {
+                command: "Mod-alt-w",
+                description: "控制台输出def123",
+                handle: () => {
+                  console.log("我是快捷键输出def123");
+                },
+              },
+              onClick: () => {},
+            },
+          ],
         }}
         value="## Hello World"
       />

@@ -4,10 +4,10 @@ import { toolbarConfig as toolbarManager } from "@/config/toolbar";
 
 export const ToolbarContext = createContext<ToolbarContextValues | undefined>(undefined);
 
-export const ToolbarProvider: React.FC<{
+export const ToolbarProvider = React.memo<{
   children: React.ReactNode;
   toolbarConfig?: { addTools?: ToolbarItem[]; excludeTools?: string[] };
-}> = ({ children, toolbarConfig }) => {
+}>(({ children, toolbarConfig }) => {
   const [toolbars, setToolbars] = useState<ToolbarItem[]>([]);
 
   useEffect(() => {
@@ -35,4 +35,4 @@ export const ToolbarProvider: React.FC<{
   );
 
   return <ToolbarContext.Provider value={values}>{children}</ToolbarContext.Provider>;
-};
+});

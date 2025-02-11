@@ -8,7 +8,6 @@ import Status from "@/components/Status";
 import { Row, Col, ConfigProvider as AntdConfigProvider, theme as AntdTheme } from "antd";
 import { ToolbarProvider } from "@/components/providers/toolbar-provider";
 import { ConfigProvider } from "@/components/providers/config-provider";
-// import { HotkeysProvider } from "@/components/providers/hotkeys-provider";
 import { GlobalConfig } from "./types/global-config";
 import { useToolbarStore } from "./store/toolbar";
 import { useInitSyncScrollStatus } from "./hooks/use-init-sync-scroll-status";
@@ -165,21 +164,19 @@ const EditorWrapper = forwardRef<EditorRef, GlobalConfig>((config, ref) => {
           <AntdConfigProvider
             theme={{ algorithm: config.theme === "light" ? undefined : AntdTheme.darkAlgorithm }}
           >
-            {/* <HotkeysProvider> */}
             <ToolbarProvider toolbarConfig={config.toolbars}>
               {/* 工具栏 */}
               <Toolbar />
-              {/* 内容区域 */}
-              <ContentWrapper>
-                <StyledRow>
-                  <RenderRow
-                    editor={<Editor isSyncScroll={isSyncScroll} {...config} />}
-                    preview={<Preview content={deferredContent} isSyncScroll={isSyncScroll} />}
-                  />
-                </StyledRow>
-              </ContentWrapper>
             </ToolbarProvider>
-            {/* </HotkeysProvider> */}
+            {/* 内容区域 */}
+            <ContentWrapper>
+              <StyledRow>
+                <RenderRow
+                  editor={<Editor isSyncScroll={isSyncScroll} {...config} />}
+                  preview={<Preview content={deferredContent} isSyncScroll={isSyncScroll} />}
+                />
+              </StyledRow>
+            </ContentWrapper>
             {/* 底部状态栏 */}
             {config.status ? (
               <Status isSyncScroll={isSyncScroll} updateSyncScrollStatus={updateSyncScrollStatus} />

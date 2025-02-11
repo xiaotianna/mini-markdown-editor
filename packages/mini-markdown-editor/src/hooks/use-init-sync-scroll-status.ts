@@ -1,6 +1,6 @@
 import { SYNC_SCROLL_STATUS } from "@/common";
 import { safeLocalStorage } from "@/utils/storage";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export const useInitSyncScrollStatus = () => {
   const localStorage = safeLocalStorage();
@@ -17,11 +17,14 @@ export const useInitSyncScrollStatus = () => {
     }
   };
 
-  const updateSyncScrollStatus = (status: boolean) => {
-    localStorage.setItem(SYNC_SCROLL_STATUS, String(status));
-    //! 更新状态
-    setIsSyncScroll(status);
-  };
+  const updateSyncScrollStatus = useCallback(
+    (status: boolean) => {
+      localStorage.setItem(SYNC_SCROLL_STATUS, String(status));
+      //! 更新状态
+      setIsSyncScroll(status);
+    },
+    [isSyncScroll],
+  );
 
   // 初始化同步滚动状态
   useEffect(() => {
