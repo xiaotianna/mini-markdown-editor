@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from "react";
-import { Editor } from "@mini-markdown/editor";
+import { Editor, insertContent, ToolbarManager } from "@mini-markdown/editor";
 import type { Callback, EditorRef } from "@mini-markdown/editor";
 import { Button, message } from "antd";
 // 可根据需要引入不同的主题
@@ -133,14 +133,14 @@ const App: FC = () => {
         <Editor
           status={true}
           onUpload={handleUpload}
-          local={true}
+          local={false}
           theme={theme}
           onChange={handleChange}
           enableShortcuts={true}
           onDragUpload={handlePatseUpload}
           onPatseUpload={handlePatseUpload}
           ref={editorRef}
-          initialValue={
+          value={
             "# 标题\n## 二级标题\n### 三级标题\n#### 四级标题\n##### 五级标题\n###### 六级标题\n"
           }
         />
