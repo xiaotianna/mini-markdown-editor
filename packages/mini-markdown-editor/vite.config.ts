@@ -63,6 +63,8 @@ export default defineConfig(({ mode }) => {
             "@codemirror/view": "view",
             "highlight.js": "hljs",
             nanoid: "nanoid",
+            immer: "immer",
+            events: "events",
           },
         },
       },
