@@ -1,6 +1,26 @@
 # mini-markdown-editor
 
-## 脚本
+## 安装
+
+```bash
+pnpm install @mini-markdown-rc/editor
+```
+
+## 使用
+
+```tsx
+import { Editor } from "@mini-markdown-rc/editor";
+
+export default function App() {
+  return <Editor />;
+}
+```
+
+## API
+
+具体API参考 [https://github.com/xiaotianna/mini-markdown-editor/blob/master/docs/guide/api.md](https://github.com/xiaotianna/mini-markdown-editor/blob/master/docs/guide/api.md)
+
+## 开发脚本
 
 ```bash
 ## 开发环境运行
