@@ -133,7 +133,7 @@ const Editor: FC<EditorProps> = (props) => {
   };
 
   const toolbars = toolbarConfig.getAllToolbars();
-  console.log(toolbars);
+
   // 创建编辑器扩展
   const extensions = useMemo(
     () =>

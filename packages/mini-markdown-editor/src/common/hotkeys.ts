@@ -85,7 +85,7 @@ export class Hotkey {
     return this.command
       .split("+")
       .map((key) => {
-        if (key === "mod") return "Mod";
+        if (key === "mod") return Hotkey.isMac ? "⌘" : "Ctrl";
         if (key === "shift") return "Shift";
         if (key === "alt") return "Alt";
         if (key === "ctrl") return "Ctrl";

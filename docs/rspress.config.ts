@@ -12,9 +12,7 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: "指南", link: "/guide/", activeMatch: "/guide" },
-      { text: "文档", link: "/docs/", activeMatch: "/docs" },
       { text: "在线尝试", link: "/example/", activeMatch: "/example" },
-      { text: "关于我们", link: "/team/", activeMatch: "/team" },
     ],
     sidebar,
     socialLinks: [
