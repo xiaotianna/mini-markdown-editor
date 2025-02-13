@@ -1,9 +1,315 @@
-import { PackageManagerTabs } from '@theme';
+import { PackageManagerTabs } from "@theme";
 
 # AST 解析
 
-完成ast解析，有增量构建。
+一个 Markdown 编辑器的 AST 解析器，支持 `ESM` 和 `CommonJS` 两个格式，也支持增量构建。
 
 ## 安装
 
-<PackageManagerTabs command="install mini-markdown-ast-parser" />
+<PackageManagerTabs command="install @mini-markdown-rc/ast-parser" />
+
+## API
+
+### parseMarkdown
+
+- 参数：`markdown: string, options?: IncrementalParseOptions`
+  - `markdown`：markdown 内容
+  - `options`：可选参数
+    - `prevMarkdown`上次解析的 markdown 内容
+    - `prevRoot`：上次解析的 ast 对象，用于增量构建
+- 返回值：`RootTokens`，解析的 ast 对象
+
+用于解析 markdown 文本，返回一个 ast 对象。
+
+**基本使用：**
+
+```ts
+import { parseMarkdown } from "@mini-markdown-rc/ast-parser";
+
+const ast = parseMarkdown("# Hello World");
+```
+
+:::details 解析后的内容
+
+```js
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "heading",
+      "depth": 1,
+      "children": [
+        {
+          "type": "text",
+          "value": "Hello World",
+          "position": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 1,
+              "column": 12,
+              "offset": 11
+            }
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 14,
+          "offset": 13
+        }
+      }
+    }
+  ],
+  "position": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 1,
+      "column": 1,
+      "offset": 13
+    }
+  }
+}
+```
+
+:::
+
+**增量构建：**
+
+```ts
+import { parseMarkdown } from "@mini-markdown-rc/ast-parser";
+
+// 模拟上一次解析的 markdown 内容和 ast 对象
+const lastCode = "#Hello World";
+const lastAst =
+  '{"type":"root","children":[{"type":"heading","depth":1,"children":[{"type":"text","value":"Hello World","position":{"start":{"line":1,"column":1,"offset":0},"end":{"line":1,"column":12,"offset":11}}}],"position":{"start":{"line":1,"column":1,"offset":0},"end":{"line":1,"column":14,"offset":13}}}],"position":{"start":{"line":1,"column":1,"offset":0},"end":{"line":1,"column":1,"offset":13}}}';
+
+const ast = parseMarkdown("# Hello World, this is a test", {
+  prevMarkdown: lastCode,
+  prevRoot: JSON.parse(lastAst),
+});
+```
+
+### transformHtml
+
+- 参数：`ast: RootTokens`
+- 返回值：`string`，转换后的 html 字符串
+
+用于将 ast 对象转换为 html 字符串。
+
+```ts
+import { parseMarkdown, transformHtml } from "@mini-markdown-rc/ast-parser";
+
+const ast = parseMarkdown("# Hello World");
+const html = transformHtml(ast);
+
+// 输出的内容：<h1 class="mini-md-h1" data-line="1">Hello World</h1>
+console.log(html);
+```
+
+:::tip 注意
+
+解析后，在 html 中，添加了 `data-line` 属性，用于标识行号。同时对于一些特殊节点，也添加了 `class` 属性，用于处理样式。
+
+该包中也导出了前缀常量`prefix`，值为：`mini-md`。
+
+```ts
+import { prefix } from "@mini-markdown-rc/ast-parser";
+```
+
+:::
+
+## 不同环境下使用
+
+```js
+// esm
+import { parseMarkdown, transformHtml } from "@mini-markdown-rc/ast-parser";
+// commonjs
+const { parseMarkdown, transformHtml } = require("@mini-markdown-rc/ast-parser");
+```
+
+## 案例
+
+```js
+// 读取 markdown 文件
+const code = fs.readFileSync(path.resolve(__dirname, "./demo.md"), "utf-8");
+// 解析 markdown 内容为 ast 对象
+const ast = parseMarkdown(code);
+// 转换 ast 为 html 字符串
+const html = transformHtml(ast);
+// 插入样式
+const newHtml = `<link rel="stylesheet" href="./demo.css">` + html;
+// highlight.js 样式文件（对 代码块 着色）
+const node_modulesCSSPath = path.resolve(
+  __dirname,
+  "../node_modules/highlight.js/styles/atom-one-dark.min.css",
+);
+const node_modulesCSS = fs.readFileSync(node_modulesCSSPath, "utf-8");
+
+const indexHtml = `
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>${node_modulesCSS}</style>
+  </head>
+  <body>
+    ${newHtml}
+  </body>
+  </html>
+`;
+
+fs.writeFileSync(path.resolve(__dirname, "./index.html"), indexHtml);
+console.log("index.html 生成成功\npath:", path.resolve(__dirname, "./index.html"));
+```
+
+## 类型
+
+### TOKENS_TYPES
+
+分词常量。
+
+```ts
+// 定义 Tokens 分词类型：区分当前是什么类型的节点
+export const TOKENS_TYPES = {
+  // 块级
+  Heading: "heading", // 标题
+  Paragraph: "paragraph", // 段落
+  Blockquote: "blockquote", // 引用
+  ThematicBreak: "thematicBreak", // 分割线
+  // 行级
+  Text: "text", // 文本
+  Bold: "bold", // 加粗
+  Italic: "italic", // 斜体
+  Underline: "underline", // 下划线
+  Delete: "delete", // 删除线
+  Link: "link", // 链接
+  Image: "image", // 图片
+  InlineCode: "inlineCode", // 行内高亮
+  // 其他
+  Code: "code", // 代码块
+  List: "list", // 列表
+  ListItem: "listItem", // 列表项
+  Html: "html", // html 标签
+  Table: "table", // 表格
+  TableRow: "tableRow", // 表格行
+  TableCell: "tableCell", // 表格单元格
+} as const;
+```
+
+### Tokens
+
+每个节点的类型。
+
+````ts
+type PositionType = {
+  start: {
+    line: number;
+    column: number;
+    offset: number;
+  };
+  end: {
+    line: number;
+    column: number;
+    offset: number;
+  };
+};
+
+export interface Tokens {
+  type: TokenTypeVal;
+  value?: string; // 节点的值
+  /**
+   * 只对 heading 有效
+   */
+  depth?: number; // 标题的层级
+  /**
+   * 只对 list 有效
+   */
+  ordered?: boolean; // 是否有序
+  /**
+   * 只对 image、link 有效
+   * （注意：link 没有 alt 属性）
+   */
+  title?: string | null; // 图片、链接的标题
+  url?: string; // 图片、链接的链接
+  alt?: string; // 图片的alt
+  /**
+   * 只对 code 有效
+   */
+  lang?: string; // 代码块的lang
+  meta?: string | null; // 代码块的meta(```js [meta])
+  children?: Tokens[];
+  position: PositionType;
+}
+````
+
+### RootTokens
+
+根节点类型。
+
+```ts
+export interface RootTokens {
+  type: "root";
+  children: Tokens[];
+  position: PositionType;
+}
+```
+
+### Tokens的 Key、Value 类型
+
+```ts
+// 导出分词类型（也就是区分当前是什么类型的节点）
+export type TokensTypes = Record<keyof typeof TOKENS_TYPES, TokenTypeVal>;
+// 分词类型的 key
+export type TokensTypesKey = keyof TokensTypes;
+// 分词类型的 value
+/**
+ * type TokenTypeVal =
+  | "bold"
+  | "link"
+  | "heading"
+  | "paragraph"
+  | "blockquote"
+  | "thematicBreak"
+  | "text"
+  | "italic"
+  | "underline"
+  | "delete"
+  | "image"
+  | "inlineCode"
+  | "code"
+  | "list"
+  | "listItem"
+  | "html"
+  | "table"
+  | "tableRow"
+  | "tableCell";
+ */
+export type TokenTypeVal = (typeof TOKENS_TYPES)[keyof typeof TOKENS_TYPES];
+```
+
+### IncrementalParseOptions
+
+增量构建配置项类型。
+
+```ts
+export interface IncrementalParseOptions {
+  prevMarkdown?: string;
+  prevRoot?: RootTokens;
+}
+```
