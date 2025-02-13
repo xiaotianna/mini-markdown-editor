@@ -18,7 +18,7 @@ export default function App() {
 
 ## API
 
-具体API参考 [https://github.com/xiaotianna/mini-markdown-editor/blob/master/docs/guide/api.md](https://github.com/xiaotianna/mini-markdown-editor/blob/master/docs/guide/api.md)
+具体API参考 [https://github.com/xiaotianna/mini-markdown-editor/blob/master/docs/guide/api.mdx](https://github.com/xiaotianna/mini-markdown-editor/blob/master/docs/guide/api.mdx)
 
 ## 开发脚本
 
