@@ -1,4 +1,4 @@
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, act, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { vi, describe, test, expect, beforeEach } from "vitest";
 import Contents from "../Contents";
@@ -84,16 +84,14 @@ describe("Contents 组件测试", () => {
 
   test("内容变化时更新目录", async () => {
     const { rerender } = render(<Contents />);
-
     const mockH3 = document.createElement("h3");
     mockH3.innerText = "Title 3";
     mockH3.setAttribute("data-line", "3");
     mockPreviewElement.appendChild(mockH3);
-    //让组件重新渲染
-    await act(async () => {
-      mockPreviewElement.dispatchEvent(new Event("scroll"));
-    });
     rerender(<Contents />);
-    expect(screen.getAllByRole("link")).toHaveLength(3);
+
+    waitFor(() => {
+      expect(screen.getAllByRole("link")).toHaveLength(3);
+    });
   });
 });
