@@ -1,11 +1,11 @@
 import { FC, useState } from "react";
 import styled from "styled-components";
-import { Editor } from "@mini-markdown/editor";
-import type { Callback } from "@mini-markdown/editor";
+import { Editor } from "@mini-markdown-rc/editor";
+import type { Callback } from "@mini-markdown-rc/editor";
 import { Button, message } from "antd";
 // 可根据需要引入不同的主题
 import "highlight.js/styles/atom-one-dark.css";
-import { ViewUpdate } from "@mini-markdown/editor";
+import { ViewUpdate } from "@mini-markdown-rc/editor";
 
 const AppWrapper = styled.div`
   width: 100%;

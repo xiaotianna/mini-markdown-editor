@@ -1,4 +1,4 @@
-# @mini-markdown/ast-parser markdown 编辑器 ast 解析器
+# @mini-markdown-rc/ast-parser markdown 编辑器 ast 解析器
 
 一个 markdown 编辑器的 ast 解析器，导出了 `parseMarkdown` 和 `transformHtml` 方法
 
@@ -11,29 +11,29 @@
 
 ```bash
 # npm
-npm install @mini-markdown/ast-parser
+npm install @mini-markdown-rc/ast-parser
 # yarn
-yarn add @mini-markdown/ast-parser
+yarn add @mini-markdown-rc/ast-parser
 # pnpm
-pnpm add @mini-markdown/ast-parser
+pnpm add @mini-markdown-rc/ast-parser
 ```
 
 ### 开发环境 monorepo 项目中安装
 
 ```bash
 # 进入到子项目目录终端
-pnpm add @mini-markdown/ast-parser
+pnpm add @mini-markdown-rc/ast-parser
 ```
 
 ## 使用
 
 ```js
 // esm
-import { parseMarkdown, transformHtml } from '@mini-markdown/ast-parser'
+import { parseMarkdown, transformHtml } from '@mini-markdown-rc/ast-parser'
 // commonjs
-const { parseMarkdown, transformHtml } = require('@mini-markdown/ast-parser')
+const { parseMarkdown, transformHtml } = require('@mini-markdown-rc/ast-parser')
 // 样式导入
-import '@mini-markdown/ast-parser/style'
+import '@mini-markdown-rc/ast-parser/style'
 
 // 解析 markdown 内容为 ast 对象
 const ast = parseMarkdown(code)
@@ -98,5 +98,3 @@ console.log('index.html 生成成功\npath:', path.resolve(__dirname, './index.h
 - `pnpm dev`：开发模式
 - `pnpm build`：打包
 - `pnpm demo`：构建案例项目
-
-

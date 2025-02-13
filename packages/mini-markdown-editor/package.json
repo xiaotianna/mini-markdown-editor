@@ -1,6 +1,6 @@
 {
-  "name": "@mini-markdown/editor",
-  "version": "0.0.0",
+  "name": "@mini-markdown-rc/editor",
+  "version": "1.0.0",
   "type": "module",
   "description": "mini-markdown-editor",
   "keywords": [
@@ -20,8 +20,21 @@
       "require": "./dist/mini-markdown-editor.umd.cjs"
     }
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "homepage": "https://github.com/xiaotianna/mini-markdown-editor/tree/master/packages/mini-markdown-editor",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaotianna/mini-markdown-editor.git"
+  },
   "scripts": {
-    "build:ast": "pnpm -F @mini-markdown/ast-parser build",
+    "build:ast": "pnpm -F @mini-markdown-rc/ast-parser build",
     "dev": "pnpm build:ast && vite",
     "build": "pnpm build:ast && tsc -b && vite build",
     "lint": "eslint .",
@@ -49,7 +62,7 @@
     "@codemirror/lang-markdown": "^6.3.2",
     "@codemirror/language-data": "^6.5.1",
     "@eslint/js": "^9.17.0",
-    "@mini-markdown/ast-parser": "workspace:^1.0.0",
+    "@mini-markdown-rc/ast-parser": "workspace:*",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",

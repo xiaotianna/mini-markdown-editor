@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useRef, useState } from "react";
-import { Editor, insertContent, ToolbarManager } from "@mini-markdown/editor";
-import type { Callback, EditorRef } from "@mini-markdown/editor";
+import { Editor, insertContent, ToolbarManager } from "@mini-markdown-rc/editor";
+import type { Callback, EditorRef } from "@mini-markdown-rc/editor";
 import { Button, message } from "antd";
 // 可根据需要引入不同的主题
 import "highlight.js/styles/atom-one-dark.css";
-import { ViewUpdate } from "@mini-markdown/editor";
+import { ViewUpdate } from "@mini-markdown-rc/editor";
 
 export const frontmatter = {
   // 声明布局类型

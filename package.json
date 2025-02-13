@@ -1,6 +1,7 @@
 {
-  "name": "mini-markdown",
+  "name": "mini-markdown-rc",
   "version": "1.0.0",
+  "private": true,
   "type": "module",
   "engines": {
     "node": ">=18",
@@ -8,19 +9,33 @@
   },
   "engine-strict": true,
   "packageManager": "pnpm@7.33.5",
+  "homepage": "https://github.com/xiaotianna/mini-markdown-editor",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaotianna/mini-markdown-editor.git"
+  },
+  "keywords": [
+    "markdown-editor",
+    "react",
+    "vite",
+    "markdown-ast",
+    "ast"
+  ],
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "in": "pnpm install -r",
     "clear": "rimraf --glob ./node_modules ./packages/**/node_modules ./packages/**/dist ./pnpm-lock.yaml",
-    "dev:ast": "pnpm -F @mini-markdown/ast-parser dev",
-    "build:ast": "pnpm -F @mini-markdown/ast-parser build",
-    "build:ast:play": "pnpm -F @mini-markdown/ast-parser build:play",
-    "dev:editor": "pnpm -F @mini-markdown/editor dev",
-    "build:editor": "pnpm -F @mini-markdown/editor build",
-    "test:editor": "pnpm -F @mini-markdown/editor test",
-    "test:editor:watch": "pnpm -F @mini-markdown/editor test:watch",
-    "test:coverage": "pnpm -F @mini-markdown/editor coverage",
-    "dev:play": "pnpm -F @mini-markdown/play dev",
+    "dev:ast": "pnpm -F @mini-markdown-rc/ast-parser dev",
+    "build:ast": "pnpm -F @mini-markdown-rc/ast-parser build",
+    "build:ast:play": "pnpm -F @mini-markdown-rc/ast-parser build:play",
+    "dev:editor": "pnpm -F @mini-markdown-rc/editor dev",
+    "build:editor": "pnpm -F @mini-markdown-rc/editor build",
+    "test:editor": "pnpm -F @mini-markdown-rc/editor test",
+    "test:editor:watch": "pnpm -F @mini-markdown-rc/editor test:watch",
+    "test:coverage": "pnpm -F @mini-markdown-rc/editor coverage",
+    "dev:play": "pnpm -F @mini-markdown-rc/play dev",
+    "dev:docs": "pnpm -F @mini-markdown-rc/docs dev",
+    "build:docs": "pnpm -F @mini-markdown-rc/docs build",
     "prepare": "husky",
     "lint": "node ./scripts/zx-lint.js",
     "prettier": "prettier --write ."
@@ -37,6 +52,7 @@
     }
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.12",
     "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
     "cz-vinyl": "1",

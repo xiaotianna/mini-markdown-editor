@@ -1,5 +1,5 @@
 {
-  "name": "@mini-markdown/ast-parser",
+  "name": "@mini-markdown-rc/ast-parser",
   "version": "1.0.0",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -15,6 +15,19 @@
       "import": "./dist/style/index.css",
       "require": "./dist/style/index.css"
     }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "homepage": "https://github.com/xiaotianna/mini-markdown-editor/tree/master/packages/mini-markdown-ast-parser",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaotianna/mini-markdown-editor.git"
   },
   "scripts": {
     "watch": "rollup -c rollup.config.ts --configPlugin typescript -w",

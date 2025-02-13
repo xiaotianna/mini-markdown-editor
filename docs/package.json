@@ -1,6 +1,7 @@
 {
-  "name": "docs",
+  "name": "@mini-markdown-rc/docs",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
     "dev": "rspress dev",
     "build": "rspress build",
@@ -13,7 +14,7 @@
     "rspress": "^1.41.0"
   },
   "dependencies": {
-    "@mini-markdown/editor": "workspace:^0.0.0",
+    "@mini-markdown-rc/editor": "workspace:*",
     "antd": "^5.23.2"
   }
 }

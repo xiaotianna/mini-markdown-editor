@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useCallback } from "react";
-import { parseMarkdown, transformHtml } from "@mini-markdown/ast-parser";
+import { parseMarkdown, transformHtml } from "@mini-markdown-rc/ast-parser";
 import styled from "styled-components";
 import { useEditorContentStore } from "@/store/editor";
 import { handlePreviewScroll } from "@/utils/handle-scroll";

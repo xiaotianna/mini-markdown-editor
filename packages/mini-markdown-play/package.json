@@ -1,5 +1,5 @@
 {
-  "name": "@mini-markdown/play",
+  "name": "@mini-markdown-rc/play",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@mini-markdown/editor": "workspace:^0.0.0",
+    "@mini-markdown-rc/editor": "workspace:*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.1.3",
