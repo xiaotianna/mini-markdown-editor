@@ -143,3 +143,22 @@ pnpm changeset version
 ```bash
 pnpm changeset publish
 ```
+
+## 关联github
+
+### 1. 添加 GitHub 作为远程仓库
+
+```bash
+git remote add github https://github.com/your-username/your-repo.git
+```
+
+### 2. 推送更新到 GitHub：
+
+当你从 Gitee 拉取更新后，可以将更改推送到 GitHub：
+
+```bash
+git pull origin master  # 从 Gitee 拉取最新代码
+git push github master  # 推送到 GitHub
+```
+
+> 注意：分支名要一致
