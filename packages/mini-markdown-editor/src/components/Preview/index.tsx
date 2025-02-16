@@ -73,8 +73,12 @@ const ScrollWrapper = styled.div`
   height: 100%;
   overflow: auto;
   padding: 10px;
+  box-sizing: border-box;
   word-wrap: break-word;
   color: var(--md-preview-color);
+  * {
+    box-sizing: border-box;
+  }
 
   p {
     line-height: 20px;

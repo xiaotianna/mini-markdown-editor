@@ -18,6 +18,7 @@ const ScrollWrapper = styled.div<{
   height: 100%;
   overflow: auto;
   padding: ${({ $lineNumbers }) => ($lineNumbers ? "0px" : "5px 10px")};
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
 

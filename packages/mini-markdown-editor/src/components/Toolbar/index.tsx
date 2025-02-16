@@ -11,6 +11,7 @@ const ToolbarContent = styled.div`
   /* border-bottom: 1px solid #e6e6e6; */
   border-bottom: 1px solid ${(props) => props.theme.borderColor};
   padding: 4px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;

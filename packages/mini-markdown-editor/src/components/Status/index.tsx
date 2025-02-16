@@ -12,6 +12,7 @@ const StatusWrapper = styled.div`
   color: ${(props) => props.theme.statusColor};
   /* border-top: 1px solid #e6e6e6; */
   border-top: 1px solid ${(props) => props.theme.borderColor};
+  box-sizing: border-box;
   display: flex;
   flex-shrink: 0;
   font-size: 12px;

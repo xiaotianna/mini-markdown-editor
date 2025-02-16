@@ -1,6 +1,6 @@
 {
   "name": "@mini-markdown-rc/editor",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "type": "module",
   "description": "mini-markdown-editor",
   "keywords": [
@@ -55,7 +55,8 @@
     "immer": "^10.1.1",
     "nanoid": "^5.0.9",
     "react-hotkeys-hook": "^4.6.1",
-    "zustand": "^5.0.3"
+    "zustand": "^5.0.3",
+    "highlight.js": "^11.11.1"
   },
   "devDependencies": {
     "@codemirror/commands": "^6.8.0",
@@ -85,8 +86,7 @@
     "typescript-eslint": "^8.18.2",
     "vite": "^6.0.5",
     "vite-plugin-dts": "^4.5.0",
-    "vitest": "^3.0.5",
-    "highlight.js": "^11.11.1"
+    "vitest": "^3.0.5"
   },
   "peerDependencies": {
     "@codemirror/commands": "^6.8.0",

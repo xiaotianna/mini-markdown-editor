@@ -23,6 +23,7 @@ const Container = styled.div`
   height: 100%;
   /* border: 1px solid #e6e6e6; */
   border: 1px solid ${(props) => props.theme.borderColor};
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   /* background-color: #fff; */
