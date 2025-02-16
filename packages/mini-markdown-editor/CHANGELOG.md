@@ -1,5 +1,11 @@
 # @mini-markdown-rc/editor
 
+## 1.0.3
+
+### Patch Changes
+
+- 修改缺少的依赖
+
 ## 1.0.2
 
 ### Patch Changes

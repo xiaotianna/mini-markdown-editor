@@ -1,6 +1,6 @@
 {
   "name": "@mini-markdown-rc/editor",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "module",
   "description": "mini-markdown-editor",
   "keywords": [
@@ -37,6 +37,7 @@
     "build:ast": "pnpm -F @mini-markdown-rc/ast-parser build",
     "dev": "pnpm build:ast && vite",
     "build": "pnpm build:ast && tsc -b && vite build",
+    "build:only-editor": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
@@ -50,7 +51,6 @@
     "antd": "^5.23.2",
     "emoji-mart": "^5.6.0",
     "events": "^3.3.0",
-    "highlight.js": "^11.11.1",
     "html2pdf.js": "^0.10.2",
     "immer": "^10.1.1",
     "nanoid": "^5.0.9",
@@ -85,7 +85,8 @@
     "typescript-eslint": "^8.18.2",
     "vite": "^6.0.5",
     "vite-plugin-dts": "^4.5.0",
-    "vitest": "^3.0.5"
+    "vitest": "^3.0.5",
+    "highlight.js": "^11.11.1"
   },
   "peerDependencies": {
     "@codemirror/commands": "^6.8.0",
@@ -94,6 +95,7 @@
     "@uiw/codemirror-extensions-events": "^4.23.7",
     "@uiw/react-codemirror": "^4.23.7",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "highlight.js": "^11.11.1"
   }
 }

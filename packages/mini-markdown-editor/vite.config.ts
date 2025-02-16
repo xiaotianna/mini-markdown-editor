@@ -4,15 +4,8 @@
 import { defineConfig, PluginOption } from "vite";
 import react from "@vitejs/plugin-react";
 import { fileURLToPath } from "node:url";
-import { readFileSync } from "node:fs";
 // 打包后生成d.ts文件
 import dts from "vite-plugin-dts";
-
-const pkg = JSON.parse(readFileSync("./package.json", { encoding: "utf-8" }));
-// 需要排除的依赖
-const externals = {
-  ...(pkg?.dependencies || {}),
-};
 
 export default defineConfig(({ mode }) => {
   const isProd = mode === "production";
@@ -34,37 +27,14 @@ export default defineConfig(({ mode }) => {
         fileName: "mini-markdown-editor",
       },
       rollupOptions: {
-        external: [
-          "react",
-          "react-dom",
-          "styled-components",
-          ...Object.keys(externals),
-          /@codemirror\/.*/,
-          "@uiw/react-codemirror",
-          "@uiw/codemirror-extensions-events",
-        ],
+        external: ["react", "react-dom", "highlight.js"],
         output: {
           chunkFileNames: `dist/chunks/[name].js`,
+          inlineDynamicImports: true,
           globals: {
             react: "React",
             "react-dom": "ReactDOM",
-            "styled-components": "styled",
-            zustand: "zustand",
-            "@codemirror/commands": "commands",
-            antd: "antd",
-            "html2pdf.js": "html2pdf",
-            "@emoji-mart/data": "data",
-            "@emoji-mart/react": "Picker",
-            "@uiw/react-codemirror": "CodeMirror",
-            "@uiw/codemirror-extensions-events": "events",
-            ahooks: "ahooks",
-            "@codemirror/lang-markdown": "lang-markdown",
-            "@codemirror/language-data": "languageData$1",
-            "@codemirror/view": "view",
             "highlight.js": "hljs",
-            nanoid: "nanoid",
-            immer: "immer",
-            events: "events",
           },
         },
       },
