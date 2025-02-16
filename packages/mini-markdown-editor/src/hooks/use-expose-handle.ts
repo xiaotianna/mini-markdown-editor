@@ -40,8 +40,7 @@ class ExposeHandle {
   public setCursor(start: number, end: number) {
     if (!this.view) return;
     if (start < end) {
-      new Error("start 必须比 end 大");
-      return;
+      throw new Error("start 必须比 end 大");
     }
     // 获取光标位置
     const { from, to } = this.view.state.selection.ranges[0];
