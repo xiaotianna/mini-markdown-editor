@@ -10,8 +10,8 @@ hero:
       text: 快速开始
       link: /guide/start
     - theme: alt
-      text: 开发文档
-      link: /docs
+      text: 指南
+      link: /guide/
   image:
     src: logo.svg
     alt: logo

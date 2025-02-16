@@ -1,7 +1,11 @@
 import { defineConfig } from "rspress/config";
 import { sidebar } from "./sidebar";
+// import { pluginPreview } from "@rspress/plugin-preview";
 
 export default defineConfig({
+  // plugins: [pluginPreview({
+  //   // defaultRenderMode: 'pure'
+  // })],
   root: "./",
   title: "Mini Markdown Editor",
   description: "一个基于 React 的 Markdown 编辑器",

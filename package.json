@@ -38,7 +38,8 @@
     "build:docs": "pnpm -F @mini-markdown-rc/docs build",
     "prepare": "husky",
     "lint": "node ./scripts/zx-lint.js",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "build": "pnpm build:ast && pnpm build:editor"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [

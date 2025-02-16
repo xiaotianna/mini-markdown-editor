@@ -17,7 +17,9 @@
         "allowImportingTsExtensions": true,
     },
     "include": [
-        "docs",
+        "**/*.mdx",
+        "**/*.ts",
+        "**/*.tsx",
         "theme",
         "rspress.config.ts"
     ],

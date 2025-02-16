@@ -21,14 +21,4 @@ export const sidebar = {
       items: [{ text: "使用", link: "/guide/ast-parser" }],
     },
   ],
-  "/docs/": [
-    {
-      text: "源码",
-      items: [],
-    },
-    {
-      text: "开发文档",
-      items: [],
-    },
-  ],
 };
