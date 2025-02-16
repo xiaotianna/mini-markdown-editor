@@ -1,5 +1,17 @@
 # @mini-markdown-rc/editor
 
+## 1.0.7
+
+### Patch Changes
+
+- 修复上个版本未重新构建bug
+
+## 1.0.6
+
+### Patch Changes
+
+- 全局样式调整
+
 ## 1.0.5
 
 ### Patch Changes
