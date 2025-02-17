@@ -9,7 +9,8 @@
   padding: 0 10px;
   word-wrap: break-word;
   color: #3f4a54;
-  margin: 0 !important;
+  margin: 0.8em 0;
+  font-weight: 700;
 }
 
 .mini-md-h1 {
@@ -40,7 +41,6 @@
   line-height: 22px;
   padding: 2px 4px;
   color: #3594f7;
-  /* #f1f1f1 */
   background-color: rgba(59, 170, 250, 0.1);
   border-radius: 4px;
 }
@@ -78,8 +78,7 @@
   margin: 20px 0;
   overflow: auto;
   padding: 0 1.2em;
-  background-color: #ececec;
-  border-left: 5px solid #35b378;
+  border-left: 5px solid #d0d7de;
   color: #3f4a54;
 }
 
@@ -107,10 +106,35 @@
 .mini-md-ul,
 .mini-md-ol {
   margin: 0.6em 0;
+  padding-inline-start: 30px;
+  list-style: initial;
+}
+
+.mini-md-li {
+  list-style: initial;
 }
 
 .mini-md-li::marker {
   color: #1456f0;
+}
+
+.mini-md-ul > .mini-md-li {
+  list-style-type: disc;
+}
+.mini-md-ul .mini-md-ul > .mini-md-li {
+  list-style-type: circle;
+}
+.mini-md-ul .mini-md-ul .mini-md-ul > .mini-md-li {
+  list-style-type: square;
+}
+.mini-md-ol > .mini-md-li {
+  list-style-type: decimal;
+}
+.mini-md-ol .mini-md-ol > .mini-md-li {
+  list-style-type: lower-alpha;
+}
+.mini-md-ol .mini-md-ol .mini-md-ol > .mini-md-li {
+  list-style-type: lower-roman;
 }
 
 .mini-md-code-container {
@@ -177,9 +201,19 @@
   border-top-right-radius: 0;
   color: #a9b7c6;
   display: block;
-  font-family: source-code-pro, Menlo, Monaco, Consolas, Courier New, monospace;
+  font-family:
+    source-code-pro,
+    Menlo,
+    Monaco,
+    Consolas,
+    Courier New,
+    monospace;
   font-size: 14px;
   line-height: 1.6;
   overflow: auto;
   padding: 1em;
+}
+
+.markdown-editor-preview p {
+  margin: 0 !important;
 }

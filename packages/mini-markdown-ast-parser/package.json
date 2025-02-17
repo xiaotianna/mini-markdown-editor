@@ -14,7 +14,8 @@
     "./style": {
       "import": "./dist/style/index.css",
       "require": "./dist/style/index.css"
-    }
+    },
+    "./*": "./dist/*"
   },
   "publishConfig": {
     "access": "public",
