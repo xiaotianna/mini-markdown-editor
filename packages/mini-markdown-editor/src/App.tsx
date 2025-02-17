@@ -200,11 +200,12 @@ const App: FC = () => {
       >
         获取预览区实例
       </Button>
+      {/* <EditorWrapper theme={theme as "light" | "dark"} /> */}
       <EditorWrapper
         placeholder={"请输入内容..."}
-        status={true}
+        // status={true}
         onUpload={handleUpload}
-        local={false}
+        // local={false}
         lineNumbers={true}
         theme={theme as "light" | "dark"}
         // onChange={handleChange}
@@ -233,7 +234,7 @@ const App: FC = () => {
             },
           ],
         }}
-        value="## Hello World"
+        value="## Hello World."
       />
     </AppWrapper>
   );

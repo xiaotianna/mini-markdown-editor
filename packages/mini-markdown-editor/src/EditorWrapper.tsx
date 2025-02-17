@@ -1,4 +1,4 @@
-import { FC, forwardRef, Fragment, useDeferredValue } from "react";
+import { FC, forwardRef, Fragment, useDeferredValue, useEffect } from "react";
 import styled from "styled-components";
 import { useEditorContentStore } from "@/store/editor";
 import Toolbar from "@/components/Toolbar";
@@ -14,6 +14,7 @@ import { useInitSyncScrollStatus } from "./hooks/use-init-sync-scroll-status";
 import GlobalTheme from "./theme/global-theme";
 import { EditorRef } from "./types/ref";
 import { useExposeHandle } from "./hooks/use-expose-handle";
+import { defaultGlobalConfig } from "./config/global";
 
 const Container = styled.div`
   width: 100%;
@@ -157,6 +158,10 @@ const EditorWrapper = forwardRef<EditorRef, GlobalConfig>((config, ref) => {
   // 外部ref使用的方法
   useExposeHandle(ref);
 
+  useEffect(() => {
+    console.log(config.status);
+  }, [config]);
+
   return (
     <GlobalTheme theme={config.theme}>
       <Container className={`md-editor ${isFullScreen && "md-editor-fullscreen"}`}>
@@ -179,7 +184,7 @@ const EditorWrapper = forwardRef<EditorRef, GlobalConfig>((config, ref) => {
               </ContentWrapper>
             </ToolbarProvider>
             {/* 底部状态栏 */}
-            {config.status ? (
+            {{ ...defaultGlobalConfig, ...config }.status ? (
               <Status isSyncScroll={isSyncScroll} updateSyncScrollStatus={updateSyncScrollStatus} />
             ) : null}
           </AntdConfigProvider>
