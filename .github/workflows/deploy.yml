@@ -2,7 +2,7 @@ name: Mini Markdown Editor Docs
 
 on:
   push:
-    branches: [master]
+    branches: [master] # 监听 master 分支的 push 事件
 
   workflow_dispatch:
 
@@ -36,13 +36,13 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Install dependencies
         run: pnpm install
-      - name: Build with Rspress
+      - name: Build with Rspress Docs
         run: |
-          pnpm run build
+          pnpm build:docs
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: docs/dist
 
   # Deployment job
   deploy:

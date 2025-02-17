@@ -1,5 +1,5 @@
-@media screen and (min-width: 960px) {
-  /* .rspress-doc-container .list-disc li {
+/* @media screen and (min-width: 960px) {
+  .rspress-doc-container .list-disc li {
     font-size: 18px;
   }
   .rspress-doc-container .list-decimal li {
@@ -7,10 +7,10 @@
   }
   .rspress-doc-container p {
     font-size: 18px;
-  } */
-}
+  }
+} */
 
-.rspress-playground-horizontal {
+/* .rspress-playground-horizontal {
   min-height: 600px !important;
   height: 90% !important;
 }
@@ -19,4 +19,4 @@
 }
 .rspress-playground-horizontal > .rspress-playground-editor {
   width: 40% !important;
-}
+} */
