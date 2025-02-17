@@ -1,6 +1,6 @@
-# 介绍
+# Mini Markdown Editor
 
-## 背景
+## 介绍
 
 Mini Markdown Editor 是 2025年寒假字节青训营「前端」的一个开源项目。
 
@@ -9,32 +9,43 @@ Mini Markdown Editor 是 2025年寒假字节青训营「前端」的一个开源
 该项目采用 `pnpm` + `monorepo` 进行管理，包含两个核心子项目：
 
 - `@mini-markdown-rc/ast-parser`：核心库，实现 Markdown 语法的 AST 解析器，用于解析 Markdown 文本，生成 AST、HTML。
+
 - `@mini-markdown-rc/editor`：一款 React 的 Markdown 编辑器。
 
 ## 优点
 
 简单易用、轻量、性能高，十万➕内容依然流畅。
 
-
 # 快速开始
 
 ## 安装
 
 ```bash
+
 # npm
+
 npm install @mini-markdown-rc/editor
+
 # yarn
+
 yarn add install @mini-markdown-rc/editor
+
 # pnpm
+
 pnpm add install @mini-markdown-rc/editor
+
 ```
 
 ## 使用
 
 ```tsx
+
 import { Editor } from "@mini-markdown-rc/editor";
 
 export default function App() {
+
   return <Editor />;
+
 }
+
 ```

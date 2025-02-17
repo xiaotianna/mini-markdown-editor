@@ -15,8 +15,9 @@ export default defineConfig({
         module: {
           rules: [
             {
-              test: /\.raw.txt$/,
-              type: "asset/source",
+              enforce: "pre",
+              test: /\.mdx$/,
+              loader: "./loader/init-value-loader.js",
             },
           ],
         },
