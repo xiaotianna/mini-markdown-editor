@@ -1,6 +1,6 @@
 {
   "name": "@mini-markdown-rc/ast-parser",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -14,7 +14,8 @@
     "./style": {
       "import": "./dist/style/index.css",
       "require": "./dist/style/index.css"
-    }
+    },
+    "./*": "./dist/*"
   },
   "publishConfig": {
     "access": "public",

@@ -1,5 +1,17 @@
 # @mini-markdown-rc/editor
 
+## 1.0.9
+
+### Patch Changes
+
+- 新增常量导出, 移除项目中多余的console
+
+## 1.0.8
+
+### Patch Changes
+
+- 修复底部状态栏默认配置不生效bug
+
 ## 1.0.7
 
 ### Patch Changes

@@ -14,6 +14,7 @@ import { useInitSyncScrollStatus } from "./hooks/use-init-sync-scroll-status";
 import GlobalTheme from "./theme/global-theme";
 import { EditorRef } from "./types/ref";
 import { useExposeHandle } from "./hooks/use-expose-handle";
+import { defaultGlobalConfig } from "./config/global";
 
 const Container = styled.div`
   width: 100%;
@@ -179,7 +180,7 @@ const EditorWrapper = forwardRef<EditorRef, GlobalConfig>((config, ref) => {
               </ContentWrapper>
             </ToolbarProvider>
             {/* 底部状态栏 */}
-            {config.status ? (
+            {{ ...defaultGlobalConfig, ...config }.status ? (
               <Status isSyncScroll={isSyncScroll} updateSyncScrollStatus={updateSyncScrollStatus} />
             ) : null}
           </AntdConfigProvider>

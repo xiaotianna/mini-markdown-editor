@@ -21,6 +21,12 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       outDir: "dist",
+      terserOptions: {
+        compress: {
+          drop_console: isProd,
+          drop_debugger: isProd,
+        },
+      },
       lib: {
         entry: "src/index.tsx",
         name: "mini-markdown-editor",

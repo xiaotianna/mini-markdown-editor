@@ -43,7 +43,7 @@ pnpm dev:docs
 # 构建 mini-markdown-docs
 pnpm build:docs
 
-# 发布 npm
+# 发布 npm（需要先对代码进行打包）
 pnpm changeset
 pnpm changeset version
 pnpm changeset publish

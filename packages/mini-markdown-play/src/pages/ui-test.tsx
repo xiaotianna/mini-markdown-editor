@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Editor } from "@mini-markdown-rc/editor";
 import type { Callback } from "@mini-markdown-rc/editor";
@@ -6,6 +6,8 @@ import { Button, message } from "antd";
 // 可根据需要引入不同的主题
 import "highlight.js/styles/atom-one-dark.css";
 import { ViewUpdate } from "@mini-markdown-rc/editor";
+import { parseMarkdown } from "@mini-markdown-rc/ast-parser";
+import "@mini-markdown-rc/ast-parser/style/index.css";
 
 const AppWrapper = styled.div`
   width: 100%;
@@ -15,6 +17,10 @@ const AppWrapper = styled.div`
 `;
 
 const App: FC = () => {
+  useEffect(() => {
+    const res = parseMarkdown(`# hello world`);
+    console.log(res);
+  });
   // 请求测试
   const handleUpload = async (file: File, callback: Callback) => {
     await new Promise((resolve) => {
