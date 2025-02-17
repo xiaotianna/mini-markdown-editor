@@ -1,4 +1,4 @@
-import { PackageManagerTabs } from "@theme";
+import { PackageManagerTabs } from "@rspress/theme-default";
 
 # AST 解析
 
@@ -139,6 +139,18 @@ import { prefix } from "@mini-markdown-rc/ast-parser";
 import { parseMarkdown, transformHtml } from "@mini-markdown-rc/ast-parser";
 // commonjs
 const { parseMarkdown, transformHtml } = require("@mini-markdown-rc/ast-parser");
+```
+
+## 样式
+
+该库导出了一个默认样式文件，用于渲染转换后的html样式。
+
+> 对于代码块的样式，需要手动引入样式文件。
+>
+> `import "highlight.js/styles/atom-one-dark.css";`
+
+```ts
+import '@mini-markdown-rc/ast-parser/style/index.css'
 ```
 
 ## 案例
