@@ -9,6 +9,7 @@ export default defineConfig({
       editorPosition: "right",
     }),
   ],
+  base: "mini-markdown-editor",
   builderConfig: {
     tools: {
       rspack: {
