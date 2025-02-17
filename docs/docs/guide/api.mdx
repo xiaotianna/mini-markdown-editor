@@ -99,9 +99,7 @@ import CustomToolbarIcon from "@/assets/images/custom-toolbar.svg?raw";
 
 该方式，工具栏的样式需要完全自定义。
 
-import Img from "./img/自定义工具栏-component.png";
-
-<img src={Img} />
+![自定义toolbar的描述](./img/custom-toolbar.png)
 
 ```tsx
 <Editor
@@ -894,6 +892,16 @@ import { insertContent } from "mini-markdown-editor";
   重做
 </button>;
 ```
+
+## 常量
+
+### EDITOR_CONTENT_KEY
+
+编辑区内容存储(localStorage)的 `key`，值为 `markdown-editor-content`。
+
+### SYNC_SCROLL_STATUS
+
+同步滚动状态(存储在localStorage中)，值为 `markdown-editor-sync-scroll`。
 
 ## 类型
 
