@@ -1,4 +1,4 @@
-import { FC, forwardRef, Fragment, useDeferredValue, useEffect } from "react";
+import { FC, forwardRef, Fragment, useDeferredValue } from "react";
 import styled from "styled-components";
 import { useEditorContentStore } from "@/store/editor";
 import Toolbar from "@/components/Toolbar";
@@ -157,10 +157,6 @@ const EditorWrapper = forwardRef<EditorRef, GlobalConfig>((config, ref) => {
 
   // 外部ref使用的方法
   useExposeHandle(ref);
-
-  useEffect(() => {
-    console.log(config.status);
-  }, [config]);
 
   return (
     <GlobalTheme theme={config.theme}>
