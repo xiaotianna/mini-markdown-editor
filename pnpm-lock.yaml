@@ -26,7 +26,7 @@ importers:
 
   docs:
     specifiers:
-      '@mini-markdown-rc/editor': 1.0.9
+      '@mini-markdown-rc/editor': latest
       '@rspress/plugin-playground': ^1.41.2
       antd: ^5.23.2
       highlight.js: ^11.11.1

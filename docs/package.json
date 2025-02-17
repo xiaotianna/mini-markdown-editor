@@ -16,7 +16,7 @@
     "tailwindcss": "^3.4.17"
   },
   "dependencies": {
-    "@mini-markdown-rc/editor": "1.0.9",
+    "@mini-markdown-rc/editor": "latest",
     "antd": "^5.23.2",
     "highlight.js": "^11.11.1"
   }
