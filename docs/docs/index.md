@@ -13,7 +13,7 @@ hero:
       text: 指南
       link: /guide/
   image:
-    src: logo.svg
+    src: /logo.svg
     alt: logo
 
 features:

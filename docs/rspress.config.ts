@@ -9,14 +9,16 @@ export default defineConfig({
       editorPosition: "right",
     }),
   ],
+  base: "/mini-markdown-editor/",
   builderConfig: {
     tools: {
       rspack: {
         module: {
           rules: [
             {
-              test: /\.raw.txt$/,
-              type: "asset/source",
+              enforce: "pre",
+              test: /\.mdx$/,
+              loader: "./loader/init-value-loader.js",
             },
           ],
         },
