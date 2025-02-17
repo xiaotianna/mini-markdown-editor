@@ -12,6 +12,7 @@
 
 .rspress-playground-horizontal {
   min-height: 600px !important;
+  height: 90% !important;
 }
 .rspress-playground-horizontal > .rspress-playground-runner {
   width: 60% !important;
