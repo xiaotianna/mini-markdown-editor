@@ -41,7 +41,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Install dependencies
-        run: pnpm install -r --no-frozen-lockfile
+        run: pnpm -F @mini-markdown-rc/docs install
       - name: Build with Rspress Docs
         run: pnpm build:docs
       - name: Upload artifact
