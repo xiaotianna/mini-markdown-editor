@@ -35,7 +35,7 @@ importers:
       rspress: ^1.41.0
       tailwindcss: ^3.4.17
     dependencies:
-      '@mini-markdown-rc/editor': link:../packages/mini-markdown-editor
+      '@mini-markdown-rc/editor': 1.0.9_ck2ap7ofk76kidkkm4uczg65xi
       antd: 5.24.1_nnrd3gsncyragczmpvfhocinkq
       highlight.js: 11.11.1
     devDependencies:
