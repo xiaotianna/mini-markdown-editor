@@ -13,6 +13,18 @@
 - scripts 脚本
 ```
 
+## 如何运行
+
+```bash
+# 安装依赖
+pnpm in
+# 运行 editor
+pnpm dev:editor
+# 运行 docs
+pnpm build
+pnpm dev:docs
+```
+
 ## 命令
 
 > 请使用 pnpm@7 进行依赖安装

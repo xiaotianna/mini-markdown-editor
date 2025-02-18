@@ -41,7 +41,9 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Install dependencies
-        run: pnpm -F @mini-markdown-rc/docs install
+        run: pnpm in
+      - name: Build AST And Editor
+        run: pnpm build
       - name: Build with Rspress Docs
         run: pnpm build:docs
       - name: Upload artifact

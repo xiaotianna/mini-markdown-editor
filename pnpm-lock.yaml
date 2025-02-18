@@ -26,7 +26,7 @@ importers:
 
   docs:
     specifiers:
-      '@mini-markdown-rc/editor': latest
+      '@mini-markdown-rc/editor': workspace:*
       '@rspress/plugin-playground': ^1.41.2
       antd: ^5.23.2
       highlight.js: ^11.11.1
@@ -35,7 +35,7 @@ importers:
       rspress: ^1.41.0
       tailwindcss: ^3.4.17
     dependencies:
-      '@mini-markdown-rc/editor': 1.0.9_ck2ap7ofk76kidkkm4uczg65xi
+      '@mini-markdown-rc/editor': link:../packages/mini-markdown-editor
       antd: 5.24.1_nnrd3gsncyragczmpvfhocinkq
       highlight.js: 11.11.1
     devDependencies:
