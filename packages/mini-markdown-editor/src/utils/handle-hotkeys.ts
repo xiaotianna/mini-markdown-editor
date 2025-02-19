@@ -2,6 +2,7 @@ import { ToolbarItem, ToolbarType } from "@/types/toolbar";
 import { BaseToolbarType } from "@/types/toolbar";
 import { useToolbarStore } from "@/store/toolbar";
 import { InsertTextEvent } from "@/config/toolbar/event";
+import { global } from "./set-global-config";
 
 // 定义处理器类型
 interface HotkeyHandler {
@@ -46,7 +47,7 @@ export const createFullScreenHandler = (hotkey: HotkeyType): HotkeyHandler => ({
 export const createSaveHandler = (hotkey: HotkeyType): HotkeyHandler => ({
   run: () => {
     hotkey.handle?.();
-    // TODO: 添加保存事件
+    global.saveHotKeyHandle();
     return true;
   },
   preventDefault: true,

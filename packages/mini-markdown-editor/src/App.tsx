@@ -200,7 +200,7 @@ const App: FC = () => {
       >
         获取预览区实例
       </Button>
-      {/* <EditorWrapper theme={theme as "light" | "dark"} /> */}
+      {/* <EditorWrapper theme={theme as "light" | "dark"} onSave={handleSave} /> */}
       <EditorWrapper
         placeholder={"请输入内容..."}
         // status={true}
