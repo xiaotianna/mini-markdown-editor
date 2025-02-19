@@ -10,8 +10,8 @@ import { EditorView } from "@uiw/react-codemirror";
 import { EditorRef } from "./types/ref";
 // import { toolbarConfig as toolbarManager } from "./config/toolbar";
 import UlIcon from "@/assets/images/ul.svg?raw";
-import { toolbarConfig } from "./config/toolbar";
-import { insertContent } from "./utils/insert-content";
+// import { toolbarConfig } from "./config/toolbar";
+// import { insertContent } from "./utils/insert-content";
 // import { insertContent } from "@/utils/insert-content";
 // import { toolbarConfig } from "./config/toolbar";
 // import { ToolbarEvents, ToolbarItem } from "./types/toolbar";
@@ -78,47 +78,48 @@ const App: FC = () => {
     }
   }, []);
 
-  useEffect(() => {
-    try {
-      toolbarConfig.addToolItem({
-        type: "abc",
-        title: "我是测试abc",
-        icon: UlIcon,
-        description: "我是描述abc",
-        hotkey: {
-          command: "Mod-l",
-          description: "控制台输出def",
-          handle: () => {
-            console.log("我是快捷键输出def");
-          },
-        },
-        onClick: () => {
-          console.log("我是输出abc");
-          // InsertText("123", {anchor: 1, head: 1});
-          insertContent.insertTextAtCursor("123");
-        },
-      });
-      console.log(toolbarConfig.getAllToolbarsOrder());
+  // useEffect(() => {
+  //   try {
+  //     // toolbarConfig.addToolItem({
+  //     //   type: "abc",
+  //     //   title: "我是测试abc",
+  //     //   icon: UlIcon,
+  //     //   description: "我是描述abc",
+  //     //   hotkey: {
+  //     //     command: "Mod-l",
+  //     //     description: "控制台输出def",
+  //     //     handle: () => {
+  //     //       console.log("我是快捷键输出def");
+  //     //     },
+  //     //   },
+  //     //   onClick: () => {
+  //     //     console.log("我是输出abc");
+  //     //     // InsertText("123", {anchor: 1, head: 1});
+  //     //     insertContent.insertTextAtCursor("123");
+  //     //   },
+  //     // });
+  //     console.log(toolbarConfig.getAllToolbarsOrder());
 
-      // 单个顺序修改测试
-      // toolbarConfig.setToolbarOrder("bold", 0);
+  //     // 单个顺序修改测试
+  //     // toolbarConfig.setToolbarOrder("bold", 0);
 
-      // 批量设置顺序
-      // toolbarConfig.setToolbarsOrder({
-      //   bold: 0,
-      //   italic: 1,
-      //   underline: 2,
-      // });
+  //     // 批量设置顺序
+  //     // toolbarConfig.setToolbarsOrder({
+  //     //   bold: 0,
+  //     //   italic: 1,
+  //     //   underline: 2,
+  //     // });
 
-      // 完全重排序
-      // 此方法需要所有工具栏都传入，否则会报错
-      // toolbarConfig.reorderToolbar([""])
+  //     // 完全重排序
+  //     // 此方法需要所有工具栏都传入，否则会报错
+  //     // toolbarConfig.reorderToolbar([""])
 
-      toolbarConfig.swapToolbarsPosition("heading", "bold");
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
+  //     toolbarConfig.swapToolbarsPosition("heading", "bold");
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }, []);
+
   return (
     <AppWrapper>
       <Button onClick={changeTheme}>主题切换{theme}</Button>
@@ -223,6 +224,7 @@ const App: FC = () => {
               },
             },
           ],
+          orderTools: [{ type: "123", order: 0 }],
         }}
         value="## Hello World."
       />
