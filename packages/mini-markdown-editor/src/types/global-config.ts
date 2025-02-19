@@ -9,10 +9,14 @@ export interface GlobalConfig extends ReactCodeMirrorProps {
   value?: string;
   /**
    * 配置工具栏
-   * @type {{ addTools?: ToolbarItem[]; excludeTools?: string[] }}
+   * @type {{ addTools?: ToolbarItem[]; excludeTools?: string[], orderTools?: { type: string; order: number }[]; }}
    * 添加工具; 排除工具
    */
-  toolbars?: { addTools?: ToolbarItem[]; excludeTools?: string[] };
+  toolbars?: {
+    addTools?: ToolbarItem[];
+    excludeTools?: string[];
+    orderTools?: { type: string; order: number }[];
+  };
   /**
    * 底部状态栏是否显示，默认显示
    * @type {boolean}
