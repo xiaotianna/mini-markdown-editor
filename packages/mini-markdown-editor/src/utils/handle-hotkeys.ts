@@ -47,7 +47,6 @@ export const createFullScreenHandler = (hotkey: HotkeyType): HotkeyHandler => ({
 export const createSaveHandler = (hotkey: HotkeyType): HotkeyHandler => ({
   run: () => {
     hotkey.handle?.();
-    // TODO: 添加保存事件
     global.saveHotKeyHandle();
     return true;
   },
