@@ -28,6 +28,11 @@ export interface GlobalConfig extends ReactCodeMirrorProps {
    */
   theme?: "light" | "dark";
   /**
+   * 语言
+   * @type {"en" | "cn" | "tw"}
+   */
+  locale?: "en" | "cn";
+  /**
    * 是否开启本地存储
    * @type {boolean}
    */
@@ -74,6 +79,7 @@ export type Callback = (param: { url: string; alt?: string }) => void;
 export type GlobalContextConfig = Pick<
   GlobalConfig,
   | "theme"
+  | "locale"
   | "value"
   | "toolbars"
   | "status"

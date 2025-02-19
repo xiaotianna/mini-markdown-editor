@@ -3,6 +3,8 @@ import { DropDownMenu } from "../base/DropDownMenu";
 import IconTooltip from "../base/IconTooltip";
 import { FC, memo } from "react";
 import type { ToolbarItem as ToolbarItemType } from "@/types/toolbar";
+import { useGlobalConfig } from "@/hooks/use-global-config";
+import { createTranslator, TRANSLATION_KEYS } from "@/locales";
 
 const ToolbarItemWrapper = styled.div`
   width: 16px;
@@ -48,10 +50,13 @@ const ToolbarItemRender: FC<ToolbarItemType> = ({
   onClick,
   component,
 }) => {
+  const { locale } = useGlobalConfig();
+  const t = createTranslator(locale);
+
   if (list && list.length > 0) {
     return (
       <>
-        <DropDownMenu list={list}>
+        <DropDownMenu list={list} t={t}>
           {/* <img src={icon} alt={title} /> */}
           {icon && <div className="icon" dangerouslySetInnerHTML={{ __html: icon }}></div>}
         </DropDownMenu>
@@ -62,7 +67,11 @@ const ToolbarItemRender: FC<ToolbarItemType> = ({
   } else {
     return (
       <>
-        <IconTooltip content={title} description={description} onClick={onClick}>
+        <IconTooltip
+          content={t(title as TRANSLATION_KEYS) || title}
+          description={description}
+          onClick={onClick}
+        >
           {/* <img src={icon} alt={title} /> */}
           {icon && <div className="icon" dangerouslySetInnerHTML={{ __html: icon }}></div>}
         </IconTooltip>

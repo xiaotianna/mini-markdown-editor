@@ -56,7 +56,7 @@ export interface BaseToolbarItem {
 
 // 工具栏列表项接口
 export interface ToolbarItemListItem {
-  title: string;
+  title?: string;
   type: string;
   hotkey?: {
     command: string;

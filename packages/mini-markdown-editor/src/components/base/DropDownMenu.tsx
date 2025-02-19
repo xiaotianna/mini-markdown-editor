@@ -3,14 +3,16 @@ import { Dropdown } from "antd";
 import type { MenuProps } from "antd";
 import { ToolbarItemListItem } from "@/types/toolbar";
 import { render, renderKey } from "@/config/toolbar/base";
+import { TRANSLATION_KEYS } from "@/locales";
 
 interface DropDownMenuProps {
   children: React.ReactNode;
   list?: ToolbarItemListItem[];
+  t?: (key: TRANSLATION_KEYS) => string;
   dropdownRender?: () => React.ReactNode;
 }
 
-export const DropDownMenu = memo(({ children, list, dropdownRender }: DropDownMenuProps) => {
+export const DropDownMenu = memo(({ children, list, dropdownRender, t }: DropDownMenuProps) => {
   // list
   const items: MenuProps["items"] = useMemo(() => {
     if (!list) return undefined;
@@ -18,10 +20,10 @@ export const DropDownMenu = memo(({ children, list, dropdownRender }: DropDownMe
     const renderKeys = Object.keys(render) as renderKey[];
     return list.map((item) => {
       return {
-        key: item.title,
+        key: item.title!,
         label: renderKeys.includes(item.type as renderKey)
           ? render[item.type as renderKey]
-          : item.title,
+          : t?.(item.title! as TRANSLATION_KEYS) || item.title!,
       };
     });
   }, [list]);

@@ -24,45 +24,47 @@ import Emoji from "@/components/Toolbar/Emoji";
 import Save from "@/components/Toolbar/Save";
 // 快捷键描述
 import { Hotkey } from "@/common/hotkeys";
+// 多语言支持
+import { TOOLBAR_KEYS } from "@/locales/keys";
 
 export const defaultToolbar: ToolbarItem[] = [
   {
     type: "heading",
     icon: HeadingIcon,
-    title: "标题",
+    title: TOOLBAR_KEYS.TOOLBAR.heading,
     list: [
       {
-        title: "H1 一级标题",
+        title: TOOLBAR_KEYS.TOOLBAR.HEADING_ITEMS["heading-1"],
         type: "heading-1",
         hotkey: Hotkey.TITLE.FIRST.toConfig(),
         onClick: () => InsertTextEvent("heading-1"),
       },
       {
-        title: "H2 二级标题",
+        title: TOOLBAR_KEYS.TOOLBAR.HEADING_ITEMS["heading-2"],
         type: "heading-2",
         hotkey: Hotkey.TITLE.SECOND.toConfig(),
         onClick: () => InsertTextEvent("heading-2"),
       },
       {
-        title: "H3 三级标题",
+        title: TOOLBAR_KEYS.TOOLBAR.HEADING_ITEMS["heading-3"],
         type: "heading-3",
         hotkey: Hotkey.TITLE.THIRD.toConfig(),
         onClick: () => InsertTextEvent("heading-3"),
       },
       {
-        title: "H4 四级标题",
+        title: TOOLBAR_KEYS.TOOLBAR.HEADING_ITEMS["heading-4"],
         type: "heading-4",
         hotkey: Hotkey.TITLE.FOURTH.toConfig(),
         onClick: () => InsertTextEvent("heading-4"),
       },
       {
-        title: "H5 五级标题",
+        title: TOOLBAR_KEYS.TOOLBAR.HEADING_ITEMS["heading-5"],
         type: "heading-5",
         hotkey: Hotkey.TITLE.FIFTH.toConfig(),
         onClick: () => InsertTextEvent("heading-5"),
       },
       {
-        title: "H6 六级标题",
+        title: TOOLBAR_KEYS.TOOLBAR.HEADING_ITEMS["heading-6"],
         type: "heading-6",
         hotkey: Hotkey.TITLE.SIXTH.toConfig(),
         onClick: () => InsertTextEvent("heading-6"),
@@ -72,7 +74,7 @@ export const defaultToolbar: ToolbarItem[] = [
   {
     type: "bold",
     icon: BoldIcon,
-    title: "加粗",
+    title: TOOLBAR_KEYS.TOOLBAR.bold,
     description: Hotkey.BOLD.readableCommand,
     hotkey: Hotkey.BOLD.toConfig(),
     onClick: () => InsertTextEvent("bold"),
@@ -80,7 +82,7 @@ export const defaultToolbar: ToolbarItem[] = [
   {
     type: "italic",
     icon: ItalicIcon,
-    title: "斜体",
+    title: TOOLBAR_KEYS.TOOLBAR.italic,
     description: Hotkey.ITALIC.readableCommand,
     hotkey: Hotkey.ITALIC.toConfig(),
     onClick: () => InsertTextEvent("italic"),
@@ -88,7 +90,7 @@ export const defaultToolbar: ToolbarItem[] = [
   {
     type: "underline",
     icon: UnderlineIcon,
-    title: "下划线",
+    title: TOOLBAR_KEYS.TOOLBAR.underline,
     description: Hotkey.UNDERLINE.readableCommand,
     hotkey: Hotkey.UNDERLINE.toConfig(),
     onClick: () => InsertTextEvent("underline"),
@@ -96,7 +98,7 @@ export const defaultToolbar: ToolbarItem[] = [
   {
     type: "delete",
     icon: DeleteIcon,
-    title: "删除线",
+    title: TOOLBAR_KEYS.TOOLBAR.delete,
     description: Hotkey.DELETE.readableCommand,
     hotkey: Hotkey.DELETE.toConfig(),
     onClick: () => InsertTextEvent("delete"),
@@ -107,7 +109,7 @@ export const defaultToolbar: ToolbarItem[] = [
   {
     type: "blockquote",
     icon: BlockquoteIcon,
-    title: "引用",
+    title: TOOLBAR_KEYS.TOOLBAR.blockquote,
     description: Hotkey.BLOCKQUOTE.readableCommand,
     hotkey: Hotkey.BLOCKQUOTE.toConfig(),
     onClick: () => InsertTextEvent("blockquote"),
@@ -115,7 +117,7 @@ export const defaultToolbar: ToolbarItem[] = [
   {
     type: "ul",
     icon: UlIcon,
-    title: "无序列表",
+    title: TOOLBAR_KEYS.TOOLBAR.ul,
     description: Hotkey.UNORDERED_LIST.readableCommand,
     hotkey: Hotkey.UNORDERED_LIST.toConfig(),
     onClick: () => InsertTextEvent("ul"),
@@ -123,7 +125,7 @@ export const defaultToolbar: ToolbarItem[] = [
   {
     type: "ol",
     icon: OlIcon,
-    title: "有序列表",
+    title: TOOLBAR_KEYS.TOOLBAR.ol,
     description: Hotkey.ORDERED_LIST.readableCommand,
     hotkey: Hotkey.ORDERED_LIST.toConfig(),
     onClick: () => InsertTextEvent("ol"),
@@ -131,7 +133,7 @@ export const defaultToolbar: ToolbarItem[] = [
   {
     type: "inlinecode",
     icon: InlineCodeIcon,
-    title: "行内代码",
+    title: TOOLBAR_KEYS.TOOLBAR.inlinecode,
     description: Hotkey.INLINE_CODE.readableCommand,
     hotkey: Hotkey.INLINE_CODE.toConfig(),
     onClick: () => InsertTextEvent("inlinecode"),
@@ -139,7 +141,7 @@ export const defaultToolbar: ToolbarItem[] = [
   {
     type: "code",
     icon: CodeIcon,
-    title: "代码块",
+    title: TOOLBAR_KEYS.TOOLBAR.code,
     description: Hotkey.CODE_BLOCK.readableCommand,
     hotkey: Hotkey.CODE_BLOCK.toConfig(),
     onClick: () => InsertTextEvent("code"),
@@ -147,7 +149,7 @@ export const defaultToolbar: ToolbarItem[] = [
   {
     type: "link",
     icon: LinkIcon,
-    title: "链接",
+    title: TOOLBAR_KEYS.TOOLBAR.link,
     description: Hotkey.LINK.readableCommand,
     hotkey: Hotkey.LINK.toConfig(),
     onClick: () => InsertTextEvent("link"),
@@ -158,13 +160,13 @@ export const defaultToolbar: ToolbarItem[] = [
     title: "图片",
     list: [
       {
-        title: "添加链接",
+        title: TOOLBAR_KEYS.TOOLBAR.IMAGE_ITEMS["image-link"],
         type: "image-link",
         hotkey: Hotkey.LINK.toConfig(),
         onClick: () => InsertTextEvent("image-link"),
       },
       {
-        title: "上传图片",
+        title: TOOLBAR_KEYS.TOOLBAR.IMAGE_ITEMS["image-upload"],
         type: "image-upload",
       },
     ],
@@ -172,7 +174,7 @@ export const defaultToolbar: ToolbarItem[] = [
   {
     type: "table",
     icon: TableIcon,
-    title: "表格",
+    title: TOOLBAR_KEYS.TOOLBAR.table,
     description: Hotkey.TABLE.readableCommand,
     hotkey: Hotkey.TABLE.toConfig(),
     onClick: () => InsertTextEvent("table"),
@@ -187,14 +189,14 @@ export const defaultToolbar: ToolbarItem[] = [
   {
     type: "undo",
     icon: UndoIcon,
-    title: "撤销",
+    title: TOOLBAR_KEYS.TOOLBAR.undo,
     description: Hotkey.UNDO.readableCommand,
     onClick: () => UndoEvent(),
   },
   {
     type: "redo",
     icon: RedoIcon,
-    title: "重做",
+    title: TOOLBAR_KEYS.TOOLBAR.redo,
     description: Hotkey.REDO.readableCommand,
     onClick: () => RedoEvent(),
   },
