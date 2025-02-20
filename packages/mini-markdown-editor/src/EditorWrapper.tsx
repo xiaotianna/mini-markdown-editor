@@ -1,4 +1,4 @@
-import { FC, forwardRef, Fragment, useDeferredValue } from "react";
+import { FC, forwardRef, Fragment, useDeferredValue, useEffect } from "react";
 import styled from "styled-components";
 import { useEditorContentStore } from "@/store/editor";
 import Toolbar from "@/components/Toolbar";
@@ -15,6 +15,7 @@ import GlobalTheme from "./theme/global-theme";
 import { EditorRef } from "./types/ref";
 import { useExposeHandle } from "./hooks/use-expose-handle";
 import { defaultGlobalConfig } from "./config/global";
+import { setCurrentLocale } from "./locales/index2";
 
 const Container = styled.div`
   width: 100%;
@@ -154,6 +155,11 @@ const EditorWrapper = forwardRef<EditorRef, GlobalConfig>((config, ref) => {
   const deferredContent = useDeferredValue(content);
   const isFullScreen = useToolbarStore((state) => state.isFullScreen);
   const { isSyncScroll, updateSyncScrollStatus } = useInitSyncScrollStatus();
+
+  // 语言初始化
+  useEffect(() => {
+    setCurrentLocale(config.locale);
+  }, [config.locale]);
 
   // 外部ref使用的方法
   useExposeHandle(ref);

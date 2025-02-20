@@ -42,7 +42,10 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:watch": "vitest --watch",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui",
+    "e2e:debug": "playwright test --debug"
   },
   "dependencies": {
     "@emoji-mart/data": "^1.2.1",
@@ -51,12 +54,12 @@
     "antd": "^5.23.2",
     "emoji-mart": "^5.6.0",
     "events": "^3.3.0",
+    "highlight.js": "^11.11.1",
     "html2pdf.js": "^0.10.2",
     "immer": "^10.1.1",
     "nanoid": "^5.0.9",
     "react-hotkeys-hook": "^4.6.1",
-    "zustand": "^5.0.3",
-    "highlight.js": "^11.11.1"
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@codemirror/commands": "^6.8.0",
@@ -64,6 +67,7 @@
     "@codemirror/language-data": "^6.5.1",
     "@eslint/js": "^9.17.0",
     "@mini-markdown-rc/ast-parser": "workspace:*",
+    "@playwright/test": "^1.50.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
@@ -79,6 +83,7 @@
     "eslint-plugin-react-refresh": "^0.4.16",
     "globals": "^15.14.0",
     "jsdom": "^26.0.0",
+    "playwright": "^1.50.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "styled-components": "^6.1.14",
@@ -94,8 +99,8 @@
     "@codemirror/language-data": "^6.5.1",
     "@uiw/codemirror-extensions-events": "^4.23.7",
     "@uiw/react-codemirror": "^4.23.7",
+    "highlight.js": "^11.11.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "highlight.js": "^11.11.1"
+    "react-dom": "^18.3.1"
   }
 }

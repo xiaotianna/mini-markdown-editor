@@ -56,7 +56,7 @@ export interface BaseToolbarItem {
 
 // 工具栏列表项接口
 export interface ToolbarItemListItem {
-  title: string;
+  title?: string;
   type: string;
   hotkey?: {
     command: string;
@@ -89,6 +89,7 @@ export enum ToolbarEvents {
   TOOLBAR_ADDED = "toolbar:added",
   TOOLBAR_REMOVED = "toolbar:removed",
   TOOLBAR_UPDATED = "toolbar:updated",
+  // 重排序
   TOOLBAR_REORDERED = "toolbar:reordered",
   TOOLBAR_RESET = "toolbar:reset",
   TOOLBAR_ERROR = "toolbar:error",

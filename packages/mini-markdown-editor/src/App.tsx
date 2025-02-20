@@ -10,8 +10,8 @@ import { EditorView } from "@uiw/react-codemirror";
 import { EditorRef } from "./types/ref";
 // import { toolbarConfig as toolbarManager } from "./config/toolbar";
 import UlIcon from "@/assets/images/ul.svg?raw";
-import { toolbarConfig } from "./config/toolbar";
-import { insertContent } from "./utils/insert-content";
+// import { toolbarConfig } from "./config/toolbar";
+// import { insertContent } from "./utils/insert-content";
 // import { insertContent } from "@/utils/insert-content";
 // import { toolbarConfig } from "./config/toolbar";
 // import { ToolbarEvents, ToolbarItem } from "./types/toolbar";
@@ -78,56 +78,47 @@ const App: FC = () => {
     }
   }, []);
 
-  useEffect(() => {
-    // 先检查工具栏是否存在
-    const allToolbars = toolbarConfig.getAllToolbars();
-    console.log("当前所有工具栏:", allToolbars);
+  // useEffect(() => {
+  //   try {
+  //     // toolbarConfig.addToolItem({
+  //     //   type: "abc",
+  //     //   title: "我是测试abc",
+  //     //   icon: UlIcon,
+  //     //   description: "我是描述abc",
+  //     //   hotkey: {
+  //     //     command: "Mod-l",
+  //     //     description: "控制台输出def",
+  //     //     handle: () => {
+  //     //       console.log("我是快捷键输出def");
+  //     //     },
+  //     //   },
+  //     //   onClick: () => {
+  //     //     console.log("我是输出abc");
+  //     //     // InsertText("123", {anchor: 1, head: 1});
+  //     //     insertContent.insertTextAtCursor("123");
+  //     //   },
+  //     // });
+  //     console.log(toolbarConfig.getAllToolbarsOrder());
 
-    // 检查特定工具栏是否存在
-    const boldToolbar = allToolbars.find((t) => t.type === "bold");
-    console.log("bold工具栏:", boldToolbar);
+  //     // 单个顺序修改测试
+  //     // toolbarConfig.setToolbarOrder("bold", 0);
 
-    try {
-      toolbarConfig.updateToolbarItem("bold", {
-        onClick: () => {
-          console.log("我是粗体");
-        },
-        hotkey: {
-          command: "Mod-b",
-          description: "控制台输出粗体",
-          handle: () => {
-            console.log("我是快捷键粗体");
-          },
-        },
-      });
-    } catch (error) {
-      console.error("更新工具栏失败:", error);
-    }
+  //     // 批量设置顺序
+  //     // toolbarConfig.setToolbarsOrder({
+  //     //   bold: 0,
+  //     //   italic: 1,
+  //     //   underline: 2,
+  //     // });
 
-    try {
-      toolbarConfig.addToolItem({
-        type: "abc",
-        title: "我是测试abc",
-        icon: UlIcon,
-        description: "我是描述abc",
-        hotkey: {
-          command: "Mod-l",
-          description: "控制台输出def",
-          handle: () => {
-            console.log("我是快捷键输出def");
-          },
-        },
-        onClick: () => {
-          console.log("我是输出abc");
-          // InsertText("123", {anchor: 1, head: 1});
-          insertContent.insertTextAtCursor("123");
-        },
-      });
-      console.log("添加工具栏成功");
-    } catch (error) {
-      console.error("添加工具栏失败:", error);
-    }
-  }, []);
+  //     // 完全重排序
+  //     // 此方法需要所有工具栏都传入，否则会报错
+  //     // toolbarConfig.reorderToolbar([""])
+
+  //     toolbarConfig.swapToolbarsPosition("heading", "bold");
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }, []);
 
   return (
     <AppWrapper>
@@ -202,6 +193,7 @@ const App: FC = () => {
       </Button>
       {/* <EditorWrapper theme={theme as "light" | "dark"} onSave={handleSave} /> */}
       <EditorWrapper
+        locale="en"
         placeholder={"请输入内容..."}
         // status={true}
         onUpload={handleUpload}
@@ -214,7 +206,7 @@ const App: FC = () => {
         onPatseUpload={handlePatseUpload}
         ref={editorRef}
         toolbars={{
-          excludeTools: ["italic"],
+          // excludeTools: ["italic"],
           addTools: [
             {
               type: "123",
@@ -233,6 +225,7 @@ const App: FC = () => {
               },
             },
           ],
+          orderTools: [{ type: "123", order: 0 }],
         }}
         value="## Hello World."
       />

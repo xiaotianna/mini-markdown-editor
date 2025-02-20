@@ -37,4 +37,9 @@ pnpm test:watch
 
 ## 测试覆盖率
 pnpm coverage
+
+# e2e 测试
+pnpm e2e
+pnpm e2e:ui
+pnpm e2e:debug
 ```

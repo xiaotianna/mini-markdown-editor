@@ -9,10 +9,14 @@ export interface GlobalConfig extends ReactCodeMirrorProps {
   value?: string;
   /**
    * 配置工具栏
-   * @type {{ addTools?: ToolbarItem[]; excludeTools?: string[] }}
+   * @type {{ addTools?: ToolbarItem[]; excludeTools?: string[], orderTools?: { type: string; order: number }[]; }}
    * 添加工具; 排除工具
    */
-  toolbars?: { addTools?: ToolbarItem[]; excludeTools?: string[] };
+  toolbars?: {
+    addTools?: ToolbarItem[];
+    excludeTools?: string[];
+    orderTools?: { type: string; order: number }[];
+  };
   /**
    * 底部状态栏是否显示，默认显示
    * @type {boolean}
@@ -23,6 +27,11 @@ export interface GlobalConfig extends ReactCodeMirrorProps {
    * @type {"light" | "dark"}
    */
   theme?: "light" | "dark";
+  /**
+   * 语言
+   * @type {"en" | "cn" | "tw"}
+   */
+  locale?: "en" | "cn";
   /**
    * 是否开启本地存储
    * @type {boolean}
@@ -70,6 +79,7 @@ export type Callback = (param: { url: string; alt?: string }) => void;
 export type GlobalContextConfig = Pick<
   GlobalConfig,
   | "theme"
+  | "locale"
   | "value"
   | "toolbars"
   | "status"
