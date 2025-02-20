@@ -2,6 +2,7 @@ import { Button, message } from "antd";
 import { FC } from "react";
 import codeCN from "@/mock/preview-cn.md?raw";
 import codeEN from "@/mock/preview-en.md?raw";
+import codeTW from "@/mock/preview-tw.md?raw";
 import { getCurrentLocale } from "@/locales";
 
 interface CopyCodeButtonProps {
@@ -28,6 +29,11 @@ export const CopyCodeButton: FC<CopyCodeButtonProps> = ({
     successMessage = "已复制！";
     errorMessage = "复制失败";
     buttonText = "复制测试代码";
+  } else if (currentLocale === "tw") {
+    textToCopy = codeTW;
+    successMessage = "已複製！";
+    errorMessage = "複製失敗";
+    buttonText = "複製測試代碼";
   } else {
     textToCopy = codeEN;
     successMessage = "Copied!";

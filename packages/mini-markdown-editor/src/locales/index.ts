@@ -1,9 +1,10 @@
 import { create } from "zustand";
 import { en } from "./en";
 import { cn } from "./cn";
+import { tw } from "./tw";
 
-type Language = "en" | "cn";
-const locales = { en, cn } as const;
+type Language = "en" | "cn" | "tw";
+const locales = { en, cn, tw } as const;
 
 export type TRANSLATION_KEYS = keyof typeof en;
 export type t = {
