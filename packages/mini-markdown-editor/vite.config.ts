@@ -1,5 +1,5 @@
 /// <reference types="vitest/config" />
-//^与测试用同一配置
+// 与测试用同一配置
 
 import { defineConfig, PluginOption } from "vite";
 import react from "@vitejs/plugin-react";
@@ -46,11 +46,12 @@ export default defineConfig(({ mode }) => {
       },
     },
 
-    //测试
+    // 单元测试
     test: {
+      name: "editor-unit-test",
       environment: "jsdom",
       globals: true,
-      setupFiles: "./src/test/setup.ts",
+      setupFiles: "./test/unit/unit-setup.ts",
       include: ["src/**/*.{test,spec}.{js,ts,jsx,tsx}"],
       coverage: {
         include: ["src/components/**", "src/hooks/**", "src/utils/**", "src/store/**"],
