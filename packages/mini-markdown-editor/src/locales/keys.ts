@@ -45,4 +45,10 @@ export const TOOLBAR_KEYS = {
       [BaseToolbarType.IMAGE_UPLOAD]: "TOOLBAR.IMAGE_ITEMS.UPLOAD",
     },
   },
+  STATUS: {
+    // 状态栏
+    WORDS: "STATUS.WORDS",
+    SYNC_SCROLL: "STATUS.SYNC_SCROLL",
+    SCROLL_TOP: "STATUS.SCROLL_TOP",
+  },
 } as const;

@@ -39,3 +39,8 @@ export const setLocale = (locale: Language): void => {
   }
   useTranslation.getState().setLocale(locale);
 };
+
+// 获取当前语言
+export const getCurrentLocale = (): Language => {
+  return useTranslation.getState().currentLocale;
+};

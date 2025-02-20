@@ -30,4 +30,7 @@ export const en = {
   "TOOLBAR.HEADING_ITEMS.H6": "H6 Heading 6",
   "TOOLBAR.IMAGE_ITEMS.LINK": "Add Link",
   "TOOLBAR.IMAGE_ITEMS.UPLOAD": "Upload Image",
+  "STATUS.WORDS": "Words",
+  "STATUS.SYNC_SCROLL": "Sync Scroll",
+  "STATUS.SCROLL_TOP": "Scroll Top",
 };

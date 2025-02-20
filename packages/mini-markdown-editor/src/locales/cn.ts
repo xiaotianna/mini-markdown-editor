@@ -30,4 +30,7 @@ export const cn = {
   "TOOLBAR.HEADING_ITEMS.H6": "H6 六级标题",
   "TOOLBAR.IMAGE_ITEMS.LINK": "添加链接",
   "TOOLBAR.IMAGE_ITEMS.UPLOAD": "上传图片",
+  "STATUS.WORDS": "字数",
+  "STATUS.SYNC_SCROLL": "同步滚动",
+  "STATUS.SCROLL_TOP": "滚动到顶部",
 };
