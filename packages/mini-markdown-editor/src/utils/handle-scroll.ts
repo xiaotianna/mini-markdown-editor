@@ -229,8 +229,8 @@ class ScrollSynchronizer {
   }
 }
 
-//? 可选导出
-const scrollSynchronizer = new ScrollSynchronizer();
+//? 可选导出  //导出方便测试
+export const scrollSynchronizer = new ScrollSynchronizer();
 
 export const handleEditorScroll = ({ editorView, previewView }: InstancesType): void => {
   scrollSynchronizer.handleEditorScroll(editorView, previewView);
