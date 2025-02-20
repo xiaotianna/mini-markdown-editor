@@ -4,6 +4,7 @@ import { ToolbarItem } from "./ToolbarItem";
 import { CopyCodeButton } from "./CopyCodeButton";
 import { useSyncEditorView } from "@/hooks/use-sync-editorview";
 import { toolbarConfig } from "@/config/toolbar";
+import { t } from "@/locales";
 
 const ToolbarContent = styled.div`
   width: 100%;
@@ -50,7 +51,7 @@ const Toolbar: FC = () => {
           item.type === "line" ? (
             <Divider key={`divider-${index}`} />
           ) : (
-            <ToolbarItem key={`item-${index}`} {...item} />
+            <ToolbarItem key={`item-${index}`} {...item} t={t} />
           ),
         )}
       </ToolbarLeft>

@@ -1,38 +1,6 @@
-// // 映射表
-// export const TRANSLATION_KEYS = {
-//   TOOLBAR: {
-//     HEADING: "TOOLBAR.HEADING",
-//     BOLD: "TOOLBAR.BOLD",
-//     ITALIC: "TOOLBAR.ITALIC",
-//     UNDERLINE: "TOOLBAR.UNDERLINE",
-//     DELETE: "TOOLBAR.DELETE",
-//     BLOCKQUOTE: "TOOLBAR.BLOCKQUOTE",
-//     UL: "TOOLBAR.UL",
-//     OL: "TOOLBAR.OL",
-//     INLINE_CODE: "TOOLBAR.INLINE_CODE",
-//     CODE: "TOOLBAR.CODE",
-//     LINK: "TOOLBAR.LINK",
-//     IMAGE: "TOOLBAR.IMAGE",
-//     TABLE: "TOOLBAR.TABLE",
-//     UNDO: "TOOLBAR.UNDO",
-//     REDO: "TOOLBAR.REDO",
-//     HEADING_ITEMS: {
-//       H1: "TOOLBAR.HEADING_ITEMS.H1",
-//       H2: "TOOLBAR.HEADING_ITEMS.H2",
-//       H3: "TOOLBAR.HEADING_ITEMS.H3",
-//       H4: "TOOLBAR.HEADING_ITEMS.H4",
-//       H5: "TOOLBAR.HEADING_ITEMS.H5",
-//       H6: "TOOLBAR.HEADING_ITEMS.H6",
-//     },
-//     IMAGE_ITEMS: {
-//       LINK: "TOOLBAR.IMAGE_ITEMS.LINK",
-//       UPLOAD: "TOOLBAR.IMAGE_ITEMS.UPLOAD",
-//     },
-//   },
-// } as const;
-
 import { BaseToolbarType } from "@/types/toolbar";
 
+// 工具栏翻译键（用于映射）
 export const TOOLBAR_KEYS = {
   TOOLBAR: {
     // 基础工具栏项
@@ -51,6 +19,7 @@ export const TOOLBAR_KEYS = {
     [BaseToolbarType.TABLE]: "TOOLBAR.TABLE",
     [BaseToolbarType.UNDO]: "TOOLBAR.UNDO",
     [BaseToolbarType.REDO]: "TOOLBAR.REDO",
+    // 复杂工具栏项
     [BaseToolbarType.FULLSCREEN]: "TOOLBAR.FULLSCREEN",
     [BaseToolbarType.WRITE]: "TOOLBAR.WRITE",
     [BaseToolbarType.PREVIEW]: "TOOLBAR.PREVIEW",

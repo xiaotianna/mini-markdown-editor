@@ -4,6 +4,8 @@ import { Hotkey } from "@/common/hotkeys";
 import { useSaveContent } from "@/hooks/use-save-content";
 import { useEditorContentStore } from "@/store/editor";
 import { useGlobalConfig } from "@/hooks/use-global-config";
+import { t, type TRANSLATION_KEYS } from "@/locales";
+import { TOOLBAR_KEYS } from "@/locales/keys";
 
 const Save = () => {
   const { content, editorView } = useEditorContentStore();
@@ -21,7 +23,11 @@ const Save = () => {
   };
 
   return (
-    <IconTooltip content={"保存"} description={Hotkey.SAVE.readableCommand} onClick={handleSave}>
+    <IconTooltip
+      content={t(TOOLBAR_KEYS.TOOLBAR.save as TRANSLATION_KEYS)}
+      description={Hotkey.SAVE.readableCommand}
+      onClick={handleSave}
+    >
       <div className="icon" dangerouslySetInnerHTML={{ __html: SaveIcon }} />
     </IconTooltip>
   );
