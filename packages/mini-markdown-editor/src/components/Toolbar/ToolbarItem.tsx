@@ -4,6 +4,7 @@ import IconTooltip from "../base/IconTooltip";
 import { FC, memo } from "react";
 import type { ToolbarItem as ToolbarItemType } from "@/types/toolbar";
 import type { t, TRANSLATION_KEYS } from "@/locales";
+import { CLASS_PREFIX } from "@/common";
 
 const ToolbarItemWrapper = styled.div`
   width: 16px;
@@ -79,7 +80,9 @@ const ToolbarItemRender: FC<ToolbarItemType & t> = ({
 
 export const ToolbarItem: FC<ToolbarItemType & t> = memo((props) => {
   return (
-    <ToolbarItemWrapper className="item">
+    <ToolbarItemWrapper
+      className={`${CLASS_PREFIX}-toolbar-item ${CLASS_PREFIX}-toolbar-item-${props.type}`}
+    >
       <ToolbarItemRender {...props} />
     </ToolbarItemWrapper>
   );

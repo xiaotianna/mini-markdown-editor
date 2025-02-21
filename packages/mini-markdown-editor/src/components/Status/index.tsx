@@ -6,6 +6,7 @@ import type { CheckboxProps } from "antd";
 import { handleScrollTop } from "@/utils/handle-scroll";
 import { t, TRANSLATION_KEYS } from "@/locales";
 import { TOOLBAR_KEYS } from "@/locales/keys";
+import { CLASS_PREFIX } from "@/common";
 
 const StatusWrapper = styled.div`
   width: 100%;
@@ -67,7 +68,7 @@ const Status: FC<{ isSyncScroll: boolean; updateSyncScrollStatus: (val: boolean)
   };
 
   return (
-    <StatusWrapper>
+    <StatusWrapper className={`${CLASS_PREFIX}-status-content`}>
       <div className="status-left">
         {t(TOOLBAR_KEYS.STATUS.WORDS as TRANSLATION_KEYS)}: {contentNum}
       </div>

@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { en } from "./en";
 import { cn } from "./cn";
 import { tw } from "./tw";
+import { defaultGlobalConfig } from "@/config/global";
 
 type Language = "en" | "cn" | "tw";
 const locales = { en, cn, tw } as const;
@@ -17,7 +18,7 @@ interface TranslationStoreType {
   setLocale: (locale: Language) => void;
 }
 
-const DEFAULT_LOCALE: Language = "en";
+const DEFAULT_LOCALE: Language = defaultGlobalConfig.locale as Language;
 
 export const useTranslation = create<TranslationStoreType>((set, get) => ({
   currentLocale: DEFAULT_LOCALE,

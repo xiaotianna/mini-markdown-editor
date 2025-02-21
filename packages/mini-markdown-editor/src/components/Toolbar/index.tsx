@@ -5,6 +5,7 @@ import { CopyCodeButton } from "./CopyCodeButton";
 import { useSyncEditorView } from "@/hooks/use-sync-editorview";
 import { toolbarConfig } from "@/config/toolbar";
 import { t } from "@/locales";
+import { CLASS_PREFIX } from "@/common";
 
 const ToolbarContent = styled.div`
   width: 100%;
@@ -45,7 +46,7 @@ const Toolbar: FC = () => {
   useSyncEditorView();
 
   return (
-    <ToolbarContent>
+    <ToolbarContent className={`${CLASS_PREFIX}-toolbar-content`}>
       <ToolbarLeft>
         {toolbars.map((item, index) =>
           item.type === "line" ? (

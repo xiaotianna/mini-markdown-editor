@@ -2,6 +2,7 @@ import { formatContents, Title } from "@/utils/format-contents";
 import { Anchor } from "antd";
 import { FC, useEffect, useMemo, useState } from "react";
 import { useEditorContentStore } from "@/store/editor";
+import { CLASS_PREFIX } from "@/common";
 
 const Contents: FC = () => {
   const previewView = useEditorContentStore((state) => state.previewView);
@@ -132,6 +133,7 @@ const Contents: FC = () => {
       getCurrentAnchor={getCurrentAnchor}
       getContainer={() => preview}
       onClick={handleClickAnchor}
+      className={`${CLASS_PREFIX}-sidebar-contents`}
     />
   ) : null;
 };

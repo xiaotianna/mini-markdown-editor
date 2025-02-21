@@ -168,7 +168,11 @@ const EditorWrapper = forwardRef<EditorRef, GlobalConfig>((config, ref) => {
 
   return (
     <GlobalTheme theme={config.theme}>
-      <Container className={`md-editor ${isFullScreen && "md-editor-fullscreen"}`}>
+      <Container
+        className={`md-editor ${isFullScreen ? "md-editor-fullscreen" : ""}`}
+        data-theme={{ ...defaultGlobalConfig, ...config }.theme}
+        data-locale={{ ...defaultGlobalConfig, ...config }.locale}
+      >
         <ConfigProvider config={config}>
           {/* antd 主题样式 */}
           <AntdConfigProvider
@@ -178,7 +182,7 @@ const EditorWrapper = forwardRef<EditorRef, GlobalConfig>((config, ref) => {
               {/* 工具栏 */}
               <Toolbar />
               {/* 内容区域 */}
-              <ContentWrapper>
+              <ContentWrapper className="mini-editor-content">
                 <StyledRow>
                   <RenderRow
                     editor={<Editor isSyncScroll={isSyncScroll} {...config} />}
