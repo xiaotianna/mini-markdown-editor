@@ -10,6 +10,8 @@ import { useToolbarStore } from "@/store/toolbar";
 import SidebarContents from "@/components/Sidebar/Contents";
 import SidebarHelp from "@/components/Sidebar/Help";
 import SidebarOutput from "@/components/Sidebar/Output";
+import { t, type TRANSLATION_KEYS } from "@/locales";
+import { TOOLBAR_KEYS } from "@/locales/keys";
 
 const Wrapper = styled.div<{ $isSelect: boolean }>`
   display: flex;
@@ -25,7 +27,10 @@ export const Write: FC = () => {
   const { isOnlyWrite, setIsOnlyWrite } = useToolbarStore();
   return (
     <>
-      <IconTooltip content={"只写"} onClick={() => setIsOnlyWrite()}>
+      <IconTooltip
+        content={t(TOOLBAR_KEYS.TOOLBAR.write as TRANSLATION_KEYS)}
+        onClick={() => setIsOnlyWrite()}
+      >
         <Wrapper $isSelect={isOnlyWrite} dangerouslySetInnerHTML={{ __html: WriteIcon }}></Wrapper>
       </IconTooltip>
     </>
@@ -37,7 +42,10 @@ export const Read: FC = () => {
   const { isOnlyPreview, setIsOnlyPreview } = useToolbarStore();
   return (
     <>
-      <IconTooltip content={"仅预览"} onClick={() => setIsOnlyPreview()}>
+      <IconTooltip
+        content={t(TOOLBAR_KEYS.TOOLBAR.preview as TRANSLATION_KEYS)}
+        onClick={() => setIsOnlyPreview()}
+      >
         <Wrapper
           $isSelect={isOnlyPreview}
           dangerouslySetInnerHTML={{ __html: PreviewIcon }}
@@ -54,7 +62,10 @@ export const Contents: FC = () => {
   const { isSidebar, componentMark, setSidebar } = useToolbarStore();
   return (
     <>
-      <IconTooltip content={"目录"} onClick={() => setSidebar(<SidebarContents />, ComponentsMark)}>
+      <IconTooltip
+        content={t(TOOLBAR_KEYS.TOOLBAR.contents as TRANSLATION_KEYS)}
+        onClick={() => setSidebar(<SidebarContents />, ComponentsMark)}
+      >
         <Wrapper
           $isSelect={isSidebar && componentMark === ComponentsMark}
           dangerouslySetInnerHTML={{ __html: ContentsIcon }}
@@ -71,7 +82,10 @@ export const Help: FC = () => {
   const { isSidebar, componentMark, setSidebar } = useToolbarStore();
   return (
     <>
-      <IconTooltip content={"帮助"} onClick={() => setSidebar(<SidebarHelp />, ComponentsMark)}>
+      <IconTooltip
+        content={t(TOOLBAR_KEYS.TOOLBAR.help as TRANSLATION_KEYS)}
+        onClick={() => setSidebar(<SidebarHelp />, ComponentsMark)}
+      >
         <Wrapper
           $isSelect={isSidebar && componentMark === ComponentsMark}
           dangerouslySetInnerHTML={{ __html: HelpIcon }}
@@ -87,7 +101,10 @@ export const Output: FC = () => {
   const { isSidebar, componentMark, setSidebar } = useToolbarStore();
   return (
     <>
-      <IconTooltip content={"导出"} onClick={() => setSidebar(<SidebarOutput />, ComponentsMark)}>
+      <IconTooltip
+        content={t(TOOLBAR_KEYS.TOOLBAR.output as TRANSLATION_KEYS)}
+        onClick={() => setSidebar(<SidebarOutput />, ComponentsMark)}
+      >
         <Wrapper
           $isSelect={isSidebar && componentMark === ComponentsMark}
           dangerouslySetInnerHTML={{ __html: OutputIcon }}

@@ -31,7 +31,7 @@ export interface GlobalConfig extends ReactCodeMirrorProps {
    * 语言
    * @type {"en" | "cn" | "tw"}
    */
-  locale?: "en" | "cn";
+  locale?: "en" | "cn" | "tw";
   /**
    * 是否开启本地存储
    * @type {boolean}

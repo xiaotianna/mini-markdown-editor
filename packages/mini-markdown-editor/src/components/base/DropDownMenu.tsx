@@ -4,6 +4,7 @@ import type { MenuProps } from "antd";
 import { ToolbarItemListItem } from "@/types/toolbar";
 import { render, renderKey } from "@/config/toolbar/base";
 import { TRANSLATION_KEYS } from "@/locales";
+import { CLASS_PREFIX } from "@/common";
 
 interface DropDownMenuProps {
   children: React.ReactNode;
@@ -54,6 +55,7 @@ export const DropDownMenu = memo(({ children, list, dropdownRender, t }: DropDow
         onClick: handleMenuClick,
       }}
       placement="bottomLeft"
+      className={`${CLASS_PREFIX}-dropdown-menu`}
     >
       {children}
     </Dropdown>

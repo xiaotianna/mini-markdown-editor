@@ -1,21 +1,44 @@
 import { Button, message } from "antd";
 import { FC } from "react";
-import code from "@/mock/preview.md?raw";
+import codeCN from "@/mock/preview-cn.md?raw";
+import codeEN from "@/mock/preview-en.md?raw";
+import codeTW from "@/mock/preview-tw.md?raw";
+import { getCurrentLocale } from "@/locales";
 
 interface CopyCodeButtonProps {
   textToCopy?: string;
   successMessage?: string;
   errorMessage?: string;
+  buttonText?: string;
 }
 
 export const CopyCodeButton: FC<CopyCodeButtonProps> = ({
-  textToCopy = code,
-  successMessage = "已复制！",
-  errorMessage = "复制失败",
+  textToCopy,
+  successMessage,
+  errorMessage,
+  buttonText,
 }) => {
   // 仅在开发环境下展示
   if (import.meta.env.PROD) {
     return null;
+  }
+
+  const currentLocale = getCurrentLocale();
+  if (currentLocale === "cn") {
+    textToCopy = codeCN;
+    successMessage = "已复制！";
+    errorMessage = "复制失败";
+    buttonText = "复制测试代码";
+  } else if (currentLocale === "tw") {
+    textToCopy = codeTW;
+    successMessage = "已複製！";
+    errorMessage = "複製失敗";
+    buttonText = "複製測試代碼";
+  } else {
+    textToCopy = codeEN;
+    successMessage = "Copied!";
+    errorMessage = "Copy failed";
+    buttonText = "Copy Test Code";
   }
 
   const handleCopy = async () => {
@@ -26,7 +49,7 @@ export const CopyCodeButton: FC<CopyCodeButtonProps> = ({
         duration: 1.5,
       });
     } catch (err) {
-      console.error("复制失败:", err);
+      console.error("Copy Error:", err);
       message.error({
         content: errorMessage,
         duration: 2,
@@ -36,7 +59,7 @@ export const CopyCodeButton: FC<CopyCodeButtonProps> = ({
 
   return (
     <Button type="primary" size="small" onClick={handleCopy} style={{ fontSize: "12px" }}>
-      复制测试代码
+      {buttonText}
     </Button>
   );
 };

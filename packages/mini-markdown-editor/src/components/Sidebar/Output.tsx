@@ -4,6 +4,7 @@ import { exportHTML } from "@/utils/output-html";
 import { useEditorContentStore } from "@/store/editor";
 import { useState } from "react";
 import { exportPdf } from "@/utils/output-pdf";
+import { CLASS_PREFIX } from "@/common";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -42,7 +43,7 @@ const Output = () => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper className={`${CLASS_PREFIX}-sidebar-output`}>
       <Form
         layout={"vertical"}
         form={form}

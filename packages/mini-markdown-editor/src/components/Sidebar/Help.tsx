@@ -1,3 +1,4 @@
+import { CLASS_PREFIX } from "@/common";
 import { grammar, shortcuts } from "@/common/help";
 import { FC } from "react";
 import styled from "styled-components";
@@ -76,7 +77,7 @@ const RenderRules: FC<{
 
 const Help: FC = () => {
   return (
-    <Wrapper>
+    <Wrapper className={`${CLASS_PREFIX}-sidebar-help`}>
       {/* 语法规则 */}
       <RenderRules title="Markdown 语法" rules={grammar} />
       {/* 快捷键 */}

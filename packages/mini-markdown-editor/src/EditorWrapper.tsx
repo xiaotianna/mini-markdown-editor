@@ -15,7 +15,7 @@ import GlobalTheme from "./theme/global-theme";
 import { EditorRef } from "./types/ref";
 import { useExposeHandle } from "./hooks/use-expose-handle";
 import { defaultGlobalConfig } from "./config/global";
-import { setCurrentLocale } from "./locales/index2";
+import { setLocale } from "./locales/index";
 
 const Container = styled.div`
   width: 100%;
@@ -158,7 +158,9 @@ const EditorWrapper = forwardRef<EditorRef, GlobalConfig>((config, ref) => {
 
   // 语言初始化
   useEffect(() => {
-    setCurrentLocale(config.locale);
+    if (config.locale) {
+      setLocale(config.locale);
+    }
   }, [config.locale]);
 
   // 外部ref使用的方法
@@ -166,7 +168,11 @@ const EditorWrapper = forwardRef<EditorRef, GlobalConfig>((config, ref) => {
 
   return (
     <GlobalTheme theme={config.theme}>
-      <Container className={`md-editor ${isFullScreen && "md-editor-fullscreen"}`}>
+      <Container
+        className={`md-editor ${isFullScreen ? "md-editor-fullscreen" : ""}`}
+        data-theme={{ ...defaultGlobalConfig, ...config }.theme}
+        data-locale={{ ...defaultGlobalConfig, ...config }.locale}
+      >
         <ConfigProvider config={config}>
           {/* antd 主题样式 */}
           <AntdConfigProvider
@@ -176,7 +182,7 @@ const EditorWrapper = forwardRef<EditorRef, GlobalConfig>((config, ref) => {
               {/* 工具栏 */}
               <Toolbar />
               {/* 内容区域 */}
-              <ContentWrapper>
+              <ContentWrapper className="mini-editor-content">
                 <StyledRow>
                   <RenderRow
                     editor={<Editor isSyncScroll={isSyncScroll} {...config} />}

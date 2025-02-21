@@ -39,7 +39,7 @@ describe("DropDownMenu 组件测试", () => {
     //由于菜单异步出现，故要等待
     await waitFor(() => {
       testList.forEach((item) => {
-        expect(screen.getByText(item.title)).toBeInTheDocument();
+        expect(screen.getByText(item.title!)).toBeInTheDocument();
       });
     });
   });
@@ -56,12 +56,12 @@ describe("DropDownMenu 组件测试", () => {
     //由于菜单异步出现，故要等待
     await waitFor(() => {
       testList.forEach((item) => {
-        expect(screen.getByText(item.title)).toBeInTheDocument();
+        expect(screen.getByText(item.title!)).toBeInTheDocument();
       });
     });
 
     testList.forEach(async (item) => {
-      const menuItem = screen.getByText(item.title);
+      const menuItem = screen.getByText(item.title!);
       fireEvent.click(menuItem);
 
       //同样需要等待
