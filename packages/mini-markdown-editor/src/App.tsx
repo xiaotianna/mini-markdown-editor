@@ -193,7 +193,7 @@ const App: FC = () => {
       </Button>
       {/* <EditorWrapper theme={theme as "light" | "dark"} onSave={handleSave} /> */}
       <EditorWrapper
-        // locale="tw"
+        locale="en"
         placeholder={"请输入内容..."}
         // status={true}
         onUpload={handleUpload}

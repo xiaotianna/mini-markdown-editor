@@ -7,7 +7,11 @@ import { InsertEmojiEvent } from "@/config/toolbar/event";
 import { useGlobalConfig } from "@/hooks/use-global-config";
 
 const Emoji: FC = () => {
-  const { theme } = useGlobalConfig();
+  const { theme, locale: globalLocal } = useGlobalConfig();
+
+  const locale = useMemo(() => {
+    return globalLocal === "cn" ? "zh" : globalLocal;
+  }, [globalLocal]);
 
   // Emoji 选择器
   const EmojiPickerComponent = useMemo(
@@ -15,11 +19,10 @@ const Emoji: FC = () => {
       <Picker
         data={data}
         onEmojiSelect={(emoji: any) => InsertEmojiEvent(emoji)}
-        locale="zh"
+        locale={locale}
         theme={theme === "dark" ? "dark" : "light"}
         previewPosition="none"
         searchPosition="top"
-        // skinTonePosition="none"
       />
     ),
     [theme],
