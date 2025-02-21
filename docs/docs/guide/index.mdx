@@ -4,13 +4,19 @@
 
 Mini Markdown Editor 是 2025年寒假字节青训营「前端」的一个开源项目。
 
+此项目旨在提供一个简单、易用且高性能的 Markdown 编辑体验。这个项目的核心目标是通过精简和优化，让开发者能够更专注于 Markdown 内容的创作，同时保证其高效的解析与渲染能力。
+
 :::
 
-该项目采用 `pnpm` + `monorepo` 进行管理，包含两个核心子项目：
+该项目采用 `pnpm` + `monorepo` 进行管理，确保了多个子项目的模块化管理以及高效的构建流程。项目包含两个核心子项目：
 
-- `@mini-markdown-rc/ast-parser`：核心库，实现 Markdown 语法的 AST 解析器，用于解析 Markdown 文本，生成 AST、HTML。
-- `@mini-markdown-rc/editor`：一款 React 的 Markdown 编辑器。
+- `@mini-markdown-rc/ast-parser`：核心库。该库负责将 Markdown 文本解析为抽象语法树（AST），并根据需要转换为 HTML 或其他格式。
+- `@mini-markdown-rc/editor`：基于 React 实现的 Markdown 编辑器，集成了语法高亮、实时预览等功能，提供了流畅的编辑体验。
 
-**优点：**
+## 功能亮点
 
-简单易用、轻量、性能高，十万➕内容依然流畅。
+- **简洁易用**：用户可以快速上手，编辑界面直观清晰。
+- **高性能**：采用高效的 AST 解析和渲染机制，即使处理十万+的内容依然保持流畅。
+- **灵活定制**：提供丰富的 API，用户可以根据需求自定义工具栏、主题以及编辑器行为。
+- **兼容性强**：支持常见的 Markdown 语法，并能够生成标准的 HTML 代码，保证兼容性。
+
