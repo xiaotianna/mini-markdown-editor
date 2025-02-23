@@ -1,5 +1,11 @@
 # @mini-markdown-rc/editor
 
+## 1.0.10
+
+### Patch Changes
+
+- 新增多语言支持
+
 ## 1.0.9
 
 ### Patch Changes
