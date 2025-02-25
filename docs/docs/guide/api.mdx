@@ -210,7 +210,7 @@ export interface ToolbarItem extends BaseToolbarItem {
 
 编辑器内容初始化内容。
 
-:::warning 注意
+:::warning 警告
 
 当 `local` 为 `false` 时，`value` 才会起作用。不然会默认使用 `localStorage` 中的内容。
 
@@ -264,6 +264,17 @@ const App = () => {
     </>
   );
 };
+```
+
+### locale
+
+- 类型：`"en" | "cn" | "tw"`
+- 默认值：`"en"`
+
+语言环境。
+
+```tsx
+<Editor locale="cn" />
 ```
 
 ### lineNumbers
@@ -1050,13 +1061,21 @@ interface GlobalConfig extends ReactCodeMirrorProps {
   value?: string;
   /**
    * 配置工具栏
-   * 添加工具; 排除工具
+   * 添加工具; 排除工具; 排序工具
    */
-  toolbars?: { addTools?: ToolbarItem[]; excludeTools?: string[] };
+  toolbars?: {
+    addTools?: ToolbarItem[];
+    excludeTools?: string[];
+    orderTools?: { type: string; order: number }[];
+  };
   /**
    * 底部状态栏是否显示，默认显示
    */
   status?: boolean;
+    /**
+   * 语言环境
+   */
+  locale?: "en" | "cn" | "tw";
   /**
    * 编辑器主题
    */
