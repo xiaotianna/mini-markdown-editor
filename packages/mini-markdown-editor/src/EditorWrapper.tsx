@@ -176,7 +176,12 @@ const EditorWrapper = forwardRef<EditorRef, GlobalConfig>((config, ref) => {
         <ConfigProvider config={config}>
           {/* antd 主题样式 */}
           <AntdConfigProvider
-            theme={{ algorithm: config.theme === "light" ? undefined : AntdTheme.darkAlgorithm }}
+            theme={{
+              algorithm:
+                { ...defaultGlobalConfig, ...config }.theme === "light"
+                  ? undefined
+                  : AntdTheme.darkAlgorithm,
+            }}
           >
             <ToolbarProvider toolbarConfig={config.toolbars}>
               {/* 工具栏 */}
