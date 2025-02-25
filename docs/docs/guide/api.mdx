@@ -4,12 +4,15 @@
 
 ### toolbars
 
-- 类型：`{ addTools?: ToolbarItem[]; excludeTools?: string[] }`
-  - addTools：可以自定义新增 `toolbar` 配置
-  - excludeTools：需要排除的 toolbar 数组
+- 类型：`{ addTools?: ToolbarItem[]; excludeTools?: string[]; orderTools?: { type: string; order: number }[]; }`
+  - addTools：可以自定义新增 `toolbar` 配置项
+  - excludeTools：需要过滤工具项的 `toolbar` 数组配置项
+  - orderTools: 排序 `toolbar` 中工具项先后顺序的数组配置项
 - 默认值：`undefined`
 
 需要渲染的 toolbar，默认全部渲染。
+
+**工具栏项接口定义：**
 
 ```ts
 export interface BaseToolbarItem {
@@ -47,6 +50,12 @@ export interface ToolbarItem extends BaseToolbarItem {
 
 #### 1. 移除工具栏
 
+:::warning 警告
+
+只能移除已存在的工具栏项，传入未被识别的工具栏项，不会生效。
+
+:::
+
 ```tsx
 <Editor
   toolbars={{
@@ -57,114 +66,130 @@ export interface ToolbarItem extends BaseToolbarItem {
 
 #### 2. 新增工具栏
 
-> 有三种方法可以自定义工具栏：配置项、组件、工具栏实例。
+> **有三种方法可以自定义工具栏：配置项、组件、工具栏实例。**
 
 - 方法1：配置项
 
-```tsx
-// 因为 icon 属性需要的是 字符串，所以导入路径的时候需要使用 `?raw`
-/**
- * 尽量将 svg 的 width、height设置为 1em
- * <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"></svg>
- */
-import CustomToolbarIcon from "@/assets/images/custom-toolbar.svg?raw";
+  ```tsx
+  // 因为 icon 属性需要的是 字符串，所以导入路径的时候需要使用 `?raw`
+  /**
+   * 尽量将 svg 的 width、height 设置为 1em
+   * <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"></svg>
+   */
+  import CustomToolbarIcon from "@/assets/images/custom-toolbar.svg?raw";
 
-<Editor
-  toolbars={{
-    addTools: [
-      {
-        type: "custom-toolbar",
-        title: "自定义toolbar",
-        icon: CustomToolbarIcon, // type: string
-        description: "自定义toolbar的描述",
-        hotkey: {
-          command: "Mod-p", // 快捷键
-          description: "Mod-p", // 工具栏快捷键展示的描述信息
-          handle: () => {
-            // 执行快捷键后的回调
+  <Editor
+    toolbars={{
+      addTools: [
+        {
+          type: "custom-toolbar",
+          title: "自定义toolbar",
+          icon: CustomToolbarIcon, // type: string
+          description: "自定义toolbar的描述",
+          hotkey: {
+            command: "Mod-p", // 快捷键
+            description: "Mod-p", // 工具栏快捷键展示的描述信息
+            handle: () => {
+              // 执行快捷键后的回调
+              console.log("我是快捷键输出123");
+            },
+          },
+          // 点击工具栏按钮的回调
+          onClick: () => {
             console.log("我是快捷键输出123");
           },
         },
-        // 点击工具栏按钮的回调
-        onClick: () => {
-          console.log("我是快捷键输出123");
-        },
-      },
-    ],
-  }}
-/>;
-```
+      ],
+    }}
+  />;
+  ```
 
 - 方法2：组件
 
-该方式，工具栏的样式需要完全自定义。
+  通过配置 `component` 属性，可以自定义工具栏的样式。
 
-![自定义toolbar的描述](./img/custom-toolbar.png)
+  > 在该方式中，工具栏的样式需要完全自定义。
+
+  ![自定义toolbar的描述](./img/custom-toolbar.png)
+
+  ```tsx
+  <Editor
+    toolbars={{
+      addTools: [
+        {
+          type: "custom-toolbar",
+          component: <div>组件</div>,
+        },
+      ],
+    }}
+  />
+  ```
+
+- 方法3： 工具栏实例
+
+  可以通过 `ToolbarManager` 实例方法，对工具栏进行操作。
+
+  此处给出添加工具栏项的示例:
+
+  ```tsx {1,7-24}
+  import { Editor, ToolbarManager, insertContent } from "mini-markdown-editor";
+  import { useEffect } from "react";
+
+  const App = () => {
+    useEffect(() => {
+      try {
+        toolbarConfig.addToolItem({
+          type: "custom-toolbar",
+          title: "自定义工具栏",
+          icon: CustomToolbarIcon,
+          description: "自定义工具栏的描述",
+          hotkey: {
+            command: "Mod-l",
+            description: "快捷键描述",
+            handle: () => {
+              console.log("执行快捷键的回调");
+            },
+          },
+          onClick: () => {
+            // 插入内容
+            insertContent.insertTextAtCursor("123");
+            // 更精细控制
+            insertContent.insertContent("123", { anchor: 1, head: 1 });
+          },
+        });
+        console.log("添加工具栏成功");
+      } catch (error) {
+        console.error("添加工具栏失败:", error);
+      }
+    }, []);
+    return (
+      <>
+        <Editor />
+      </>
+    );
+  };
+
+  export default App;
+  ```
+
+  > 想要深入了解 ToolbarManager 实例方法，可以移步查看: [ToolbarManager 实例方法](#toolbarmanager)。
+
+#### 3. 工具栏排序
+
+通过 `orderTools` 配置项，可以对工具栏中的工具项进行排序。
+
+> 只对 `orderTools` 中配置的工具项进行排序，未配置的工具项不受影响。
 
 ```tsx
 <Editor
   toolbars={{
-    addTools: [
-      {
-        type: "custom-toolbar",
-        component: <div>组件</div>,
-      },
+    orderTools: [
+      { type: "bold", order: 1 },
+      { type: "italic", order: 2 },
+      { type: "underline", order: 3 },
     ],
   }}
 />
-```
-
-- 方法3： 工具栏实例
-
-```tsx {1,7-11,17-35}
-import { Editor, ToolbarManager, insertContent } from "mini-markdown-editor";
-import { useEffect } from "react";
-
-const App = () => {
-  useEffect(() => {
-    try {
-      toolbarConfig.updateToolbarItem("bold", {
-        onClick: () => {
-          console.log("我是粗体");
-        },
-      });
-    } catch (error) {
-      console.error("更新工具栏失败:", error);
-    }
-
-    try {
-      toolbarConfig.addToolItem({
-        type: "custom-toolbar",
-        title: "自定义工具栏",
-        icon: CustomToolbarIcon,
-        description: "自定义工具栏的描述",
-        hotkey: {
-          command: "Mod-l",
-          description: "快捷键描述",
-          handle: () => {
-            console.log("执行快捷键的回调");
-          },
-        },
-        onClick: () => {
-          // 插入内容
-          insertContent.insertTextAtCursor("123");
-          // 更精细控制
-          insertContent.insertContent("123", { anchor: 1, head: 1 });
-        },
-      });
-      console.log("添加工具栏成功");
-    } catch (error) {
-      console.error("添加工具栏失败:", error);
-    }
-  }, []);
-  return (
-    <>
-      <Editor />
-    </>
-  );
-};
-
-export default App;
 ```
 
 ### placeholder
