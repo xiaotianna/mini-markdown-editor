@@ -1,5 +1,11 @@
 # @mini-markdown-rc/editor
 
+## 1.0.11
+
+### Patch Changes
+
+- 修复构建产物ts类型文件位置错误
+
 ## 1.0.10
 
 ### Patch Changes
