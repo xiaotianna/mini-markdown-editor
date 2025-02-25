@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       react() as PluginOption,
-      ...(isProd ? [dts({ tsconfigPath: "./tsconfig.app.json" })] : []),
+      ...(isProd ? [dts({ tsconfigPath: "./tsconfig.app.json", include: ["src/**"] })] : []),
     ],
     resolve: {
       alias: {
