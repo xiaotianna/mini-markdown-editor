@@ -1,5 +1,11 @@
 # @mini-markdown-rc/editor
 
+## 1.0.12
+
+### Patch Changes
+
+- 修复全局默认主题部分颜色错误bug
+
 ## 1.0.11
 
 ### Patch Changes
