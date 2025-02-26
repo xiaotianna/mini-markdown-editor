@@ -2,6 +2,12 @@
 
 ## 属性
 
+:::tip 提示
+
+`Editor` 组件基于 `CodeMirror` 实现，支持所有 CodeMirror 的原生配置选项，并进行了功能扩展。本文档中仅列出了扩展属性和部分常用配置，如需了解全部配置选项，请查阅 [CodeMirror 官方文档](https://codemirror.net/doc/manual.html#config)。
+
+:::
+
 ### toolbars
 
 - 类型：`{ addTools?: ToolbarItem[]; excludeTools?: string[]; orderTools?: { type: string; order: number }[]; }`
@@ -308,6 +314,13 @@ const App = () => {
 > - className：默认为 `markdown-editor-content`
 
 ## 事件
+
+:::tip 提示
+
+`Editor` 组件的事件系统基于 `CodeMirror` 进行了扩展，部分基础事件已重命名或优化。本文档列出了常用事件处理方法，如需了解全部事件类型及详细用法，请参考 [CodeMirror 事件文档](https://codemirror.net/doc/manual.html#events)。
+
+:::
+
 
 ### onChange
 
@@ -860,7 +873,7 @@ import { insertContent } from "mini-markdown-editor";
 
 在编辑区插入内容（相比 `insertTextAtCursor` 方法，该方法控制更加精细）。
 
-:::info selection参数
+:::info selection 参数
 
 `anchor、head`：用于控制光标位置，当 `anchor` 和 `head` 相等时，表示光标在当前位置，如果 `anchor` 和 `head` 不相等，则表示光标选中某段内容。
 
@@ -933,11 +946,11 @@ import { insertContent } from "mini-markdown-editor";
 
 ### EDITOR_CONTENT_KEY
 
-编辑区内容存储(localStorage)的 `key`，值为 `markdown-editor-content`。
+编辑区内容存储( localStorage )的 `key`，值为 `markdown-editor-content`。
 
 ### SYNC_SCROLL_STATUS
 
-同步滚动状态(存储在localStorage中)，值为 `markdown-editor-sync-scroll`。
+同步滚动状态(存储在 localStorage 中)，值为 `markdown-editor-sync-scroll`。
 
 ## 类型
 
