@@ -117,7 +117,7 @@ class ToolbarConfig extends BaseClass {
   }
 
   // 设置单个工具项的顺序
-  public setToolbarOrder(type: ToolbarType, newOrder: number): void {
+  public setToolbarItemOrder(type: ToolbarType, newOrder: number): void {
     try {
       this.checkDestroyed();
 
@@ -146,7 +146,7 @@ class ToolbarConfig extends BaseClass {
   }
 
   // 批量设置工具项顺序
-  public setToolbarsOrder(orders: Record<ToolbarType, number>): void {
+  public setToolbarOrder(orders: Record<ToolbarType, number>): void {
     try {
       this.checkDestroyed();
 
