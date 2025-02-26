@@ -9,6 +9,7 @@ class ToolbarConfig extends BaseClass {
   private readonly defaultToolbars: ToolbarItem[];
   private toolbarOrderMap: Map<ToolbarType, number>;
   private initialized: boolean = false;
+  private plugins: Map<string, (...args: any[]) => any> = new Map();
 
   constructor(initialToolbars: ToolbarItem[]) {
     super({
@@ -318,6 +319,85 @@ class ToolbarConfig extends BaseClass {
       this.error("Error swapping toolbar positions:", error);
       throw error;
     }
+  }
+
+  // ---------------------扩展函数-----------------------
+
+  // 注册方法
+  public registerMethod(
+    name: string,
+    method: (...args: any[]) => any,
+    override: boolean = false,
+  ): void {
+    try {
+      this.checkDestroyed();
+
+      // 防止覆盖
+      const protectedMethods = [
+        "addToolItem",
+        "removeToolItem",
+        "updateToolbars",
+        "reset",
+        "registerMethod",
+        "unregisterMethod",
+        "callMethod",
+        "destroy",
+      ];
+
+      if (protectedMethods.includes(name)) {
+        throw new Error(`Cannot override protected method: ${name}`);
+      }
+
+      if (this.plugins.has(name) && !override) {
+        throw new Error(`Method "${name}" already exists. Set override to true to replace it.`);
+      }
+
+      // 注册
+      this.plugins.set(name, method.bind(this));
+      this.emit("METHOD_REGISTERED", name);
+    } catch (error) {
+      this.error("Error registering method:", error);
+      throw error;
+    }
+  }
+
+  // 注销方法
+  public unregisterMethod(name: string): void {
+    try {
+      this.checkDestroyed();
+
+      if (!this.plugins.has(name)) {
+        return;
+      }
+
+      this.plugins.delete(name);
+      this.emit("METHOD_UNREGISTERED", name);
+    } catch (error) {
+      this.error("Error unregistering method:", error);
+      throw error;
+    }
+  }
+
+  // 调用自定义方法
+  public callMethod(name: string, ...args: any[]): any {
+    try {
+      this.checkDestroyed();
+
+      if (!this.plugins.has(name)) {
+        throw new Error(`Method "${name}" not found`);
+      }
+
+      return this.plugins.get(name)!(...args);
+    } catch (error) {
+      this.error(`Error calling method "${name}":`, error);
+      throw error;
+    }
+  }
+
+  // 销毁
+  public destroy(): void {
+    this.plugins.clear();
+    super.destroy();
   }
 }
 
