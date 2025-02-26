@@ -687,11 +687,13 @@ export default function () {
 
 ### ToolbarManager
 
-工具栏管理器方法，用于自定义工具栏。
+工具栏管理器，提供丰富的工具栏自定义功能。
 
 :::tip 注意
 
-需要渲染 `<Editor />` 组件后，才能使用 `ToolbarManager`。
+必须在渲染 `<Editor />` 组件后才能使用 `ToolbarManager`。
+
+建议使用 `try...catch` 包裹相关操作以捕获可能的错误。
 
 :::
 
@@ -699,16 +701,34 @@ export default function () {
 import { ToolbarManager } from "mini-markdown-editor";
 ```
 
-> 可以使用 `try...catch`包裹 `ToolbarManager`，捕获错误。
+**基本用法示例：**
 
-#### 1. getDefaultToolbar
+```tsx
+import { Editor, ToolbarManager } from "mini-markdown-editor";
+
+export default function EditorComponent() {
+  useEffect(() => {
+    try {
+      // 工具栏管理器操作...
+      const toolbars = ToolbarManager.getAllToolbars();
+      console.log(toolbars);
+    } catch (error) {
+      console.error("工具栏操作失败:", error);
+    }
+  }, []);
+  
+  return <Editor />;
+}
+```
+
+#### getDefaultToolbar
+
+获取默认工具栏配置。
 
 - 参数：`void`
 - 返回值：`ToolbarItem[]`
+- 说明：返回原始默认工具栏配置，不受 `toolbar.excludeTools` 属性影响。
 
-获取默认工具栏内容。
-
-> 获取的 toolbar 内容默认的内容，即使 `toolbar.excludeTools` 排除后，还是会获取。
 
 ```tsx {1,5}
 import { Editor, ToolbarManager } from "mini-markdown-editor";
@@ -726,40 +746,49 @@ export default function () {
 }
 ```
 
-#### 2. getAllToolbars
+#### getAllToolbars
+
+获取当前所有工具栏项。
 
 - 参数：`void`
 - 返回值：`ToolbarItem[]`
+- 说明：返回当前实际使用的工具栏配置，包括所有自定义修改。
 
-获取所有工具栏项。
 
 ```tsx
 useEffect(() => {
-  const res = ToolbarManager.getAllToolbars();
+  const currentToolbars = ToolbarManager.getAllToolbars();
+  console.log(currentToolbars);
 }, []);
 ```
 
-#### 3. addToolItem
+#### addToolItem
 
-- 参数：`item: ToolbarItem`
+添加新的工具栏项。
+
+- 参数：`item: ToolbarItem` - 工具栏项配置对象
 - 返回值：`void`
+- 说明：如果添加的工具栏类型已存在，将抛出错误。
 
-添加指定工具栏项。
 
-```tsx {1,5-12}
+```tsx {1,5-16}
 import { Editor, ToolbarManager } from "mini-markdown-editor";
 
 export default function () {
   useEffect(() => {
+  try {
     ToolbarManager.addToolItem({
-      type: "heading",
-      icon: "heading",
-      title: "标题",
+      type: "custom-heading",  // 工具栏类型，必须唯一
+      icon: "heading",         // 图标名称
+      title: "自定义标题",      // 悬停提示文本
       onClick: () => {
-        console.log("标题");
+        console.log("标题功能被点击");
       },
     });
-  }, []);
+  } catch (error) {
+    console.error("添加工具栏失败:", error);
+  }
+}, []);
   return (
     <>
       <Editor />
@@ -767,12 +796,18 @@ export default function () {
   );
 ```
 
-#### 4. updateToolbars
+#### updateToolbars
 
-- 参数：`newToolbars: ToolbarItem[]`
+完全替换工具栏配置。
+
+- 参数：`newToolbars: ToolbarItem[]` - 新的工具栏配置数组
 - 返回值：`void`
 
-更新工具栏内容。
+:::warning 警告
+
+此操作会覆盖所有现有工具栏项，请谨慎使用！
+
+:::
 
 ```tsx
 useEffect(() => {
@@ -782,45 +817,50 @@ useEffect(() => {
       icon: "heading",
       title: "标题",
       onClick: () => {
-        console.log("标题");
+        console.log("标题功能被触发");
       },
     },
+    // 添加其他需要保留的工具栏项...
   ]);
 }, []);
 ```
 
-> 注意：上面写法👆，会覆盖工具栏配置，最后只剩一个 `heading` 工具栏。
+#### updateToolbarItem
 
-#### 5. updateToolbarItem
+更新特定工具栏项的配置。
 
-- 参数：`type: ToolbarType, partialToolbarItem: Partial<ToolbarItem>`
+- 参数：
+  - type: `ToolbarType` - 要更新的工具栏类型
+  - partialToolbarItem: `Partial<ToolbarItem>` - 部分工具栏配置
 - 返回值：`void`
+- 说明：只更新指定的属性，其他属性保持不变。
 
-修改特定工具栏项的功能。
 
 ```tsx
 useEffect(() => {
   ToolbarManager.updateToolbarItem("bold", {
+    // 只更新以下属性，其他属性保持不变
     onClick: () => {
-      console.log("我是粗体");
+      console.log("自定义粗体功能");
     },
     hotkey: {
       command: "Mod-b",
-      description: "快捷键描述",
+      description: "加粗文本 (Ctrl+B)",
       handle: () => {
-        console.log("我是快捷键粗体");
+        console.log("通过快捷键触发粗体功能");
       },
     },
   });
 }, []);
 ```
 
-#### 6. removeToolItem
+#### removeToolItem
 
-- 参数：`type: ToolbarType`
+移除指定的工具栏项。
+
+- 参数：`type: ToolbarType` - 要移除的工具栏类型
 - 返回值：`void`
-
-移除指定工具栏项。
+- 说明：如果指定类型不存在，此操作不会产生任何效果。
 
 ```tsx
 useEffect(() => {
@@ -828,29 +868,86 @@ useEffect(() => {
 }, []);
 ```
 
-#### 7. reset
+#### reset
+
+重置工具栏到初始状态。
 
 - 参数：`void`
 - 返回值：`void`
+- 说明：恢复到默认工具栏配置。
 
-重置工具栏。
-
-```tsx
-ToolbarManager.reset();
-```
-
-#### 8. reorderToolbar
-
-- 参数：`newOrder: ToolbarType[]`
-- 返回值：`void`
-
-重新排序工具栏。
 
 ```tsx
 useEffect(() => {
-  ToolbarManager.reorderToolbar(["heading", "line", "table", "undo", "redo", "fullscreen"]);
+  // 在进行多次自定义后，恢复到默认配置
+  ToolbarManager.reset();
 }, []);
 ```
+
+#### reorderToolbar
+
+重新排序工具栏。
+
+- 参数：`newOrder: ToolbarType[]` - 新的工具栏顺序数组
+- 返回值：`void`
+- 说明：必须包含所有现有工具栏类型，否则将抛出错误。
+
+```tsx
+useEffect(() => {
+  try {
+    ToolbarManager.reorderToolbar([
+      "heading", "line", "table", 
+      "undo", "redo", "fullscreen"
+      // 需包含所有现有工具栏类型
+    ]);
+  } catch (error) {
+    console.error("工具栏重排序失败:", error);
+  }
+}, []);
+```
+
+#### 事件监听
+
+`ToolbarManager` 继承自 `BaseClass`，因此具有完整的事件管理能力，可以监听和响应工具栏变化事件。
+
+> 通过事件系统，您可以实现对工具栏变化的实时响应，如状态同步、UI更新等。 
+
+
+**事件监听方法示例：**
+
+```tsx
+
+// 监听工具栏变化事件
+ToolbarManager.on("TOOLBAR_ADDED", (toolbarItem) => {
+  console.log("新增了工具栏项:", toolbarItem);
+});
+
+// 一次性事件监听
+ToolbarManager.once("TOOLBAR_REMOVED", (type) => {
+  console.log(`工具栏项 ${type} 已被移除`);
+});
+
+// 移除事件监听
+const updateHandler = (updatedItem) => {
+  console.log("工具栏项已更新:", updatedItem);
+};
+ToolbarManager.on("TOOLBAR_UPDATED", updateHandler);
+// 稍后移除监听
+ToolbarManager.off("TOOLBAR_UPDATED", updateHandler);
+
+
+```
+
+:::tip 提示
+
+更多自定义时间类型，详见 [类型 ToolbarEvents](#toolbarevents)。
+
+:::
+
+
+#### 扩展方法
+
+
 
 ### insertContent
 
@@ -1042,6 +1139,23 @@ interface ToolbarItem extends BaseToolbarItem {
     handle?: () => void;
   };
 }
+```
+
+### ToolbarEvents
+
+工具栏基础自定义事件类型。
+
+```ts 
+
+enum ToolbarEvents {
+  TOOLBAR_ADDED = "toolbar:added",
+  TOOLBAR_REMOVED = "toolbar:removed",
+  TOOLBAR_UPDATED = "toolbar:updated",
+  TOOLBAR_REORDERED = "toolbar:reordered",
+  TOOLBAR_RESET = "toolbar:reset",
+  TOOLBAR_ERROR = "toolbar:error",
+}
+
 ```
 
 ### ToolbarContextValues
