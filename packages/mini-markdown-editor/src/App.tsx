@@ -228,6 +228,7 @@ const App: FC = () => {
           orderTools: [{ type: "123", order: 0 }],
         }}
         value="## Hello World."
+        autoFocus={true}
       />
     </AppWrapper>
   );

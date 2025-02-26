@@ -166,7 +166,6 @@ const Editor: FC<EditorProps> = (props) => {
           autocompletion: false,
           defaultKeymap: true,
         }}
-        autoFocus={true}
         style={{ height: "100%", ...(style || {}) }}
         onChange={handleChange}
         onMouseEnter={handleMouseEnter}

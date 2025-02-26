@@ -23,6 +23,11 @@ export interface GlobalConfig extends ReactCodeMirrorProps {
    */
   status?: boolean;
   /**
+   * 是否自动获取焦点，默认不获取
+   * @type {boolean}
+   */
+  autoFocus?: boolean;
+  /**
    * 编辑器主题
    * @type {"light" | "dark"}
    */
@@ -84,6 +89,7 @@ export type GlobalContextConfig = Pick<
   | "toolbars"
   | "status"
   | "local"
+  | "autoFocus"
   | "lineNumbers"
   | "enableShortcuts"
   | "onUpload"
