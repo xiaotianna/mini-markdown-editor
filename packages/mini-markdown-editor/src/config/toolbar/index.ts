@@ -354,7 +354,7 @@ class ToolbarConfig extends BaseClass {
 
       // 注册
       this.plugins.set(name, method.bind(this));
-      this.emit("METHOD_REGISTERED", name);
+      this.emit(ToolbarEvents.METHOD_REGISTERED, name);
     } catch (error) {
       this.error("Error registering method:", error);
       throw error;
@@ -371,7 +371,7 @@ class ToolbarConfig extends BaseClass {
       }
 
       this.plugins.delete(name);
-      this.emit("METHOD_UNREGISTERED", name);
+      this.emit(ToolbarEvents.METHOD_UNREGISTERED, name);
     } catch (error) {
       this.error("Error unregistering method:", error);
       throw error;
