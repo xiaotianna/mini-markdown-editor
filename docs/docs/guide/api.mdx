@@ -746,6 +746,40 @@ export default function () {
 }
 ```
 
+#### getToolbarOrder
+
+获取指定工具栏项的当前顺序。
+
+- 参数：`type`: `ToolbarType` - 工具栏类型
+- 返回值：`number` - 工具栏项的顺序索引，如果不存在则返回 -1
+- 说明：顺序索引从 0 开始，表示工具栏项在工具栏中的位置
+
+```tsx
+
+useEffect(() => {
+  const boldOrder = ToolbarManager.getToolbarOrder("bold");
+  console.log(`粗体按钮的位置是: ${boldOrder}`);
+}, []);
+
+```
+
+#### getAllToolbarsOrder
+
+获取所有工具栏项的顺序信息。
+
+- 参数：`void`
+- 返回值：`{ type: ToolbarType; order: number }[]` - 工具栏类型和顺序的数组
+- 说明：返回按顺序排列的工具栏类型和索引位置信息
+
+```tsx
+
+useEffect(() => {
+  const toolbarsOrder = ToolbarManager.getAllToolbarsOrder();
+  console.log("工具栏顺序:", toolbarsOrder);
+}, []);
+
+```
+
 #### getAllToolbars
 
 获取当前所有工具栏项。
@@ -753,7 +787,6 @@ export default function () {
 - 参数：`void`
 - 返回值：`ToolbarItem[]`
 - 说明：返回当前实际使用的工具栏配置，包括所有自定义修改。
-
 
 ```tsx
 useEffect(() => {
@@ -796,11 +829,58 @@ export default function () {
   );
 ```
 
+#### setToolbarItemOrder
+
+设置单个工具栏项的顺序。
+
+- 参数：
+  - `type`: `ToolbarType` - 工具栏类型
+  - `newOrder`: `number` - 新的顺序位置
+- 返回值：`void`
+- 说明：会自动调整其他工具栏项的顺序以适应变化
+
+```tsx
+
+useEffect(() => {
+  try {
+    // 将粗体按钮移动到第一位置
+    ToolbarManager.setToolbarItemOrder("bold", 0);
+  } catch (error) {
+    console.error("设置工具栏顺序失败:", error);
+  }
+}, []);
+
+```
+
+#### setToolbarOrder
+
+批量设置多个工具栏项的顺序。
+
+- 参数：`orders`: `Record<ToolbarType, number>` - 类型到顺序的映射对象
+- 返回值：`void`
+- 说明：可以同时调整多个工具栏项的顺序
+
+```tsx
+
+useEffect(() => {
+  try {
+    ToolbarManager.setToolbarsOrder({
+      "bold": 0,
+      "italic": 1,
+      "underline": 2
+    });
+  } catch (error) {
+    console.error("批量设置工具栏顺序失败:", error);
+  }
+}, []);
+
+```
+
 #### updateToolbars
 
 完全替换工具栏配置。
 
-- 参数：`newToolbars: ToolbarItem[]` - 新的工具栏配置数组
+- 参数：`newToolbars`: `ToolbarItem[]` - 新的工具栏配置数组
 - 返回值：`void`
 
 :::warning 警告
@@ -830,8 +910,8 @@ useEffect(() => {
 更新特定工具栏项的配置。
 
 - 参数：
-  - type: `ToolbarType` - 要更新的工具栏类型
-  - partialToolbarItem: `Partial<ToolbarItem>` - 部分工具栏配置
+  - `type`: `ToolbarType` - 要更新的工具栏类型
+  - `partialToolbarItem`: `Partial<ToolbarItem>` - 部分工具栏配置
 - 返回值：`void`
 - 说明：只更新指定的属性，其他属性保持不变。
 
@@ -858,7 +938,7 @@ useEffect(() => {
 
 移除指定的工具栏项。
 
-- 参数：`type: ToolbarType` - 要移除的工具栏类型
+- 参数：`type`: `ToolbarType` - 要移除的工具栏类型
 - 返回值：`void`
 - 说明：如果指定类型不存在，此操作不会产生任何效果。
 
@@ -888,7 +968,7 @@ useEffect(() => {
 
 重新排序工具栏。
 
-- 参数：`newOrder: ToolbarType[]` - 新的工具栏顺序数组
+- 参数：`newOrder`: `ToolbarType[]` - 新的工具栏顺序数组
 - 返回值：`void`
 - 说明：必须包含所有现有工具栏类型，否则将抛出错误。
 
@@ -904,6 +984,29 @@ useEffect(() => {
     console.error("工具栏重排序失败:", error);
   }
 }, []);
+```
+
+#### swapToolbarsPosition
+
+- 参数：
+  - `firstType`: `ToolbarType` - 第一个工具栏类型
+  - `secondType`: `ToolbarType` - 第二个工具栏类型
+- 返回值：`void`
+- 说明：如果指定的工具栏类型不存在，将抛出错误。
+
+交换两个工具栏项的位置。
+
+```tsx
+
+useEffect(() => {
+  try {
+    // 交换粗体和斜体按钮的位置
+    ToolbarManager.swapToolbarsPosition("bold", "italic");
+  } catch (error) {
+    console.error("交换工具栏位置失败:", error);
+  }
+}, []);
+
 ```
 
 #### 事件监听
@@ -940,14 +1043,116 @@ ToolbarManager.off("TOOLBAR_UPDATED", updateHandler);
 
 :::tip 提示
 
-更多自定义时间类型，详见 [类型 ToolbarEvents](#toolbarevents)。
+更多自定义事件类型，详见 [类型 ToolbarEvents](#toolbarevents)。
 
 :::
 
-
 #### 扩展方法
 
+`ToolbarManagerx` 提供了插件系统，允许您注册自定义方法来扩展其功能，无需继承或修改原始类。
 
+:::warning 注意 
+
+自定义方法中，`this` 指向 `ToolbarManager` 实例，因此可以访问所有公共方法。但应避免直接访问私有属性或修改内部状态，以免导致意外行为。 
+
+:::
+
+##### registerMethod
+
+注册自定义方法到工具栏管理器。
+
+- 参数：
+  - `name`: `string` - 方法名称
+  - `method`: `(...args: any[]) => any` - 方法实现
+  - `override`: `boolean = false` - 是否允许覆盖已存在的方法
+- 返回值：`void`
+
+```tsx
+
+useEffect(() => {
+  try {
+    ToolbarManager.registerMethod("groupToolbars", function(groupName) {
+      // 此处的 this 指向 ToolbarManager 实例
+      const allToolbars = this.getAllToolbars();
+      
+      // 根据类型分组工具栏
+      return {
+        formatting: allToolbars.filter(tool => 
+          ["bold", "italic", "underline"].includes(tool.type)
+        ),
+        insert: allToolbars.filter(tool => 
+          ["image", "link", "table"].includes(tool.type)
+        )
+      };
+    });
+  } catch (error) {
+    console.error("注册自定义方法失败:", error);
+  }
+}, []);
+
+```
+
+##### callMethod
+
+调用已注册的自定义方法。
+
+- 参数:
+  - `name`: `string` - 方法名称
+  - `...args`: `any[]` - 传递给方法的参数
+- 返回值: `any` - 自定义方法的返回值
+- 说明: 如果方法不存在，将抛出错误
+
+```tsx
+
+// 假定已注册了名为 groupToolbars 的自定义方法
+useEffect(() => {
+  try {
+    // 调用自定义分组方法
+    const groups = ToolbarManager.callMethod("groupToolbars", "default");
+    console.log("格式化工具:", groups.formatting);
+    console.log("插入工具:", groups.insert);
+  } catch (error) {
+    console.error("调用自定义方法失败:", error);
+  }
+}, []);
+
+```
+
+##### unregisterMethod
+
+移除已注册的自定义方法。
+
+- 参数: `name`: `string` - 方法名称
+- 返回值: `void`
+- 说明: 如果方法不存在，此操作不会产生任何效果
+
+```tsx 
+
+useEffect(() => {
+  // 当不再需要某个自定义方法时
+  ToolbarManager.unregisterMethod("groupToolbars");
+}, []);
+
+```
+
+#### 资源清理
+
+当不再需要 ToolbarManager 时，应当调用 `destroy()` 方法释放资源：
+
+```tsx
+
+useEffect(() => {
+  // ...
+  
+  return () => {
+    // 组件卸载时清理资源
+    ToolbarManager.destroy();
+  };
+}, []);
+
+```
+
+这将移除所有事件监听器和自定义方法，并标记实例为已销毁，防止内存泄漏和意外操作。
 
 ### insertContent
 
