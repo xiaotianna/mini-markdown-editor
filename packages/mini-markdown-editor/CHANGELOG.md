@@ -1,5 +1,11 @@
 # @mini-markdown-rc/editor
 
+## 1.0.13
+
+### Patch Changes
+
+- 新增工具栏扩展,修复autoFocus的bug
+
 ## 1.0.12
 
 ### Patch Changes
