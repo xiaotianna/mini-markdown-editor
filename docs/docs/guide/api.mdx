@@ -275,7 +275,7 @@ const App = () => {
 ### locale
 
 - 类型：`"en" | "cn" | "tw"`
-- 默认值：`"en"`
+- 默认值：`"cn"`
 
 语言环境。
 
@@ -1060,7 +1060,7 @@ ToolbarManager.off("TOOLBAR_UPDATED", updateHandler);
 
 #### 扩展方法
 
-`ToolbarManagerx` 提供了插件系统，允许您注册自定义方法来扩展其功能，无需继承或修改原始类。
+`ToolbarManager` 提供了插件系统，允许您注册自定义方法来扩展其功能，无需继承或修改原始类。
 
 :::warning 注意 
 
@@ -1370,6 +1370,10 @@ enum ToolbarEvents {
   TOOLBAR_REORDERED = "toolbar:reordered",
   TOOLBAR_RESET = "toolbar:reset",
   TOOLBAR_ERROR = "toolbar:error",
+  METHOD_REGISTERED = "method:registered",
+  METHOD_UNREGISTERED = "method:unregistered",
+  beforeDestroy = "beforeDestroy",
+  destroy = "destroy",
 }
 
 ```
