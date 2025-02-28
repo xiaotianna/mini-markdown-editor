@@ -51,7 +51,6 @@ describe("CopyCodeButton 组件测试", () => {
   test("开发环境下根据语言显示正确文本", () => {
     // 测试英文环境
     render(<CopyCodeButton />);
-    screen.debug();
     expect(screen.getByText("Copy Test Code")).toBeInTheDocument();
 
     // 测试中文环境

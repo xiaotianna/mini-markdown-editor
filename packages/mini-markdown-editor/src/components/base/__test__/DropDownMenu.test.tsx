@@ -61,6 +61,7 @@ describe("DropDownMenu 组件测试", () => {
     });
 
     testList.forEach(async (item) => {
+      fireEvent.mouseOver(button);
       const menuItem = screen.getByText(item.title!);
       fireEvent.click(menuItem);
 
@@ -69,6 +70,20 @@ describe("DropDownMenu 组件测试", () => {
         expect(getName).toHaveBeenCalled();
         expect(getName).toHaveReturnedWith(item.type);
       });
+    });
+  });
+  it("正确渲染自定义菜单项", () => {
+    const custom = () => <div>custom</div>;
+    render(
+      <DropDownMenu dropdownRender={custom}>
+        <button>heading</button>
+      </DropDownMenu>,
+    );
+    const button = screen.getByRole("button", { name: "heading" });
+    fireEvent.mouseOver(button);
+    //同样需要等待
+    waitFor(() => {
+      expect(screen.getByText("custom")).toBeInTheDocument();
     });
   });
 });

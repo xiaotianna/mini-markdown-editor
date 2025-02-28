@@ -89,7 +89,6 @@ describe("ToolbarItem 组件测试", () => {
 
   test("应正确应用类名", () => {
     const { container } = render(<ToolbarItem {...baseProps} />);
-    screen.debug();
     expect(container.firstChild).toHaveClass(
       `${CLASS_PREFIX}-toolbar-item ${CLASS_PREFIX}-toolbar-item-${baseProps.type}`,
     );

@@ -22,9 +22,10 @@ const mockLocalStorage = (() => {
   };
 })();
 
-describe("safeLocalStorage Utils测试", () => {
+describe("safeLocalStorage", () => {
   let originalLocalStorage: Storage;
   const consoleError = vi.spyOn(console, "error");
+  const consoleWarn = vi.spyOn(console, "warn");
 
   beforeEach(() => {
     // 重置模拟 localStorage
@@ -75,6 +76,18 @@ describe("safeLocalStorage Utils测试", () => {
   });
 
   describe("异常处理测试", () => {
+    test("不可用的 localStorage", () => {
+      // 模拟 localStorage 不可用
+      (window as any).localStorage = null;
+
+      const storage = safeLocalStorage();
+      storage.setItem("test", "value");
+      expect(storage.getItem("test")).toBeNull();
+      storage.removeItem("test");
+      storage.clear();
+      expect(consoleWarn).toHaveBeenCalledTimes(4);
+    });
+
     test("损坏的 JSON 数据", () => {
       const storage = safeLocalStorage();
       mockLocalStorage.setItem("badData", "{invalid json");
@@ -103,6 +116,13 @@ describe("safeLocalStorage Utils测试", () => {
     test("获取不存在的键", () => {
       const storage = safeLocalStorage();
       expect(storage.getItem("nonExistent")).toBeNull();
+    });
+
+    test("存储特殊类型", () => {
+      const storage = safeLocalStorage();
+      const date = new Date();
+      storage.setItem("date", date);
+      expect(storage.getItem<Date>("date")).toBe(date.toISOString());
     });
   });
 });
