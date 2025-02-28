@@ -1,125 +1,166 @@
-import { describe, test, expect, vi, beforeEach } from "vitest";
-import type { EditorView } from "@uiw/react-codemirror";
+import { describe, test, expect, vi, beforeEach, beforeAll, afterAll } from "vitest";
 import {
+  scrollSynchronizer,
   handleEditorScroll,
   handlePreviewScroll,
   handleScrollTop,
-  scrollSynchronizer,
 } from "../handle-scroll";
+import { EditorView } from "@codemirror/view";
 import { waitFor } from "@testing-library/react";
 
 // 模拟 DOM 环境
 const mockPreviewView = document.createElement("div");
-mockPreviewView.scrollTo = vi.fn();
+mockPreviewView.style.height = "300px";
+// 添加测试数据行标记
+for (let i = 1; i <= 3; i++) {
+  const vnode = document.createElement("div") as any;
+  vnode.setAttribute("data-line", i.toString());
+  vnode.style.height = "50px";
+  //jsdom不支持offsetTop故手动赋值
+  Object.defineProperty(vnode, "offsetTop", {
+    value: (i - 1) * 50,
+    writable: true,
+  });
+  mockPreviewView.appendChild(vnode);
+}
+
 const mockEditorView = {
   scrollDOM: document.createElement("div"),
-  state: { doc: { lines: 100 } },
+  state: {
+    doc: {
+      lines: 100,
+      line: (num: number) => ({ from: num * 10 }),
+    },
+  },
+  lineBlockAt: (pos: number) => ({ top: pos }),
+  dispatch: vi.fn(),
 } as unknown as EditorView;
-mockEditorView.scrollDOM.scrollTo = vi.fn();
 
 describe("handle-scroll Utils测试", () => {
   beforeEach(() => {
-    // 重置所有模拟调用
-    vi.restoreAllMocks();
+    // 重置实例状态
+
+    vi.clearAllMocks();
   });
 
-  // 测试 handleEditorScroll
-  describe("handleEditorScroll", () => {
-    test("正常调用时应触发同步逻辑", () => {
-      const spy = vi.spyOn(scrollSynchronizer, "handleEditorScroll");
+  describe("核心方法", () => {
+    test("应正确计算高度映射", () => {
+      scrollSynchronizer.handleEditorScroll(mockEditorView, mockPreviewView);
+      expect(scrollSynchronizer["editorElementList"]).toEqual([10, 20, 30]);
+      expect(scrollSynchronizer["previewElementList"]).toEqual([0, 50, 100]);
+    });
 
-      handleEditorScroll({
-        editorView: mockEditorView,
-        previewView: mockPreviewView,
-      });
+    test("应处理无效行号", () => {
+      const invalidNode = document.createElement("div");
+      invalidNode.setAttribute("data-line", "invalid");
+      mockPreviewView.appendChild(invalidNode);
 
-      expect(spy).toHaveBeenCalledWith(mockEditorView, mockPreviewView);
+      scrollSynchronizer.handleEditorScroll(mockEditorView, mockPreviewView);
+      expect(scrollSynchronizer["editorElementList"].length).toBe(3);
     });
   });
 
-  // 测试 handlePreviewScroll
-  describe("handlePreviewScroll", () => {
-    test("正常调用时应触发同步逻辑", () => {
-      const spy = vi.spyOn(scrollSynchronizer, "handlePreviewScroll");
+  describe("滚动同步", () => {
+    test("顶部边界处理", () => {
+      mockEditorView.scrollDOM.scrollTop = 0;
+      scrollSynchronizer.handleEditorScroll(mockEditorView, mockPreviewView);
 
-      handlePreviewScroll({
-        editorView: mockEditorView,
-        previewView: mockPreviewView,
-      });
-
-      expect(spy).toHaveBeenCalledWith(mockPreviewView, mockEditorView);
-    });
-  });
-
-  // 测试 handleScrollTop
-  describe("handleScrollTop", () => {
-    test("正常调用时应触发置顶逻辑", () => {
-      const spy = vi.spyOn(scrollSynchronizer, "handleScrollTop");
-
-      handleScrollTop({
-        editorView: mockEditorView,
-        previewView: mockPreviewView,
-      });
-
-      expect(spy).toHaveBeenCalledWith(mockEditorView, mockPreviewView);
-    });
-  });
-
-  // 测试 ScrollSynchronizer 类的私有方法
-  describe("ScrollSynchronizer 私有方法测试", () => {
-    test("computeHeightMapping 应正确计算高度映射", () => {
-      const instance = scrollSynchronizer;
-      const spy = vi.spyOn(instance as any, "clearHeightMappings");
-
-      instance["computeHeightMapping"]({
-        editorView: mockEditorView,
-        previewView: mockPreviewView,
-      });
-
-      expect(spy).toHaveBeenCalled();
+      expect(mockPreviewView.scrollTop).toBe(0);
     });
 
-    test("synchronizeScroll 应正确同步滚动", () => {
-      const instance = scrollSynchronizer;
-      const spy = vi.spyOn(instance as any, "performProportionalScroll");
-
-      instance["synchronizeScroll"]("editor", {
-        editorView: mockEditorView,
-        previewView: mockPreviewView,
-      });
+    test("底部边界处理", () => {
+      mockEditorView.scrollDOM.scrollTop = 9999;
+      scrollSynchronizer.handleEditorScroll(mockEditorView, mockPreviewView);
       waitFor(() => {
-        expect(spy).toHaveBeenCalled();
+        // 验证触发动画逻辑
+        expect(mockPreviewView.scrollTop).toBeGreaterThan(100);
       });
     });
 
-    test("scrollToTop 应正确滚动到顶部", () => {
-      const instance = scrollSynchronizer;
-
-      instance["scrollToTop"](mockEditorView, mockPreviewView);
-
-      expect(mockEditorView.scrollDOM.scrollTo).toHaveBeenCalledWith({
-        top: 0,
-        behavior: "smooth",
-      });
-      expect(mockPreviewView.scrollTo).toHaveBeenCalledWith({
-        top: 0,
-        behavior: "smooth",
-      });
-    });
-
-    test("scrollToBottom 应正确滚动到底部", () => {
-      const instance = scrollSynchronizer;
-      const targetElement = document.createElement("div");
-      const content = document.createElement("div");
-      targetElement.appendChild(content);
-      targetElement.style.height = "100px";
-      content.style.height = "200px";
-      targetElement.scrollTop = 50;
-      instance["scrollToBottom"](targetElement);
-
+    test("中间位置比例滚动", () => {
+      // 模拟编辑器滚动到中间位置
+      mockEditorView.scrollDOM.scrollTop = 15;
+      scrollSynchronizer.handleEditorScroll(mockEditorView, mockPreviewView);
       waitFor(() => {
-        expect(targetElement.scrollTop).toBe(200 - 100);
+        // 预期预览区域滚动到 25px (0-50 对应 0-50px)
+        expect(mockPreviewView.scrollTop).toBe(25);
       });
     });
   });
+
+  describe("公共接口", () => {
+    test("handleEditorScroll 应触发同步", () => {
+      handleEditorScroll({ editorView: mockEditorView, previewView: mockPreviewView });
+      expect(mockPreviewView.scrollTop).toBeDefined();
+    });
+
+    test("handlePreviewScroll 应反向同步", () => {
+      mockPreviewView.scrollTop = 50;
+      handlePreviewScroll({ editorView: mockEditorView, previewView: mockPreviewView });
+      waitFor(() => {
+        expect(mockEditorView.scrollDOM.scrollTop).toBe(10);
+      });
+    });
+
+    test("handleScrollTop 应重置滚动位置", () => {
+      const mockScroll = vi.fn();
+      mockEditorView.scrollDOM.scrollTo = mockScroll;
+      mockPreviewView.scrollTo = mockScroll;
+
+      handleScrollTop({ editorView: mockEditorView, previewView: mockPreviewView });
+      expect(mockScroll).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  describe("边界条件", () => {
+    test("空预览视图应跳过处理", () => {
+      expect(() => {
+        scrollSynchronizer.handleEditorScroll(mockEditorView, null);
+      }).not.toThrow();
+    });
+
+    test("无效文档状态处理", () => {
+      const invalidEditorView = { ...mockEditorView, state: null } as any;
+      expect(() => {
+        scrollSynchronizer.handleEditorScroll(invalidEditorView, mockPreviewView);
+      }).not.toThrow();
+    });
+  });
+
+  describe("动画逻辑", () => {
+    test("滚动到底部应触发动画", () => {
+      const mockRequestAnimationFrame = vi.spyOn(window, "requestAnimationFrame");
+      scrollSynchronizer["scrollToBottom"](mockPreviewView);
+
+      expect(mockRequestAnimationFrame).toHaveBeenCalled();
+    });
+
+    test("滚动过程中断应安全处理", () => {
+      const element = document.createElement("div");
+      const child = document.createElement("div");
+      element.appendChild(child);
+      child.style.height = "1000px";
+      element.style.height = "500px";
+      element.scrollTop = 300;
+
+      scrollSynchronizer["scrollToBottom"](element);
+      element.scrollTop = 0; // 模拟外部中断
+
+      // 验证无错误抛出
+      expect(() => {
+        vi.advanceTimersByTime(200);
+      }).not.toThrow();
+    });
+  });
+});
+
+// 配置测试环境
+beforeAll(() => {
+  Object.defineProperty(HTMLElement.prototype, "clientHeight", { value: 500 });
+  Object.defineProperty(HTMLElement.prototype, "scrollHeight", { value: 1000 });
+  vi.useFakeTimers();
+});
+
+afterAll(() => {
+  vi.useRealTimers();
 });

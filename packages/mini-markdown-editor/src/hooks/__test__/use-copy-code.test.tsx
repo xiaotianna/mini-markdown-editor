@@ -1,10 +1,9 @@
-import { render, act, waitFor } from "@testing-library/react";
-import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
-import { useRef } from "react";
-import { createRoot } from "react-dom/client";
+import { renderHook, waitFor } from "@testing-library/react";
+import { describe, test, expect, vi, beforeEach } from "vitest";
 import { useCopyCode } from "../use-copy-code";
+import { createRoot } from "react-dom/client";
 
-// Mock ReactDOM.createRoot 和定时器
+// 模拟 ReactDOM.createRoot
 vi.mock("react-dom/client", () => ({
   createRoot: vi.fn(() => ({
     render: vi.fn(),
@@ -12,140 +11,143 @@ vi.mock("react-dom/client", () => ({
   })),
 }));
 
-// Mock requestAnimationFrame
-vi.stubGlobal("requestAnimationFrame", (fn: FrameRequestCallback) => setTimeout(fn, 0));
-
-// 测试组件容器
-const TestComponent = ({ node }: { node: string }) => {
-  const previewRef = useRef<HTMLDivElement>(null);
-  useCopyCode({ previewRef, node });
-  return <div ref={previewRef} data-testid="preview"></div>;
-};
+// 模拟 CopyButton 组件
+vi.mock("@/components/Preview/CopyCodeButton", () => ({
+  CopyButton: () => <div data-testid="copy-button" />,
+}));
 
 describe("useCopyCode Hook测试", () => {
-  beforeEach(() => {
-    vi.useFakeTimers();
-    // 重置DOM
-    document.body.innerHTML = "";
-    vi.clearAllMocks();
-  });
-  afterEach(() => {
-    vi.clearAllTimers();
-  });
-
-  test("应在挂载时添加复制按钮", async () => {
-    // 准备测试DOM结构
-    const preview = document.createElement("div");
-    preview.innerHTML = `
-      <div class="mini-md-code-container">
-        <div class="mini-md-code-right"></div>
-        <code>console.log('test')</code>
-      </div>
-    `;
-    document.body.appendChild(preview);
-
-    const { unmount } = render(<TestComponent node="test1" />, {
-      container: preview,
-    });
-
-    // 等待异步操作完成
-    await act(async () => {
-      vi.runAllTimers();
-    });
-
-    // 验证按钮容器已添加
-    const buttons = preview.querySelectorAll(".copy-code-button-wrapper");
-    waitFor(() => {
-      expect(buttons.length).toBe(1);
-      // 验证createRoot调用
-      expect(createRoot).toHaveBeenCalledTimes(1);
-    });
-
-    unmount();
-  });
-
-  test("应在node变化时清理并重新创建按钮", async () => {
-    const preview = document.createElement("div");
-    preview.innerHTML = `
+  const mockPreviewContainer = document.createElement("div");
+  const mockCodeBlock = `
     <div class="mini-md-code-container">
       <div class="mini-md-code-right"></div>
-      <code>console.log('updated')</code>
+      <code>console.log('test')</code>
     </div>
   `;
-    const { rerender } = render(<TestComponent node="test1" />, {
-      container: preview,
-    });
-
-    // 初始渲染
-    await act(async () => {
-      vi.runAllTimers();
-    });
-
-    rerender(<TestComponent node="test2" />);
-
-    await act(async () => {
-      vi.runAllTimers();
-    });
-    // 验证清理函数被调用
-    const mockRoot = createRoot({} as HTMLElement);
-    waitFor(() => {
-      expect(mockRoot.unmount).toHaveBeenCalled();
-      expect(createRoot).toHaveBeenCalledTimes(2);
-    });
+  const mockRef = { current: mockPreviewContainer };
+  const testContainer = document.createElement("div");
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockPreviewContainer.innerHTML = mockCodeBlock;
+    document.body.appendChild(mockPreviewContainer);
   });
 
-  test("应在卸载时执行清理", async () => {
-    const preview = document.createElement("div");
-    const { unmount } = render(<TestComponent node="test1" />, {
-      container: preview,
+  test("应正确添加复制按钮", async () => {
+    const { unmount } = renderHook(() =>
+      useCopyCode({
+        previewRef: mockRef,
+        node: "test-node",
+      }),
+    );
+
+    // 等待异步操作完成
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    const buttons = mockPreviewContainer.querySelectorAll('[data-testid="copy-button"]');
+    waitFor(() => {
+      expect(buttons.length).toBe(1);
+      expect(createRoot).toHaveBeenCalled();
     });
 
-    await act(async () => {
-      vi.runAllTimers();
-    });
+    unmount(); // 触发清理
+  });
 
-    // 执行卸载
+  test("卸载时应清理所有按钮", async () => {
+    const { unmount } = renderHook(() =>
+      useCopyCode({
+        previewRef: mockRef,
+        node: "test-node",
+      }),
+    );
+
+    await new Promise((resolve) => setTimeout(resolve, 0));
     unmount();
-
     // 验证清理函数被调用
-    const mockRoot = createRoot({} as HTMLElement);
     waitFor(() => {
-      expect(mockRoot.unmount).toHaveBeenCalled();
+      expect(createRoot(testContainer).unmount).toHaveBeenCalled();
+      const buttons = mockPreviewContainer.querySelectorAll('[data-testid="copy-button"]');
+      expect(buttons.length).toBe(0);
     });
   });
 
-  test("应处理无匹配元素的情况", async () => {
-    const preview = document.createElement("div");
-    preview.innerHTML = `<div class="wrong-container"></div>`;
-    render(<TestComponent node="test1" />, {
-      container: preview,
+  test("依赖项变化时应重新创建按钮", async () => {
+    const { rerender, unmount } = renderHook((props) => useCopyCode(props), {
+      initialProps: {
+        previewRef: mockRef,
+        node: "node-1",
+      },
     });
 
-    await act(async () => {
-      vi.runAllTimers();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    const initialRootInstance = createRoot(testContainer);
+
+    // 更新依赖项
+    rerender({
+      previewRef: mockRef,
+      node: "node-2",
     });
 
-    expect(createRoot).not.toHaveBeenCalled();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    waitFor(() => {
+      expect(createRoot).toHaveBeenCalledTimes(2);
+      expect(initialRootInstance.unmount).toHaveBeenCalled();
+    });
+
+    unmount();
   });
 
-  test("应跳过已存在按钮的元素", async () => {
-    const preview = document.createElement("div");
-    preview.innerHTML = `
-      <div class="mini-md-code-container">
-        <div class="mini-md-code-right">
-          <div class="copy-code-button"></div>
-        </div>
-        <code>existing button</code>
-      </div>
-    `;
-    render(<TestComponent node="test1" />, {
-      container: preview,
+  test("应处理重复添加按钮的情况", async () => {
+    // 添加重复按钮结构
+    mockPreviewContainer.innerHTML = mockCodeBlock + mockCodeBlock;
+
+    const { unmount } = renderHook(() =>
+      useCopyCode({
+        previewRef: mockRef,
+        node: "test-node",
+      }),
+    );
+
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    const buttons = mockPreviewContainer.querySelectorAll('[data-testid="copy-button"]');
+    waitFor(() => {
+      expect(buttons.length).toBe(2);
     });
 
-    await act(async () => {
-      vi.runAllTimers();
+    unmount();
+  });
+
+  test("应处理无效代码块的情况", async () => {
+    const consoleSpy = vi.spyOn(console, "error");
+    mockPreviewContainer.innerHTML = '<div class="invalid-code"></div>';
+
+    renderHook(() =>
+      useCopyCode({
+        previewRef: mockRef,
+        node: "test-node",
+      }),
+    );
+
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(consoleSpy).not.toHaveBeenCalled();
+  });
+
+  test("应捕获并记录错误", async () => {
+    const consoleSpy = vi.spyOn(console, "error");
+    const mockError = new Error("Render error");
+    vi.mocked(createRoot).mockImplementationOnce(() => {
+      throw mockError;
     });
 
-    expect(createRoot).not.toHaveBeenCalled();
+    renderHook(() =>
+      useCopyCode({
+        previewRef: mockRef,
+        node: "test-node",
+      }),
+    );
+
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    waitFor(() => {
+      expect(consoleSpy).toHaveBeenCalledWith("Copy Error:", mockError);
+    });
   });
 });

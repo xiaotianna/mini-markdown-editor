@@ -22,7 +22,7 @@ const mockLocalStorage = (() => {
   };
 })();
 
-describe("safeLocalStorage", () => {
+describe("storage Utils测试", () => {
   let originalLocalStorage: Storage;
   const consoleError = vi.spyOn(console, "error");
   const consoleWarn = vi.spyOn(console, "warn");
