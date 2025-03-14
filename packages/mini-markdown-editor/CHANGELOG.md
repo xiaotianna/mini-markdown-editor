@@ -1,5 +1,11 @@
 # @mini-markdown-rc/editor
 
+## 1.0.14
+
+### Patch Changes
+
+- 修复html标签解析，防止xss入注
+
 ## 1.0.13
 
 ### Patch Changes
