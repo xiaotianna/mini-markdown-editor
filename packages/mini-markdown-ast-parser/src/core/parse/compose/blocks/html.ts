@@ -48,7 +48,7 @@ export const parseHtml = ({
         currentStatus.htmlBlockTag = null;
         root.children.push({
           type: "html",
-          value: currentStatus.htmlContent.trim(),
+          value: escapeHtml(currentStatus.htmlContent.trim()),
           position: {
             start: {
               line: index - currentStatus.htmlContent.split("\n").length + 2,
@@ -83,7 +83,7 @@ export const parseHtml = ({
 
       root.children.push({
         type: "html",
-        value: content.trim(),
+        value: escapeHtml(content.trim()),
         position: {
           start: {
             line: index + 1,
@@ -111,7 +111,7 @@ export const parseHtml = ({
       currentStatus.inHtmlBlock = false; // 自闭合标签不需要继续处理
       root.children.push({
         type: "html",
-        value: currentStatus.htmlContent.trim(),
+        value: escapeHtml(currentStatus.htmlContent.trim()),
         position: {
           start: {
             line: index + 1,
@@ -137,7 +137,7 @@ export const parseHtml = ({
         currentStatus.htmlBlockTag = null;
         root.children.push({
           type: "html",
-          value: currentStatus.htmlContent.trim(),
+          value: escapeHtml(currentStatus.htmlContent.trim()),
           position: {
             start: {
               line: index + 1,
@@ -156,4 +156,16 @@ export const parseHtml = ({
     }
     return true;
   }
+};
+
+// 对 html 标签进行转义和过滤
+const escapeHtml = (unsafe: string): string => {
+  // 移除所有事件处理器属性和危险属性
+  const sanitized = unsafe
+    .replace(/\son\w+\s*=\s*["']?[^"']*["']?/gi, "") // 移除所有事件处理器
+    .replace(/\s(?:javascript|data):[^\s>]*/gi, "") // 移除javascript:和data:协议
+    .replace(/\sformaction\s*=\s*["']?[^"']*["']?/gi, "") // 移除formaction属性
+    .replace(/\sform\s*=\s*["']?[^"']*["']?/gi, ""); // 移除form属性
+
+  return sanitized;
 };
