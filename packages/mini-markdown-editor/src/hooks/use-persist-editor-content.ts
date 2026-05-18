@@ -19,8 +19,9 @@ export const usePersistEditorContent = () => {
 
   // 获取内容
   const getContent = (): string => {
-    if (!local && value) {
-      return value;
+    // 关闭本地持久化时，不读取 localStorage
+    if (!local) {
+      return value ?? "";
     }
     return localStorage.getItem(EDITOR_CONTENT_KEY) ?? "";
   };

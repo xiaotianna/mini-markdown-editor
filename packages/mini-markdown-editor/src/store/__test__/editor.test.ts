@@ -1,5 +1,5 @@
 import { describe, test, expect, vi } from "vitest";
-import { useEditorContentStore } from "../editor";
+import { createEditorContentStore } from "../editor";
 import type { EditorView } from "@codemirror/view";
 
 // 模拟 EditorView 和 HTMLElement
@@ -8,7 +8,7 @@ const mockPreviewElement = document.createElement("div");
 
 describe("useEditorContentStore Store测试", () => {
   // 创建独立的 store 实例用于测试
-  const useTestStore = useEditorContentStore;
+  const useTestStore = createEditorContentStore();
 
   test("初始状态应为空值", () => {
     const state = useTestStore.getState();
@@ -72,5 +72,16 @@ describe("useEditorContentStore Store测试", () => {
     expect(finalState.scrollWrapper).toBe("wrapper");
     expect(finalState.previewView).toBe(mockPreviewElement);
     expect(finalState.editorView).toBe(mockEditorView);
+  });
+
+  test("不同 store 实例应互不影响", () => {
+    const storeA = createEditorContentStore();
+    const storeB = createEditorContentStore();
+
+    storeA.getState().setContent("editor-a");
+    storeB.getState().setContent("editor-b");
+
+    expect(storeA.getState().content).toBe("editor-a");
+    expect(storeB.getState().content).toBe("editor-b");
   });
 });

@@ -1,6 +1,10 @@
-import { FC, forwardRef, Fragment, useDeferredValue, useEffect } from "react";
+import { FC, forwardRef, Fragment, Ref, useDeferredValue, useEffect, useRef } from "react";
 import styled from "styled-components";
-import { useEditorContentStore } from "@/store/editor";
+import {
+  createEditorContentStore,
+  EditorContentStoreContext,
+  useEditorContentStore,
+} from "@/store/editor";
 import Toolbar from "@/components/Toolbar";
 import Editor from "@/components/Editor";
 import Preview from "@/components/Preview";
@@ -150,7 +154,10 @@ const RenderRow: FC<{
   );
 };
 
-const EditorWrapper = forwardRef<EditorRef, GlobalConfig>((config, ref) => {
+const EditorWrapperContent: FC<{
+  config: GlobalConfig;
+  editorRef: Ref<EditorRef>;
+}> = ({ config, editorRef }) => {
   const content = useEditorContentStore((state) => state.content);
   const deferredContent = useDeferredValue(content);
   const isFullScreen = useToolbarStore((state) => state.isFullScreen);
@@ -164,7 +171,7 @@ const EditorWrapper = forwardRef<EditorRef, GlobalConfig>((config, ref) => {
   }, [config.locale]);
 
   // 外部ref使用的方法
-  useExposeHandle(ref);
+  useExposeHandle(editorRef);
 
   return (
     <GlobalTheme theme={config.theme}>
@@ -204,6 +211,15 @@ const EditorWrapper = forwardRef<EditorRef, GlobalConfig>((config, ref) => {
         </ConfigProvider>
       </Container>
     </GlobalTheme>
+  );
+};
+
+const EditorWrapper = forwardRef<EditorRef, GlobalConfig>((config, ref) => {
+  const editorContentStoreRef = useRef(createEditorContentStore());
+  return (
+    <EditorContentStoreContext.Provider value={editorContentStoreRef.current}>
+      <EditorWrapperContent config={config} editorRef={ref} />
+    </EditorContentStoreContext.Provider>
   );
 });
 

@@ -230,6 +230,7 @@ const App: FC = () => {
         value="## Hello World."
         autoFocus={true}
       />
+      <EditorWrapper local={false} />
     </AppWrapper>
   );
 };
