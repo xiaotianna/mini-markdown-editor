@@ -1,5 +1,11 @@
 # @mini-markdown-rc/editor
 
+## 1.0.15
+
+### Patch Changes
+
+- 修复多个组件共用同一个store实例bug
+
 ## 1.0.14
 
 ### Patch Changes
